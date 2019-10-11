@@ -33,3 +33,4 @@ clean:
 	@latexmk -CA
 	@rm -f *.bbl
 	@rm -f *.run.xml
+	@rm -R __pycache__/
