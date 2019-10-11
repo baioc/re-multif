@@ -14,23 +14,21 @@ authors:
     orcid: 0000-0001-8364-8969
     email: baiocchi.gabriel@gmail.com
     affiliations: 1,*
-
-  - name: Mateus Favarin
+  - name: Mateus Favarin Costa
     orcid:
-    email:
-    affiliations: 1,*      # * is for contact author
+    email: mateusfavarinc@gmail.com
+    affiliations: 1
 
 # List of affiliations with code (corresponding to author affiliations), name
 # and address. You can also use these affiliations to add text such as "Equal
 # contributions" as name (with no address).
 affiliations:
   - code:    1
-    name:    Federal University of Santa Catarina (UFSC)
+    name:    Universidade Federal de Santa Catarina (UFSC)
     address: Florianópolis, Brazil
 
-
 # List of keywords (adding the programming language might be a good idea)
-keywords: rescience c, biological computing, bioinformatics, octave, oscillator, digital circuits
+keywords: rescience c, biological computing, synthetic biology, digital circuits, oscillator, octave, copasi
 
 # Code URL and DOI (url is mandatory for replication, doi after acceptance)
 # You can get a DOI for your code from Zenodo,
@@ -41,12 +39,14 @@ code:
 
 # Date URL and DOI (optional if no data)
 data:
-  - url: 10/10/2019
+  - url:
   - doi:
 
 # Information about the original article that has been replicated
 replication:
- - cite: "Purcell, O.; di Bernardo, M.; Grierson, C. S.; Savery, N. J. A multi-functional synthetic gene network: a frequency multiplier, oscillator and switch. PLoS One. 2011 Feb 17;6(2):e16140. doi: 10.1371/journal.pone.0016140. PMID: 21359152; PMCID: PMC3040778." # Full textual citation
+ - cite: "Purcell O.; di Bernardo M.; Grierson C.S.; Savery N.J.
+          (2011) A Multi-Functional Synthetic Gene Network: A Frequency Multiplier, Oscillator and Switch.
+          PLoS ONE 6(2): e16140. doi:10.1371/journal.pone.0016140" # Full textual citation
  - bib:  oscillator # Bibtex key (if any) in your bibliography file
  - url:  https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3040778/pdf/pone.0016140.pdf # URL to the PDF, try to link to a non-paywall version
  - doi:  https://doi.org/10.1371/journal.pone.0016140 # Regular digital object identifier
