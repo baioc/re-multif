@@ -18,10 +18,14 @@ Kd_R3 = 4e-4;
 Kd_R4 = 4e-4;
 
 % mRNA degradation rates (1/s)
-Kd_mR1 = 2.5e-3;
-Kd_mR2 = 2.5e-3;
-Kd_mR3 = 2.5e-3;
-Kd_mR4 = 2.5e-3;
+Kd_mR1P1 = 2.5e-3;
+Kd_mR4P1 = 2.5e-3;
+Kd_mR2P2 = 2.5e-3;
+Kd_mR3P2 = 2.5e-3;
+Kd_mR1P3 = 2.5e-3;
+Kd_mR2P4 = 2.5e-3;
+Kd_mR3P5 = 2.5e-3;
+Kd_mR4P6 = 2.5e-3;
 
 % basal transcription rates (1/s)
 Kc_P1 = 0;
@@ -114,14 +118,14 @@ for t = 1 : length(simulation)
     dR2dt = Kt_R2*(mR2P2 + mR2P4) - Kd_R2*R2;
     dR3dt = Kt_R3*(mR3P2 + mR3P5) - Kd_R3*R3;
     dR4dt = Kt_R4*(mR4P1 + mR4P6) - Kd_R4*R4;
-    dmR1P1dt = Kc_P1 + Kb_P1 * (Is(t)^Na_P1 / (Ka_P1 + Is(t)^Na_P1)) * (1 / (1 + (R2^Nr_R2P1 / Kr_R2P1))) - Kd_mR1*mR1P1;
-    dmR4P1dt = Kc_P1 + Kb_P1 * (Is(t)^Na_P1 / (Ka_P1 + Is(t)^Na_P1)) * (1 / (1 + (R2^Nr_R2P1 / Kr_R2P1))) - Kd_mR4*mR4P1;
-    dmR2P2dt = Kc_P2 + Kb_P2 * (Is(t)^Na_P2 / (Ka_P2 + Is(t)^Na_P2)) * (1 / (1 + (R4^Nr_R4P2 / Kr_R4P2))) - Kd_mR2*mR2P2;
-    dmR3P2dt = Kc_P2 + Kb_P2 * (Is(t)^Na_P2 / (Ka_P2 + Is(t)^Na_P2)) * (1 / (1 + (R4^Nr_R4P2 / Kr_R4P2))) - Kd_mR3*mR3P2;
-    dmR1P3dt = Kc_P3 + Kb_P3 * (1 / (1 + (R3^Nr_R3P3 / Kr_R3P3))) - Kd_mR1*mR1P3;
-    dmR2P4dt = Kc_P4 + Kb_P4 * (1 / (1 + (R3^Nr_R3P4 / Kr_R3P4))) * (1 / (1 + (R4^Nr_R4P4 / Kr_R4P4))) - Kd_mR2*mR2P4;
-    dmR3P5dt = Kc_P5 + Kb_P5 * (1 / (1 + (R1^Nr_R1P5 / Kr_R1P5))) - Kd_mR3*mR3P5;
-    dmR4P6dt = Kc_P6 + Kb_P6 * (1 / (1 + (R1^Nr_R1P6 / Kr_R1P6))) * (1 / (1 + (R2^Nr_R2P6 / Kr_R2P6))) - Kd_mR4*mR4P6;
+    dmR1P1dt = Kc_P1 + Kb_P1 * (Is(t)^Na_P1 / (Ka_P1 + Is(t)^Na_P1)) * (1 / (1 + (R2^Nr_R2P1 / Kr_R2P1))) - Kd_mR1P1*mR1P1;
+    dmR4P1dt = Kc_P1 + Kb_P1 * (Is(t)^Na_P1 / (Ka_P1 + Is(t)^Na_P1)) * (1 / (1 + (R2^Nr_R2P1 / Kr_R2P1))) - Kd_mR4P1*mR4P1;
+    dmR2P2dt = Kc_P2 + Kb_P2 * (Is(t)^Na_P2 / (Ka_P2 + Is(t)^Na_P2)) * (1 / (1 + (R4^Nr_R4P2 / Kr_R4P2))) - Kd_mR2P2*mR2P2;
+    dmR3P2dt = Kc_P2 + Kb_P2 * (Is(t)^Na_P2 / (Ka_P2 + Is(t)^Na_P2)) * (1 / (1 + (R4^Nr_R4P2 / Kr_R4P2))) - Kd_mR3P2*mR3P2;
+    dmR1P3dt = Kc_P3 + Kb_P3 * (1 / (1 + (R3^Nr_R3P3 / Kr_R3P3))) - Kd_mR1P3*mR1P3;
+    dmR2P4dt = Kc_P4 + Kb_P4 * (1 / (1 + (R3^Nr_R3P4 / Kr_R3P4))) * (1 / (1 + (R4^Nr_R4P4 / Kr_R4P4))) - Kd_mR2P4*mR2P4;
+    dmR3P5dt = Kc_P5 + Kb_P5 * (1 / (1 + (R1^Nr_R1P5 / Kr_R1P5))) - Kd_mR3P5*mR3P5;
+    dmR4P6dt = Kc_P6 + Kb_P6 * (1 / (1 + (R1^Nr_R1P6 / Kr_R1P6))) * (1 / (1 + (R2^Nr_R2P6 / Kr_R2P6))) - Kd_mR4P6*mR4P6;
 
     R1 += dR1dt * dt;
     R2 += dR2dt * dt;
@@ -141,10 +145,7 @@ endfor
 % plotting
 hold on;
 subplot(2,1, 1);
-plot(simulation, R1s, '-m;R1;');
-plot(simulation, R2s, '-k;R2;');
-plot(simulation, R3s, '-r;R3;');
-plot(simulation, R4s, '-g;R4;');
+plot(simulation,R1s,'-m;R1;', simulation,R2s,'-k;R2;', simulation,R3s,'-r;R3;', simulation,R4s,'-g;R4;');
 subplot(2,1, 2);
 plot(simulation, Is, 'b;I;');
 hold off;
