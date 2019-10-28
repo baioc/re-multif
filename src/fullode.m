@@ -1,0 +1,151 @@
+clear;
+format long;
+
+% general definitions
+dt = 0.01;
+simulation = 0 : dt : 3.5;
+
+% translation rates (1/s)
+Kt_R1 = 6e-4;
+Kt_R2 = 6e-4;
+Kt_R3 = 6e-4;
+Kt_R4 = 6e-4;
+
+% protein degradation rates (1/s)
+Kd_R1 = 4e-4;
+Kd_R2 = 4e-4;
+Kd_R3 = 4e-4;
+Kd_R4 = 4e-4;
+
+% mRNA degradation rates (1/s)
+Kd_mR1 = 2.5e-3;
+Kd_mR2 = 2.5e-3;
+Kd_mR3 = 2.5e-3;
+Kd_mR4 = 2.5e-3;
+
+% basal transcription rates (1/s)
+Kc_P1 = 0;
+Kc_P2 = 0;
+Kc_P3 = 0;
+Kc_P4 = 0;
+Kc_P5 = 0;
+Kc_P6 = 0;
+
+% maximum/unrepressed transcription rates (M/s)
+Kb_P1 = 4e-10;
+Kb_P2 = 4e-10;
+Kb_P3 = 4e-10;
+Kb_P4 = 4e-10;
+Kb_P5 = 4e-10;
+Kb_P6 = 4e-10;
+
+% activation constants (M)
+Ka_P1 = 2e-8;
+Ka_P2 = 2e-8;
+
+% repression constants (M)
+Kr_R2P1 = 6e-10;
+Kr_R4P2 = 6e-10;
+Kr_R3P3 = 6e-10;
+Kr_R3P4 = 6e-10;
+Kr_R4P4 = 6e-10;
+Kr_R1P5 = 6e-10;
+Kr_R1P6 = 6e-10;
+Kr_R2P6 = 6e-10;
+
+% Hill coefficients
+Na_P1 = 1.3;
+Na_P2 = 1.3;
+Nr_R2P1 = 1.3;
+Nr_R4P2 = 1.3;
+Nr_R3P3 = 1.3;
+Nr_R3P4 = 1.3;
+Nr_R4P4 = 1.3;
+Nr_R1P5 = 1.3;
+Nr_R1P6 = 1.3;
+Nr_R2P6 = 1.3;
+
+% system initial state (M)
+R1 = 50;
+R2 = 50;
+R3 = 0;
+R4 = 0;
+mR1P1 = 0;
+mR4P1 = 0;
+mR2P2 = 0;
+mR3P2 = 0;
+mR1P3 = 0;
+mR2P4 = 0;
+mR3P5 = 0;
+mR4P6 = 0;
+
+% concentrations over time
+Is = 6 .- 25*cos(simulation .* 2*pi/0.9) .+ 25;
+R1s = zeros(1, length(simulation));
+R2s = zeros(1, length(simulation));
+R3s = zeros(1, length(simulation));
+R4s = zeros(1, length(simulation));
+mR1P1s = zeros(1, length(simulation));
+mR4P1s = zeros(1, length(simulation));
+mR2P2s = zeros(1, length(simulation));
+mR3P2s = zeros(1, length(simulation));
+mR1P3s = zeros(1, length(simulation));
+mR2P4s = zeros(1, length(simulation));
+mR3P5s = zeros(1, length(simulation));
+mR4P6s = zeros(1, length(simulation));
+
+% simulation
+for t = 1 : length(simulation)
+
+    R1s(t) = R1;
+    R2s(t) = R2;
+    R3s(t) = R3;
+    R4s(t) = R4;
+    mR1P1s(t) = mR1P1;
+    mR4P1s(t) = mR4P1;
+    mR2P2s(t) = mR2P2;
+    mR3P2s(t) = mR3P2;
+    mR1P3s(t) = mR1P3;
+    mR2P4s(t) = mR2P4;
+    mR3P5s(t) = mR3P5;
+    mR4P6s(t) = mR4P6;
+
+    dR1dt = Kt_R1*(mR1P1 + mR1P3) - Kd_R1*R1;
+    dR2dt = Kt_R2*(mR2P2 + mR2P4) - Kd_R2*R2;
+    dR3dt = Kt_R3*(mR3P2 + mR3P5) - Kd_R3*R3;
+    dR4dt = Kt_R4*(mR4P1 + mR4P6) - Kd_R4*R4;
+    dmR1P1dt = Kc_P1 + Kb_P1 * (Is(t)^Na_P1 / (Ka_P1 + Is(t)^Na_P1)) * (1 / (1 + (R2^Nr_R2P1 / Kr_R2P1))) - Kd_mR1*mR1P1;
+    dmR4P1dt = Kc_P1 + Kb_P1 * (Is(t)^Na_P1 / (Ka_P1 + Is(t)^Na_P1)) * (1 / (1 + (R2^Nr_R2P1 / Kr_R2P1))) - Kd_mR4*mR4P1;
+    dmR2P2dt = Kc_P2 + Kb_P2 * (Is(t)^Na_P2 / (Ka_P2 + Is(t)^Na_P2)) * (1 / (1 + (R4^Nr_R4P2 / Kr_R4P2))) - Kd_mR2*mR2P2;
+    dmR3P2dt = Kc_P2 + Kb_P2 * (Is(t)^Na_P2 / (Ka_P2 + Is(t)^Na_P2)) * (1 / (1 + (R4^Nr_R4P2 / Kr_R4P2))) - Kd_mR3*mR3P2;
+    dmR1P3dt = Kc_P3 + Kb_P3 * (1 / (1 + (R3^Nr_R3P3 / Kr_R3P3))) - Kd_mR1*mR1P3;
+    dmR2P4dt = Kc_P4 + Kb_P4 * (1 / (1 + (R3^Nr_R3P4 / Kr_R3P4))) * (1 / (1 + (R4^Nr_R4P4 / Kr_R4P4))) - Kd_mR2*mR2P4;
+    dmR3P5dt = Kc_P5 + Kb_P5 * (1 / (1 + (R1^Nr_R1P5 / Kr_R1P5))) - Kd_mR3*mR3P5;
+    dmR4P6dt = Kc_P6 + Kb_P6 * (1 / (1 + (R1^Nr_R1P6 / Kr_R1P6))) * (1 / (1 + (R2^Nr_R2P6 / Kr_R2P6))) - Kd_mR4*mR4P6;
+
+    R1 += dR1dt * dt;
+    R2 += dR2dt * dt;
+    R3 += dR3dt * dt;
+    R4 += dR4dt * dt;
+    mR1P1 += dmR1P1dt * dt;
+    mR4P1 += dmR4P1dt * dt;
+    mR2P2 += dmR2P2dt * dt;
+    mR3P2 += dmR3P2dt * dt;
+    mR1P3 += dmR1P3dt * dt;
+    mR2P4 += dmR2P4dt * dt;
+    mR3P5 += dmR3P5dt * dt;
+    mR4P6 += dmR4P6dt * dt;
+
+endfor
+
+% plotting
+hold on;
+subplot(2,1, 1);
+plot(simulation, R1s, '-m;R1;');
+plot(simulation, R2s, '-k;R2;');
+plot(simulation, R3s, '-r;R3;');
+plot(simulation, R4s, '-g;R4;');
+subplot(2,1, 2);
+plot(simulation, Is, 'b;I;');
+hold off;
+a = input("\nPress enter to exit ");
