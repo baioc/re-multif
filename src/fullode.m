@@ -1,21 +1,11 @@
 clear;
 format long;
 
-% general definitions
-dt = 0.01;
-simulation = 0 : dt : 3.5;
-
 % translation rates (1/s)
 Kt_R1 = 6e-4;
 Kt_R2 = 6e-4;
 Kt_R3 = 6e-4;
 Kt_R4 = 6e-4;
-
-% protein degradation rates (1/s)
-Kd_R1 = 4e-4;
-Kd_R2 = 4e-4;
-Kd_R3 = 4e-4;
-Kd_R4 = 4e-4;
 
 % mRNA degradation rates (1/s)
 Kd_mR1P1 = 2.5e-3;
@@ -27,21 +17,23 @@ Kd_mR2P4 = 2.5e-3;
 Kd_mR3P5 = 2.5e-3;
 Kd_mR4P6 = 2.5e-3;
 
-% basal transcription rates (1/s)
-Kc_P1 = 0;
-Kc_P2 = 0;
-Kc_P3 = 0;
-Kc_P4 = 0;
-Kc_P5 = 0;
-Kc_P6 = 0;
+% protein degradation rates (1/s)
+Kd_R1 = 4e-4;
+Kd_R2 = 4e-4;
+Kd_R3 = 4e-4;
+Kd_R4 = 4e-4;
 
-% maximum/unrepressed transcription rates (M/s)
-Kb_P1 = 4e-10;
-Kb_P2 = 4e-10;
-Kb_P3 = 4e-10;
-Kb_P4 = 4e-10;
-Kb_P5 = 4e-10;
-Kb_P6 = 4e-10;
+% Hill coefficients
+Na_P1 = 1.3;
+Na_P2 = 1.3;
+Nr_R2P1 = 1.3;
+Nr_R4P2 = 1.3;
+Nr_R3P3 = 1.3;
+Nr_R3P4 = 1.3;
+Nr_R4P4 = 1.3;
+Nr_R1P5 = 1.3;
+Nr_R1P6 = 1.3;
+Nr_R2P6 = 1.3;
 
 % activation constants (M)
 Ka_P1 = 2e-8;
@@ -57,34 +49,42 @@ Kr_R1P5 = 6e-10;
 Kr_R1P6 = 6e-10;
 Kr_R2P6 = 6e-10;
 
-% Hill coefficients
-Na_P1 = 1.3;
-Na_P2 = 1.3;
-Nr_R2P1 = 1.3;
-Nr_R4P2 = 1.3;
-Nr_R3P3 = 1.3;
-Nr_R3P4 = 1.3;
-Nr_R4P4 = 1.3;
-Nr_R1P5 = 1.3;
-Nr_R1P6 = 1.3;
-Nr_R2P6 = 1.3;
+% maximum/unrepressed transcription rates (M/s)
+Kb_P1 = 4e-10;
+Kb_P2 = 4e-10;
+Kb_P3 = 4e-10;
+Kb_P4 = 4e-10;
+Kb_P5 = 4e-10;
+Kb_P6 = 4e-10;
+
+% basal transcription rates (1/s)
+Kc_P1 = 0;
+Kc_P2 = 0;
+Kc_P3 = 0;
+Kc_P4 = 0;
+Kc_P5 = 0;
+Kc_P6 = 0;
+
+% simulation parameters
+dt = 1;
+simulation = 0 : dt : 3.5e5;
 
 % system initial state (M)
-R1 = 50;
-R2 = 50;
-R3 = 0;
-R4 = 0;
-mR1P1 = 0;
-mR4P1 = 0;
-mR2P2 = 0;
-mR3P2 = 0;
-mR1P3 = 0;
-mR2P4 = 0;
-mR3P5 = 0;
-mR4P6 = 0;
+R1 = 50e-9;
+R2 = 50e-9;
+R3 = 0e-9;
+R4 = 0e-9;
+mR1P1 = 0e-9;
+mR4P1 = 0e-9;
+mR2P2 = 0e-9;
+mR3P2 = 0e-9;
+mR1P3 = 0e-9;
+mR2P4 = 0e-9;
+mR3P5 = 0e-9;
+mR4P6 = 0e-9;
 
 % concentrations over time
-Is = 6 .- 25*cos(simulation .* 2*pi/0.9) .+ 25;
+Is = 6 .- 25*cos(simulation .* 2*pi/(0.9e5)) .+ 25;
 R1s = zeros(1, length(simulation));
 R2s = zeros(1, length(simulation));
 R3s = zeros(1, length(simulation));
