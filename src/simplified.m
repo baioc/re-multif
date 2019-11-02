@@ -5,61 +5,13 @@
 
 % ========================== MODEL REACTION RATES ==============================
 
-    % translation rates (1/s)
-    Kt_R1 = 6e-4;
-    Kt_R2 = 6e-4;
-    Kt_R3 = 6e-4;
-    Kt_R4 = 6e-4;
-
-    % mRNA degradation rates (1/s)
-    Kd_mR1P1 = 2.5e-3;
-    Kd_mR4P1 = 2.5e-3;
-    Kd_mR2P2 = 2.5e-3;
-    Kd_mR3P2 = 2.5e-3;
-    Kd_mR1P3 = 2.5e-3;
-    Kd_mR2P4 = 2.5e-3;
-    Kd_mR3P5 = 2.5e-3;
-    Kd_mR4P6 = 2.5e-3;
-
-    % protein degradation rates (1/s)
-    Kd_R1 = 4e-4;
-    Kd_R2 = 4e-4;
-    Kd_R3 = 4e-4;
-    Kd_R4 = 4e-4;
-
-    % maximum/unrepressed transcription rates (M/s)
-    Kb_P1 = 4e-10;
-    Kb_P2 = 4e-10;
-    Kb_P3 = 4e-10;
-    Kb_P4 = 4e-10;
-    Kb_P5 = 4e-10;
-    Kb_P6 = 4e-10;
-
-    % Hill coefficients (scalar)
-    Na_P1 = 1.3;
-    Na_P2 = 1.3;
-    Nr_R2P1 = 1.3;
-    Nr_R4P2 = 1.3;
-    Nr_R3P3 = 1.3;
-    Nr_R3P4 = 1.3;
-    Nr_R4P4 = 1.3;
-    Nr_R1P5 = 1.3;
-    Nr_R1P6 = 1.3;
-    Nr_R2P6 = 1.3;
-
-    % Hill activation constants (M)
-    Ka_P1 = 2e-8;
-    Ka_P2 = 2e-8;
-
-    % Hill repression constants (M)
-    Kr_R2P1 = 6e-10;
-    Kr_R4P2 = 6e-10;
-    Kr_R3P3 = 6e-10;
-    Kr_R3P4 = 6e-10;
-    Kr_R4P4 = 6e-10;
-    Kr_R1P5 = 6e-10;
-    Kr_R1P6 = 6e-10;
-    Kr_R2P6 = 6e-10;
+    Kt = 6e-4;     % translation rate (1/s)
+    Kd_m = 2.5e-3; % mRNA degradation rate (1/s)
+    Kd_p = 4e-4;   % protein degradation rate (1/s)
+    N = 1.3;       % Hill coefficient (scalar)
+    Ka = 2e-8;     % Hill activation constant (M)
+    Kr = 6e-10;    % Hill repression constant (M)
+    Kb = 4e-10;    % maximum/unrepressed transcription rate (M/s)
 
 
 % ============================ INPUT PARAMETERS ================================
@@ -86,17 +38,10 @@
     R3s = zeros(1, length(simulation));
     R4s = zeros(1, length(simulation));
 
-    % precompute loop invariants
-    Ka_P1 ^= Na_P1;
-    Ka_P2 ^= Na_P2;
-    Kr_R2P1 ^= Nr_R2P1;
-    Kr_R4P2 ^= Nr_R4P2;
-    Kr_R3P3 ^= Nr_R3P3;
-    Kr_R3P4 ^= Nr_R3P4;
-    Kr_R4P4 ^= Nr_R4P4;
-    Kr_R1P5 ^= Nr_R1P5;
-    Kr_R1P6 ^= Nr_R1P6;
-    Kr_R2P6 ^= Nr_R2P6;
+    % precomputed invariants
+    alpha = Kt * Kb / Kd_m;
+    Kan = Ka ^ N;
+    Krn = Kr ^ N;
 
     % abstractions for activation & repression Hill-function
     % these consider K^n is being passed in already precomputed
@@ -108,16 +53,6 @@
         y = 1 / (1 + (X^n / Kn));
     endfunction
 
-    % simplified coefficients
-    a1 = Kt_R1 * Kb_P1 / Kd_mR1P1;
-    a2 = Kt_R1 * Kb_P3 / Kd_mR1P3;
-    b1 = Kt_R2 * Kb_P2 / Kd_mR2P2;
-    b2 = Kt_R2 * Kb_P4 / Kd_mR2P4;
-    c1 = Kt_R3 * Kb_P2 / Kd_mR3P2;
-    c2 = Kt_R3 * Kb_P5 / Kd_mR3P5;
-    d1 = Kt_R4 * Kb_P1 / Kd_mR4P1;
-    d2 = Kt_R4 * Kb_P6 / Kd_mR4P6;
-
     % actual simulation
     for t = 1 : length(simulation)
 
@@ -128,16 +63,17 @@
         R4s(t) = R4;
 
         % common subexpression optimization (used below)
-        AP1 = Ha(Is(t), Na_P1, Ka_P1);
-        AP2 = Ha(Is(t), Na_P2, Ka_P2);
-        RP1 = Hr(R2, Nr_R2P1, Kr_R2P1);
-        RP2 = Hr(R4, Nr_R4P2, Kr_R4P2);
+        HaI = Ha(Is(t), N, Kan);
+        HrR1 = Hr(R1, N, Krn);
+        HrR2 = Hr(R2, N, Krn);
+        HrR3 = Hr(R3, N, Krn);
+        HrR4 = Hr(R4, N, Krn);
 
         % compute variation
-        dR1dt = a1*AP1*RP1 + a2*Hr(R3, Nr_R3P3, Kr_R3P3) - Kd_R1*R1;
-        dR2dt = b1*AP2*RP2 + b2*Hr(R3, Nr_R3P4, Kr_R3P4)*Hr(R4, Nr_R4P4, Kr_R4P4) - Kd_R2*R2;
-        dR3dt = c1*AP2*RP2 + c2*Hr(R1, Nr_R1P5, Kr_R1P5) - Kd_R3*R3;
-        dR4dt = d1*AP1*RP1 + d2*Hr(R1, Nr_R1P6, Kr_R1P6)*Hr(R2, Nr_R2P6, Kr_R2P6) - Kd_R4*R4;
+        dR1dt = alpha * (HaI*HrR2 + HrR3) - Kd_p*R1;
+        dR2dt = alpha * HrR4 * (HaI + HrR3) - Kd_p*R2;
+        dR3dt = alpha * (HaI*HrR4 + HrR1) - Kd_p*R3;
+        dR4dt = alpha * HrR2 * (HaI + HrR1) - Kd_p*R4;
 
         % apply state changes
         R1 += dR1dt * dt;
@@ -167,7 +103,7 @@
     plot(simulation,R1s,'-m;R1;', simulation,R2s,'-k;R2;', simulation,R3s,'-r;R3;', simulation,R4s,'-g;R4;');
     xlabel("Time (10^5 seconds)");
     ylabel("Concentration (nM)");
-    title("Reduced Model");
+    title("Simplified Model");
 
     % input subplot
     subplot(2, 1, 2);
