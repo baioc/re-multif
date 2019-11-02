@@ -35,19 +35,19 @@ Nr_R1P5 = 1.3;
 Nr_R1P6 = 1.3;
 Nr_R2P6 = 1.3;
 
-% activation constants (M)
-Ka_P1 = 2e-8;
-Ka_P2 = 2e-8;
+% Hill activation constants (M^n)
+Ka_P1 = 2e-8 ^ Na_P1;
+Ka_P2 = 2e-8 ^ Na_P2;
 
-% repression constants (M)
-Kr_R2P1 = 6e-10;
-Kr_R4P2 = 6e-10;
-Kr_R3P3 = 6e-10;
-Kr_R3P4 = 6e-10;
-Kr_R4P4 = 6e-10;
-Kr_R1P5 = 6e-10;
-Kr_R1P6 = 6e-10;
-Kr_R2P6 = 6e-10;
+% Hill repression constants (M^n)
+Kr_R2P1 = 6e-10 ^ Nr_R2P1;
+Kr_R4P2 = 6e-10 ^ Nr_R4P2;
+Kr_R3P3 = 6e-10 ^ Nr_R3P3;
+Kr_R3P4 = 6e-10 ^ Nr_R3P4;
+Kr_R4P4 = 6e-10 ^ Nr_R4P4;
+Kr_R1P5 = 6e-10 ^ Nr_R1P5;
+Kr_R1P6 = 6e-10 ^ Nr_R1P6;
+Kr_R2P6 = 6e-10 ^ Nr_R2P6;
 
 % maximum/unrepressed transcription rates (M/s)
 Kb_P1 = 4e-10;
@@ -59,7 +59,7 @@ Kb_P6 = 4e-10;
 
 % simulation parameters
 dt = 1;
-simulation = 0 : dt : 3.5e5;
+simulation = 0 : dt : 4.0e5;
 
 % system initial state (M)
 R1 = 50e-9;
@@ -138,17 +138,26 @@ endfor
 figure;
 hold on;
 
-    title("Full Model");
+    timescale = 1e5;
+    quantscale = 1e-9;
+
+    simulation /= timescale;
+    Is  /= quantscale;
+    R1s /= quantscale;
+    R2s /= quantscale;
+    R3s /= quantscale;
+    R4s /= quantscale;
 
     subplot(2,1, 1);
     plot(simulation,R1s,'-m;R1;', simulation,R2s,'-k;R2;', simulation,R3s,'-r;R3;', simulation,R4s,'-g;R4;');
-    xlabel("Time (s)");
-    ylabel("Concentration (M)");
+    xlabel("Time (10^5 seconds)");
+    ylabel("Concentration (nM)");
+    title("Full Model");
 
     subplot(2,1, 2);
     plot(simulation, Is, 'b;I;');
-    xlabel("Time (s)");
-    ylabel("Concentration (M)");
+    xlabel("Time (10^5 seconds)");
+    ylabel("Concentration (nM)");
 
 hold off;
 a = input("\nPress enter to exit ");
