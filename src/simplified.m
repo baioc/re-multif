@@ -18,16 +18,14 @@
 
     % time settings
     dt = 60;                     % 1 minute timesteps
-    simulation = 0 : dt : 4.0e5; % simulation length control
+    simulation = 0 : dt : 7.0e5; % simulation length control
 
     % input vector
-    Is = (6 .- 25*cos(simulation .* 2*pi/0.9e5) .+ 25) * 1e-9; % sinusoidal
+    Is = zeros(1, length(simulation));
 
     % initial state concentrations (M)
-    R1 = 50e-9;
-    R2 = 50e-9;
-    R3 = 0e-9;
-    R4 = 0e-9;
+    R1 = R2 = 50e-9;
+    R3 = R4 = 0e-9;
 
 
 % =============================== SIMULATION ===================================
@@ -62,6 +60,13 @@
         R3s(t) = R3;
         R4s(t) = R4;
 
+        % square wave input
+        if mod(t*dt, 160000) > 80000
+            Is(t) = 51e-9;
+        else
+            Is(t) = 0.0;
+        endif
+
         % common subexpression optimization (used below)
         HaI = Ha(Is(t), N, Kan);
         HrR1 = Hr(R1, N, Krn);
@@ -86,6 +91,7 @@
 
 % ================================ RESULTS =====================================
 
+    figure;
     hold on;
 
     % scale data for easier visualization

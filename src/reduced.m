@@ -150,6 +150,7 @@
 
 % ================================ RESULTS =====================================
 
+    figure;
     hold on;
 
     % scale data for easier visualization
