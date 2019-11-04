@@ -19,6 +19,17 @@ Explicar a modelagem que utilizarmos, destacando similaridades e diferenças do 
 Mencionar as ferramentas computacionais utilizadas nos experimentos e simulações, também comparando com o original: provavelmente utilizaremos \textit{Octave} e/ou \textit{Copasi} e/ou \textit{TinkerCell}.\\
 Devemos liberar acesso ao código fonte, parâmetros iniciais utilizados, constantes das reações simuladas, arquivos de configuração e o ambiente computacional em si (via Guix/Nix ou Docker/Vagrant, por exemplo), dados intermediários gerados e tudo o que for necessário para tornar nosso trabalho também reprodutível, reusável e replicável.\\
 
+We use the network description and parameters given in the original study to reproduce each of the presented simulations.
+Every experiment was carried in both models: one considering the full set of \textbf{ODE}s (as seen in the paper's supplementary material S1) and another with the \textbf{QSSA} that is supposedly used throughout that study (and whose derivation is found in that same file S1).
+Deterministic numerical simulations of \textbf{ODE} systems were performed using Euler's method in custom Octave (version 4.2.2) scripts, with a fixed step size of 60 seconds.
+Stochastic experiments were also carried using Octave by adding Gaussian noise generated with ???.
+
+% ODE: Ordinary Differential Equation
+% QSSA: Quasi-Steady State Approximation
+% Simulacoes Estocasticas ???
+
+Another set of simulations were ran by considering the full \textbf{ODE} model and extra basal/leakage transcripion rates as commented in Ingalls ...
+
 
 \subsubsection{Results}
 
