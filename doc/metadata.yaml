@@ -5,7 +5,7 @@
 #  - For a successful replication, it shoudl be prefixed with "[Re]"
 #  - For a failed replication, it should be prefixed with "[¬Re]"
 #  - For other article types, no instruction (but please, not too long)
-title: "[Re] Synthetic Gene Network Oscillator"
+title: "[Re] A Multi-Functional Synthetic Gene Network"
 
 # List of authors with name, orcid number, email and affiliation
 # Affiliation "*" means contact author
@@ -28,7 +28,8 @@ affiliations:
     address: Florianópolis, Brazil
 
 # List of keywords (adding the programming language might be a good idea)
-keywords: rescience c, biological computing, synthetic biology, digital circuits, oscillator, octave, copasi
+keywords: rescience c, octave, synthetic biology, biological computing, genetic circuit, frequency multiplier, oscillator, switch
+
 
 # Code URL and DOI (url is mandatory for replication, doi after acceptance)
 # You can get a DOI for your code from Zenodo,
@@ -37,26 +38,25 @@ code:
   - url: https://github.com/baioc/ReBioComp
   - doi:
 
-# Date URL and DOI (optional if no data)
+# Data URL and DOI (optional if no data)
 data:
   - url:
   - doi:
 
 # Information about the original article that has been replicated
 replication:
- - cite: "Purcell O.; di Bernardo M.; Grierson C.S.; Savery N.J.
+ - cite: "Purcell O, di Bernardo M, Grierson CS, Savery NJ
           (2011) A Multi-Functional Synthetic Gene Network: A Frequency Multiplier, Oscillator and Switch.
-          PLoS ONE 6(2): e16140. doi:10.1371/journal.pone.0016140" # Full textual citation
- - bib:  oscillator # Bibtex key (if any) in your bibliography file
+          PLOS ONE 6(2): e16140. https://doi.org/10.1371/journal.pone.0016140" # Full textual citation
+ - bib:  originals # Bibtex key (if any) in your bibliography file
  - url:  https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3040778/pdf/pone.0016140.pdf # URL to the PDF, try to link to a non-paywall version
  - doi:  https://doi.org/10.1371/journal.pone.0016140 # Regular digital object identifier
 
 # Don't forget to surround abstract with double quotes
-abstract: "Implementação de componente(s) de circuitos digitais síncronos e/ou
-           assíncronos em substratos biológicos através de regulação genética ou
-           por vias de sinalização bioquímica em organismos simples; replicando
-           um trabalho relacionado ao tema de forma a atestar seu caráter
-           científico em um artigo próprio."
+abstract: "Studies in the field of synthetic biology make constant additions to the existing repositories of biological circuits and to the theoretical understanding of their capabilities.
+           Although many synthetic gene networks have been demonstrated to posses the ability to perform computations using biomolecules, until recently such models were engineered to implement the functionality of single circuit parts.
+           Purcell et al. have proposed a network capable of multiple functions, allowing for the selection of three different behaviours in a programmable fashion.
+           This work presents a replication of their in silico experiments and provides an open-source implementation for the reference of further studies."
 
 # Bibliography file (yours)
 bibliography: bibliography.bib

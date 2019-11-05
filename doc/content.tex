@@ -1,44 +1,91 @@
+\subsection*{Abstract}
 
-\subsubsection{Abstract}
-
-Brevemente explicar o contexto atual dos circuitos lógicos na biologia computacional.\\
-Descrever em uma ou duas frases o que foi feito no trabalho replicado: \textbf{circuitos digitais osciladores em substrato biológico} e sua relevância nessa área.\\
-Destacar que faremos a \textbf{replicação de um trabalho\footnote{Alguma das referências \cite{oscillator} ou \cite{clock}} já existente} seguindo a filosofia do \href{http://rescience.github.io/}{ReScience}, explicando a importância do trabalho aqui apresentado.\\
-Mencionar se foi possível replicar os experimentos, simulações e resultados ou não.\\
-
-
-\subsubsection{Introduction}
-
-Alguns conceitos básicos sobre biologia sintética e computação biológica: apenas aqueles fundamentais para o entendimento deste artigo.\\
-Explorar os trabalhos correlatos e explicar porque replicamos esse em específico.\\
+  Studies in the field of synthetic biology make constant additions to existing repositories of biological circuits as well as to the theoretical understanding of their capabilities.
+  Although many synthetic gene networks have been demonstrated to posses the ability to perform computations using biomolecules, until recently the majority of such models were engineered to implement the functionality of single reusable circuit parts.
+  \citet{originals} have proposed a network capable of multiple functions, allowing for the selection of three different behaviours in a programmable fashion.
+  This work presents a replication of their \textit{in silico} experiments and provides an open-source implementation for the reference of future studies.
 
 
-\subsubsection{Methods}
+\section{Introduction}
 
-Explicar a modelagem que utilizarmos, destacando similaridades e diferenças do trabalho original.\\
-Mencionar as ferramentas computacionais utilizadas nos experimentos e simulações, também comparando com o original: provavelmente utilizaremos \textit{Octave} e/ou \textit{Copasi} e/ou \textit{TinkerCell}.\\
-Devemos liberar acesso ao código fonte, parâmetros iniciais utilizados, constantes das reações simuladas, arquivos de configuração e o ambiente computacional em si (via Guix/Nix ou Docker/Vagrant, por exemplo), dados intermediários gerados e tudo o que for necessário para tornar nosso trabalho também reprodutível, reusável e replicável.\\
+  % Biological computing using chemical reaction networks has been shown to be physically realisable in DNA
 
-We use the network description and parameters given in the original study to reproduce each of the presented simulations.
-Every experiment was carried in both models: one considering the full set of \textbf{ODE}s (as seen in the paper's supplementary material S1) and another with the \textbf{QSSA} that is supposedly used throughout that study (and whose derivation is found in that same file S1).
-Deterministic numerical simulations of \textbf{ODE} systems were performed using Euler's method in custom Octave (version 4.2.2) scripts, with a fixed step size of 60 seconds.
-Stochastic experiments were also carried using Octave by adding Gaussian noise generated with ???.
+  % build a computer with
+  % biological parts microprocessor
+  % physically realised in DNA
 
-% ODE: Ordinary Differential Equation
-% QSSA: Quasi-Steady State Approximation
-% Simulacoes Estocasticas ???
+  % Molecular computing is a discipline that aims at
+  % harnessing individual molecules at nanoscales for computational
+  % purposes. The best-studied molecules for this purpose to date
+  % have been DNA and bacteriorhodopsin.
+  % Biomolecular computing
+  % allows one to realistically entertain, for the first time in history,
+  % the possibility of exploiting the massive parallelism at nanoscales
+  % inherent in natural phenomena to solve computational problems.
+  % although no exhaustive survey of the expanding
+  % literature is intended.
 
-Another set of simulations were ran by considering the full \textbf{ODE} model and extra basal/leakage transcripion rates as commented in Ingalls ...
+  % To date, synthetic gene networks have possessed single
+  % functions. The preceding investigation of the bifurcation structure
+  % suggests that our network possesses other functions in addition to
+  % frequency multiplication. Specifically, the network is also capable
+  % of functioning as an oscillator or a switch.
+  % The network presented here is novel in two respects. Firstly, it is
+  % capable of performing frequency multiplication on a sinusoidally
+  % oscillating input, suggesting it is capable of integrating with current
+  % oscillators. Secondly, it possesses programmable multi-functional-
+  % ity, specifically the ability to select between one of three functions
+  % by changing the nature of the input. 
+
+  % We present the design and analysis of a synthetic gene network that performs frequency multiplication. It takes oscillatory
+  % transcription factor concentrations, such as those produced from the currently available genetic oscillators, as an input, and
+  % produces oscillations with half the input frequency as an output. Analysis of the bifurcation structure also reveals novel,
+  % programmable multi-functionality; in addition to functioning as a frequency multiplier, the network is able to function as a
+  % switch or an oscillator, depending on the temporal nature of the input. Multi-functionality is often observed in neuronal
+  % networks, where it is suggested to allow for the efficient coordination of different responses. This network represents a
+  % significant theoretical addition that extends the capabilities of synthetic gene networks.
+
+  % Abstract: The usefulness of a genetic clock lies in its role to stimulate a sequence of logic reactions for sequential biological circuits.
+  % A clock signal is a periodic square wave, its amplitude alternates at a steady frequency between fixed minimal and maximal levels.
+  % Transition between the minimum and the maximum is instantaneous for an ideal square wave; however, the function is unrealisable in
+  % physical bio-systems. This research develops a new genetic clock generator based on a genetic oscillator, in which, a sine wave
+  % generator is adopted as a signal oscillator. It is shown that combination of a genetic oscillator with a toggle switch is able to
+  % generate clock signals forming an efficient way to generate a near square wave. In silico study confirms the proposed idea.
+
+  % This paper presents ...
+  % A complete .. is described ...
+  % This ... is demonstrated using ...
+  % A brief comparison of ... is also presented.
+
+  \textit{Alguns conceitos básicos sobre biologia sintética e computação biológica: apenas aqueles fundamentais para o entendimento deste artigo.\\
+  Explorar os trabalhos correlatos e explicar porque replicamos esse em específico.\\}
 
 
-\subsubsection{Results}
+\section{Methods}
 
-Analisar os resultados dos experimentos, comparando-os com os do trabalho de referência através de gráficos e estatísticas referentes às simulações.\\
-A metodologia de análise deve ser explicada na seção de métodos ou até mesmo na introdução.\\
+  We use the network description and parameters given in the original study to reproduce each of the presented simulations.
+  Every experiment was carried in both models: one considering the full set of \ac{odes} (as seen in the paper's supplementary material on the reduced model derivation) and another with the \ac{qssa} that is used throughout that study.
+
+  Deterministic numerical simulations of \ac{ode} systems were performed using Euler's method in custom Octave (version 4.2.2) scripts, with a fixed step size of 60 seconds.
+  Stochastic experiments were also carried using Octave by adding Gaussian noise generated with ???.
+
+  According to \citet{ingalls}, most activated genes are transcribed at a low basal rate even in the absence of bound activators.
+  This also holds for repressed promoters, in which we consider a small leak transcription rate to be constantly present.
+  Thus, in order to further investigate the proposed model's robustness, we slightly modified the full \ac{ode} system by including a constant baseline transcription rate from every promoter.
+
+  \textit{Explicar a modelagem que utilizarmos, destacando similaridades e diferenças do trabalho original.\\
+  Mencionar as ferramentas computacionais utilizadas nos experimentos e simulações, também comparando com o original: provavelmente utilizaremos \textit{Octave} e/ou \textit{Copasi}.\\
+  Devemos liberar acesso ao código fonte, parâmetros iniciais utilizados, constantes das reações simuladas, arquivos de configuração e o ambiente computacional em si (via Guix/Nix ou Docker/Vagrant, por exemplo), dados intermediários gerados e tudo o que for necessário para tornar nosso trabalho também reprodutível, reusável e replicável.\\}
 
 
-\subsubsection{Conclusions}
+\section{Results}
 
-Relembrar objetivos.\\
-Explicar como foi (ou não) possível replicar o artigo original, destacando quaisquer diferenças nos trabalhos.\\
-Trabalhos futuros.\\
+  \textit{Analisar os resultados dos experimentos, comparando-os com os do trabalho de referência através de gráficos e estatísticas referentes às simulações.\\
+  A metodologia de análise deve ser explicada na seção de métodos ou até mesmo na introdução.\\}
+
+
+\section{Conclusion}
+
+  \textit{Relembrar objetivos.\\
+  Explicar como foi (ou não) possível replicar o artigo original, destacando quaisquer diferenças nos trabalhos.\\
+  Trabalhos futuros.\\}
