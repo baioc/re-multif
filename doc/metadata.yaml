@@ -53,10 +53,10 @@ replication:
  - doi:  https://doi.org/10.1371/journal.pone.0016140 # Regular digital object identifier
 
 # Don't forget to surround abstract with double quotes
-abstract: "Studies in the field of synthetic biology make constant additions to the existing repositories of biological circuits and to the theoretical understanding of their capabilities.
-           Although many synthetic gene networks have been demonstrated to posses the ability to perform computations using biomolecules, until recently such models were engineered to implement the functionality of single circuit parts.
+abstract: "Studies in the field of synthetic biology make constant additions to existing repositories of biological circuits as well as to the theoretical understanding of their capabilities.
+           Although many synthetic gene networks have been demonstrated to posses the ability to perform computations using biomolecules, until recently the majority of such models were engineered to implement the functionality of single reusable circuit parts.
            Purcell et al. have proposed a network capable of multiple functions, allowing for the selection of three different behaviours in a programmable fashion.
-           This work presents a replication of their in silico experiments and provides an open-source implementation for the reference of further studies."
+           This work provides a reference open-source implementation which is used to replicate their in silico experiments."
 
 # Bibliography file (yours)
 bibliography: bibliography.bib
