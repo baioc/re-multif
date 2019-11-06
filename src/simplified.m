@@ -21,7 +21,7 @@
     simulation = 0 : dt : 7.0e5; % simulation length control
 
     % input vector
-    Is = zeros(1, length(simulation));
+    Is = zeros(1, length(simulation)); % square wave generated during simulation
 
     % initial state concentrations (M)
     R1 = R2 = 50e-9;
@@ -36,8 +36,8 @@
     R3s = zeros(1, length(simulation));
     R4s = zeros(1, length(simulation));
 
-    % precomputed invariants
-    alpha = Kt * Kb / Kd_m;
+    % precompute loop invariants and reduced coefficients
+    transcription = Kt * Kb / Kd_m;
     Kan = Ka ^ N;
     Krn = Kr ^ N;
 
@@ -75,10 +75,10 @@
         HrR4 = Hr(R4, N, Krn);
 
         % compute variation
-        dR1dt = alpha * (HaI*HrR2 + HrR3) - Kd_p*R1;
-        dR2dt = alpha * HrR4 * (HaI + HrR3) - Kd_p*R2;
-        dR3dt = alpha * (HaI*HrR4 + HrR1) - Kd_p*R3;
-        dR4dt = alpha * HrR2 * (HaI + HrR1) - Kd_p*R4;
+        dR1dt = transcription * (HaI*HrR2 + HrR3) - Kd_p*R1;
+        dR2dt = transcription * (HaI*HrR4 + HrR3*HrR4) - Kd_p*R2;
+        dR3dt = transcription * (HaI*HrR4 + HrR1) - Kd_p*R3;
+        dR4dt = transcription * (HaI*HrR2 + HrR1*HrR2) - Kd_p*R4;
 
         % apply state changes
         R1 += dR1dt * dt;
@@ -97,23 +97,23 @@
     % scale data for easier visualization
     timescale = 1e5;
     quantscale = 1e-9;
-    simulation /= timescale;
-    Is  /= quantscale;
-    R1s /= quantscale;
-    R2s /= quantscale;
-    R3s /= quantscale;
-    R4s /= quantscale;
+    x = simulation / timescale;
+    yI = Is / quantscale;
+    yR1 = R1s / quantscale;
+    yR2 = R2s / quantscale;
+    yR3 = R3s / quantscale;
+    yR4 = R4s / quantscale;
 
-    % model suplot
+    % model subplot
     subplot(2, 1, 1);
-    plot(simulation,R1s,'-m;R1;', simulation,R2s,'-k;R2;', simulation,R3s,'-r;R3;', simulation,R4s,'-g;R4;');
+    plot(x,yR1,'-m;R1;', x,yR2,'-k;R2;', x,yR3,'-r;R3;', x,yR4,'-g;R4;');
     xlabel("Time (10^5 seconds)");
     ylabel("Concentration (nM)");
     title("Simplified Model");
 
     % input subplot
     subplot(2, 1, 2);
-    plot(simulation, Is, 'b;I;');
+    plot(x, yI, 'b;I;');
     xlabel("Time (10^5 seconds)");
     ylabel("Concentration (nM)");
 
