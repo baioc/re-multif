@@ -38,11 +38,16 @@
     % abstractions for activation & repression Hill-function
     % these consider K^n is being passed in already precomputed
     function y = Ha(X, n, Kn)
+
         Xn = X^n;
         y = Xn / (Kn + Xn);
+
     endfunction
+
     function y = Hr(X, n, Kn)
+
         y = 1 / (1 + (X^n / Kn));
+
     endfunction
 
     % for each set of parameters, make a simulation run and print results
@@ -69,39 +74,52 @@
             R3s(t) = R3;
             R4s(t) = R4;
 
-	    % common subexpression optimization (used below)
-	    HaI = Ha(Is(t), N, Kan);
+            % common subexpression optimization (used below)
+            HaI = Ha(Is(t), N, Kan);
 
-	    if s == 1 || s == 3
-	    	if t >= 2500 && t <= 2584
- 		    HrR1 = Hr(R1, N, Krn2);
-	            HrR2 = Hr(R2, N, Krn2);
-	            HrR3 = Hr(R3, N, Krn);
+            if s == 1 || s == 3
+
+                if t >= 2500 && t <= 2584 % Switch trigger time 
+
+                    HrR1 = Hr(R1, N, Krn2);
+                    HrR2 = Hr(R2, N, Krn2);
+                    HrR3 = Hr(R3, N, Krn);
                     HrR4 = Hr(R4, N, Krn);
-	    	else    
-	            HrR1 = Hr(R1, N, Krn);
-	            HrR2 = Hr(R2, N, Krn);
-	            HrR3 = Hr(R3, N, Krn);
-           	    HrR4 = Hr(R4, N, Krn);
-	    	endif
-	    else
-		if t >= 2500 && t <= 2584
- 		    HrR1 = Hr(R1, N, Krn);
-	            HrR2 = Hr(R2, N, Krn);
-	            HrR3 = Hr(R3, N, Krn2);
-                    HrR4 = Hr(R4, N, Krn2);
-	    	else    
-	            HrR1 = Hr(R1, N, Krn);
-	            HrR2 = Hr(R2, N, Krn);
-	            HrR3 = Hr(R3, N, Krn);
+
+                else
+
+                    HrR1 = Hr(R1, N, Krn);
+                    HrR2 = Hr(R2, N, Krn);
+                    HrR3 = Hr(R3, N, Krn);
                     HrR4 = Hr(R4, N, Krn);
-	    	endif
-	    endif
+
+                endif
+
+            else
+
+                if t >= 2500 && t <= 2584 % Switch trigger time 
+
+                        HrR1 = Hr(R1, N, Krn);
+                        HrR2 = Hr(R2, N, Krn);
+                        HrR3 = Hr(R3, N, Krn2);
+                        HrR4 = Hr(R4, N, Krn2);
+
+                    else    
+
+                        HrR1 = Hr(R1, N, Krn);
+                        HrR2 = Hr(R2, N, Krn);
+                        HrR3 = Hr(R3, N, Krn);
+                        HrR4 = Hr(R4, N, Krn);
+
+                    endif
+
+            endif
+
             % compute variation
-            dR1dt = alpha * (HaI*HrR2 + HrR3) - Kd_p*R1;
-            dR2dt = alpha * HrR4 * (HaI + HrR3) - Kd_p*R2;
-            dR3dt = alpha * (HaI*HrR4 + HrR1) - Kd_p*R3;
-            dR4dt = alpha * HrR2 * (HaI + HrR1) - Kd_p*R4;
+            dR1dt = alpha * (HaI * HrR2 + HrR3) - Kd_p * R1;
+            dR2dt = alpha * HrR4 * (HaI + HrR3) - Kd_p * R2;
+            dR3dt = alpha * (HaI * HrR4 + HrR1) - Kd_p * R3;
+            dR4dt = alpha * HrR2 * (HaI + HrR1) - Kd_p * R4;
 
             % apply state changes
             R1 += dR1dt * dt;
@@ -111,6 +129,7 @@
 
         endfor
 
+% ================================ RESULTS =====================================
 
         figure; % plot each graphic in its separate window
         hold on;
