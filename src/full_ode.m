@@ -170,23 +170,23 @@
     % scale data for easier visualization
     timescale = 1e5;
     quantscale = 1e-9;
-    simulation /= timescale;
-    Is  /= quantscale;
-    R1s /= quantscale;
-    R2s /= quantscale;
-    R3s /= quantscale;
-    R4s /= quantscale;
+    x = simulation / timescale;
+    yI = Is / quantscale;
+    yR1 = R1s / quantscale;
+    yR2 = R2s / quantscale;
+    yR3 = R3s / quantscale;
+    yR4 = R4s / quantscale;
 
     % model subplot
     subplot(2, 1, 1);
-    plot(simulation,R1s,'-m;R1;', simulation,R2s,'-k;R2;', simulation,R3s,'-r;R3;', simulation,R4s,'-g;R4;');
+    plot(x,yR1,'-m;R1;', x,yR2,'-k;R2;', x,yR3,'-r;R3;', x,yR4,'-g;R4;');
     xlabel("Time (10^5 seconds)");
     ylabel("Concentration (nM)");
     title("Full Model");
 
     % input subplot
     subplot(2, 1, 2);
-    plot(simulation, Is, 'b;I;');
+    plot(x, yI, 'b;I;');
     xlabel("Time (10^5 seconds)");
     ylabel("Concentration (nM)");
 
