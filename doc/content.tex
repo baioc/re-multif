@@ -3,7 +3,7 @@
   \noindent Studies in the field of synthetic biology make constant additions to existing repositories of biological circuits as well as to the theoretical understanding of their capabilities.
   Although many synthetic gene networks have been demonstrated to posses the ability to perform computations using biomolecules, until recently the majority of such models were engineered to implement the functionality of single reusable circuit parts.
   \citet{originals} have proposed a network capable of multiple functions, allowing for the selection of three different behaviours in a programmable fashion.
-  This work provides a reference open-source implementation which is used to replicate their \textit{in silico} experiments.
+  This work provides a reference open-source implementation which is used to replicate their study.
 
 
 \section{Introduction}
@@ -18,25 +18,29 @@
 
   \citet{originals} presented the \textit{in silico} design of a novel genetic regulatory network which performs frequency division on an oscillating input.
   During simulations, that model was discovered able to behave not only as a frequency multiplier, but also as a self-induced oscillator or toggle switch.
-  We believe such multi-functionality may lead to the creation of reusable programmable components in biological computing and this has led to the replication of the simulations described in that paper on an open-source implementation of the aforementioned model.
-
-  % This paper presents ...
-  % A complete .. is described ...
-  % This ... is demonstrated using ...
-  % A brief comparison of ... is also presented.
+  We believe such multi-functionality may lead to the creation of reusable programmable components in biological computing and this has led to the reproduction of the simulations described in that paper on an open-source implementation of the aforementioned model.
 
 
 \section{Methods}
 
-  We use the network description and parameters given in the original study to reproduce each of the presented simulations.
-  Every experiment was carried in both models: one considering the full set of \ac{odes} (as seen in the paper's supplementary material on the reduced model derivation) and another with the \ac{qssa} that is used throughout that study.
+  The multi-functional synthetic gene network and its dynamics are wholly described in the original study.
+  Supplementary material contains the full \ac{ode} system under mass-action kinetics with Hill functions used to represent activation and repression of genetic promoters.
+  The \ac{qssa} exploited to derive the reduced model considered in simulations is also provided, together with all reaction parameterisation and initial state of each experiment.
+  These factors allowed for an easy replication of the model in Octave (version 5.1.0), even without direct reference to the original source code or usage of the proprietary tools which were employed.
 
-  Deterministic numerical simulations of \acs{ode} systems were performed using Euler's method in custom Octave (version 4.2.2) scripts, with a fixed step size of 60 seconds.
+  We borrow the network's mathematical description and parameters from the original paper to reproduce each of the presented simulations.
+  Every experiment was carried in both models: one considering the full set of \acs{odes} and another with the \ac{qssa} approximation that is used throughout that study.
+  Numerical simulations of deterministic \ac{ode} systems were performed using Euler's method with a fixed step size of 60 seconds.
+  This is justified based on the duration of experiments, the shortest of which take approximately four days (simulated time) in order to observe a couple of periods on the oscillating output of the frequency divider.
+
+  % This paper presents ...
+  % A brief comparison of ... is also presented.
+
   Stochastic experiments were also carried using Octave by adding Gaussian noise generated with ???.
 
-  According to \citet{ingalls}, most activated genes are transcribed at a low basal rate even in the absence of bound activators.
-  This also holds for repressed promoters, in which we consider a small leak transcription rate to be constantly present.
-  Thus, in order to further investigate the proposed model's robustness, we slightly modified the full \ac{ode} system by including a constant baseline transcription rate from every promoter.
+  % According to \citet{ingalls}, most activated genes are transcribed at a low basal rate even in the absence of bound activators.
+  % This also holds for repressed promoters, in which we consider a small leak transcription rate to be constantly present.
+  % Thus, in order to further investigate the proposed model's robustness, we slightly modified the full \ac{ode} system by including a constant baseline transcription rate from every promoter.
 
   \textit{Explicar a modelagem que utilizarmos, destacando similaridades e diferenças do trabalho original.
   Mencionar as ferramentas computacionais utilizadas nos experimentos e simulações, também comparando com o original: provavelmente utilizaremos \textit{Octave} e/ou \textit{Copasi}.
