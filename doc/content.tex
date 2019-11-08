@@ -37,15 +37,71 @@
   The \ac{cles} described therein were implemented -- albeit with some small differences, as explained in the next section -- with Gaussian noise being generated through the use of built-in Octave functions.
 
   \citet{ingalls} states there is always some chance that thermal fluctuations cause \acs{rna} polymerase to find operators, even if in some cases effects of this phenomenon are negligible.
-  This represents a basal rate of transcription held for activated genes even in the absence of bound activators (in this case, the lack of input molecules) or a "leaking" rate of repressible transcription coming from repressed promoters.
-  Thus, in order to further investigate the proposed model's robustness, an extra set of experiments were performed with the \ac{ode} system modified to consider a baseline transcription rate taking place at every promoter.
+  This represents a basal rate of transcription held for activated genes even in the absence of bound activators (in this case, the lack of input molecules) or a "leak" rate of repressible transcription coming from repressed promoters.
+  Thus, in order to further investigate the proposed model's robustness, an extra set of experiments were performed with the \ac{ode} system modified to consider a non-zero baseline transcription rate taking place at every promoter.
   Values used for this constant follow from \citet{repressilator}, whose design pioneered oscillating genetic networks.
 
 
 \section{Results}
 
-  \textit{Analisar os resultados dos experimentos, comparando-os com os do trabalho de referência através de gráficos e estatísticas referentes às simulações.
-  A metodologia de análise deve ser explicada na seção de métodos ou até mesmo na introdução.}
+  \subsection{Frequency Divider}
+
+    Although the network is said to be a frequency multiplier, it actually performs frequency division as concentrations of repressor proteins oscillate in one half of the input frequency or, equivalently, with a period that is twice as long.
+    This behaviour can be observed by feeding the model with a continuously oscillating input -- this would be often the case considering existing genetic oscillators -- but also works with square waves, as shown in Figures \ref{fig.freqdiv-square} to \ref{fig.freqdiv-full}.
+
+    \begin{figure}[!htbp]
+      \centering
+      \includegraphics[width=\textwidth]{freqdiv-square}
+      \caption{@FIXME.}
+      \label{fig.freqdiv-square}
+    \end{figure}
+
+    \begin{figure}[!htbp]
+      \centering
+      \includegraphics[width=\textwidth]{freqdiv-qssa}
+      \caption{@FIXME.}
+      \label{fig.freqdiv-qssa}
+    \end{figure}
+
+    \begin{figure}[!htbp]
+      \centering
+      \includegraphics[width=\textwidth]{freqdiv-full}
+      \caption{@FIXME.}
+      \label{fig.freqdiv-full}
+    \end{figure}
+
+    Notice that with a sinusoidal input, the output signals from the \ac{qssa} model have constant amplitude, whereas in the full model the first concentration peak of proteins R2 and R3 are higher than the following ones.
+    This suggests \acs{mrna} reactions stabilize quicker in the first $1 \times 10^5$ seconds and thus the approximation is more accurate at those instants.
+    After that moment, however, the reduced model exhibits a persistent error in relation to the complete one, which can be observed by comparing concentration levels reached during oscillation peaks in Figures \ref{fig.freqdiv-qssa} and \ref{fig.freqdiv-full}.
+
+    In those simulations, while R1 and R4 concentrations in the full model reach \textit{maxima} valued at \SI{238.29}{\nano M} and \SI{87.62}{\nano M} respectively, the reduced model (again, this is the one presented in the original paper) goes up to \SI{283.96}{\nano M} and \SI{113.05}{\nano M} for each of these proteins.
+    Peak values of R3 follow R1 closely and the same happens with R2 and R4.
+    This offset distinguishing the two models happens because the \ac{qssa} used to derive the reduced \ac{ode} system considers a separation of time-scales between reactions which regulate \acs{mrna} production and those which describe protein translation.
+    In the approximation, the former reactions are assumed to reach equilibrium instantaneously relative to the latter.
+    Thus, the difference is a consequence of the fact that the original model maintains itself in a dynamic state that never actually reaches equilibrium, as it perpetually oscillates \cite{ingalls}.
+
+
+  \subsection{Bifurcation Analysis}
+
+    ...
+
+    \subsubsection{Self-induced Oscillator}
+
+      ...
+
+    \subsubsection{Toggle Switch}
+
+      ...
+
+
+  \subsection{Stochastic Simulations}
+
+    ...
+
+
+  \subsection{Leaky Promoter Experiments}
+
+    ...
 
 
 \section{Conclusion}
@@ -55,4 +111,4 @@
 
   \textit{Relembrar objetivos.
   Explicar como foi (ou não) possível replicar o artigo original, destacando quaisquer diferenças nos trabalhos.
-  Trabalhos futuros.}
+  Apresentar trabalhos futuros.}

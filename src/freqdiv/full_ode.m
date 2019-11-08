@@ -77,7 +77,10 @@
     simulation = 0 : dt : 4.0e5; % simulation length control
 
     % input vector
-    Is = (6 .- 25*cos(simulation .* 2*pi/0.9e5) .+ 25) * 1e-9; % sinusoidal
+    period = 0.9e5;
+    amplitude = 50e-9;
+    dc_level = 6e-9;
+    Is = (dc_level .- (amplitude/2)*cos(simulation .* 2*pi/period) .+ amplitude/2);
 
     % initial state concentrations (M)
     R1 = 50e-9;
@@ -182,7 +185,7 @@
     plot(x,yR1,'-m;R1;', x,yR2,'-k;R2;', x,yR3,'-r;R3;', x,yR4,'-g;R4;');
     xlabel("Time (10^5 seconds)");
     ylabel("Concentration (nM)");
-    title("Full Model");
+    title("Frequency Division on Sinusoidal Input (Full Model)");
 
     % input subplot
     subplot(2, 1, 2);
@@ -191,4 +194,6 @@
     ylabel("Concentration (nM)");
 
     hold off;
-    a = input("\nPress enter to exit ");
+    maxR1 = max(yR1)
+    maxR4 = max(yR4)
+    print('freqdiv-sinusoidal-full.pdf'); % put in the folder the script is run from

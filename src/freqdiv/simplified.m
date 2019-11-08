@@ -21,7 +21,19 @@
     simulation = 0 : dt : 7.0e5; % simulation length control
 
     % input vector
-    Is = zeros(1, length(simulation)); % square wave generated during simulation
+    period = 1.6e5;
+    amplitude = 50e-9;
+    dc_level = 0e-9;
+    duty_cycle = 0.5;
+    Is = zeros(1, length(simulation));
+    % square wave
+    for t = 1 : length(Is)
+        if mod(t*dt, period) > duty_cycle*period
+            Is(t) = amplitude;
+        else
+            Is(t) = dc_level;
+        endif
+    endfor
 
     % initial state concentrations (M)
     R1 = R2 = 50e-9;
@@ -59,13 +71,6 @@
         R2s(t) = R2;
         R3s(t) = R3;
         R4s(t) = R4;
-
-        % square wave input
-        if mod(t*dt, 160000) > 80000
-            Is(t) = 51e-9;
-        else
-            Is(t) = 0.0;
-        endif
 
         % common subexpression optimization (used below)
         HaI = Ha(Is(t), N, Kan);
@@ -106,16 +111,17 @@
 
     % model subplot
     subplot(2, 1, 1);
-    plot(x,yR1,'-m;R1;', x,yR2,'-k;R2;', x,yR3,'-r;R3;', x,yR4,'-g;R4;');
+    plot(x,yR1,'--m;R1;', x,yR2,'--k;R2;', x,yR3,'-r;R3;', x,yR4,'--g;R4;');
     xlabel("Time (10^5 seconds)");
     ylabel("Concentration (nM)");
-    title("Simplified Model");
+    title("Frequency Division (Simplified Model)");
 
     % input subplot
     subplot(2, 1, 2);
     plot(x, yI, 'b;I;');
+    axis([-Inf,+Inf, 0,amplitude*1.21/quantscale]);
     xlabel("Time (10^5 seconds)");
     ylabel("Concentration (nM)");
 
     hold off;
-    a = input("\nPress enter to exit ");
+    print('freqdiv.pdf'); % put in the folder the script is run from
