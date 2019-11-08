@@ -88,7 +88,7 @@
     t_hold = 1.5e5 / dt;
     t_release = 1.55e5 / dt;
 
-    % induced increase in repressor binding affinity used to trigger the switch
+    % induced decrease in repressor binding affinity used to trigger the switch
     switch_trigger = 6e-10 - 4e-6;
 
     % save original Hill repression constants
@@ -192,7 +192,7 @@
 
         endfor
 
-        figure; % plot each graphic on a separate window
+        figure(sim); % plot each graphic separately
         hold on;
 
         % scale data for easier visualization
@@ -208,9 +208,9 @@
         plot(x,yR1,'-m;R1;', x,yR2,'-k;R2;', x,yR3,'-r;R3;', x,yR4,'-g;R4;');
         xlabel("Time (10^5 seconds)");
         ylabel("Concentration (nM)");
-        title("Switch Function (Reduced Model)");
+        title("Toggle Switch Operating Mode");
 
         hold off;
+        print(sim, strcat('switch-qssa-', num2str(sim), '.pdf')); % put in the folder the script is run from
 
     endfor
-    a = input("\nPress enter to exit ");
