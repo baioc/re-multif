@@ -30,11 +30,11 @@
   All numerical simulations were performed in Octave (version 5.1.0) using Euler's method with a fixed step size of 60 seconds.
   This is justified based on the duration of experiments, the shortest of which take at least four days (virtual simulated time) in order to observe a couple of periods on the oscillating output of the frequency divider.
 
-  We borrow the network's parameters and mathematical description exactly from the original paper to reproduce each of the hereby presented simulations.
+  We borrow the network's parameters and mathematical description from the original paper to reproduce each of the hereby presented simulations.
   Every deterministic experiment was carried in two systems: one considering the full set of \ac{ode}s and another with the \ac{qssa} approximation that is used throughout that study.
   We present a brief comparison of these models' quantitative results and highlight their differences.
   While stochastic experiments are only briefly mentioned on the main text, more details can be found inside supporting information documents provided by \citet{originals}.
-  The \ac{cles} described therein were implemented -- albeit with some small differences, as explained in the next section -- with Gaussian noise being generated through the use of built-in Octave functions.
+  The \ac{cles} described therein were implemented with Gaussian noise being generated through the use of built-in Octave functions.
 
   \citet{ingalls} states there is always some chance that thermal fluctuations cause \acs{rna} polymerase to find operators, even if in some cases effects of this phenomenon are negligible.
   This represents a basal rate of transcription held for activated genes even in the absence of bound activators (in this case, the lack of input molecules) or a "leak" rate of repressible transcription coming from repressed promoters.
@@ -58,6 +58,13 @@
 
     \begin{figure}[!htbp]
       \centering
+      \includegraphics[width=\textwidth]{freqdiv-zero}
+      \caption{@FIXME.}
+      \label{fig.freqdiv-zero}
+    \end{figure}
+
+    \begin{figure}[!htbp]
+      \centering
       \includegraphics[width=\textwidth]{freqdiv-qssa}
       \caption{@FIXME.}
       \label{fig.freqdiv-qssa}
@@ -71,7 +78,7 @@
     \end{figure}
 
     Notice that with a sinusoidal input, the output signals from the \ac{qssa} model have constant amplitude, whereas in the full model the first concentration peak of proteins R2 and R3 are higher than the following ones.
-    This suggests \acs{mrna} reactions stabilize quicker in the first $1 \times 10^5$ seconds and thus the approximation is more accurate at those instants.
+    This suggests \acs{mrna} reactions stabilize quicker in the first $10^5$ seconds and thus the approximation is more accurate at those instants.
     After that moment, however, the reduced model exhibits a persistent error in relation to the complete one, which can be observed by comparing concentration levels reached during oscillation peaks in Figures \ref{fig.freqdiv-qssa} and \ref{fig.freqdiv-full}.
 
     In those simulations, while R1 and R4 concentrations in the full model reach \textit{maxima} valued at \SI{238.29}{\nano M} and \SI{87.62}{\nano M} respectively, the reduced model (again, this is the one presented in the original paper) goes up to \SI{283.96}{\nano M} and \SI{113.05}{\nano M} for each of these proteins.
@@ -83,15 +90,63 @@
 
   \subsection{Bifurcation Analysis}
 
-    ...
+    As in the original work, we observe different behaviours can be obtained by holding input concentration constant at certain ranges.
+    More importantly, it is how \citet{originals} discovered the model's multiple extra functionalities.
+    The six experiments in the bifurcation analysis were reproduced, where input levels are the same as given and initial conditions used are $R1=R2=0nM$ and $R3=R4=50nM$ for simulations $1b$ and $4c_{2}$ and $R1=R2=50nM$ and $R3=R4=0nM$ for all others.
+    The original text states simulations labeled $4c_{1}$ and $1b$ use the same initial conditions as $4c_{2}$ and $1a$ respectively.
+    We believe these were typographical errors, as such settings would lead the mentioned experiments to be exactly the same under deterministic semantics and this is not what is exhibited.
 
-    \subsubsection{Self-induced Oscillator}
+    \begin{figure}[!htbp]
+      \centering
+      \includegraphics[width=\textwidth]{bifurcation-1a}
+      \caption{@FIXME.}
+      \label{fig.bifurcation-1a}
+    \end{figure}
 
-      ...
+    \begin{figure}[!htbp]
+      \centering
+      \includegraphics[width=\textwidth]{bifurcation-1b}
+      \caption{@FIXME.}
+      \label{fig.bifurcation-1b}
+    \end{figure}
 
-    \subsubsection{Toggle Switch}
+    \begin{figure}[!htbp]
+      \centering
+      \includegraphics[width=\textwidth]{bifurcation-2-full}
+      \caption{@FIXME.}
+      \label{fig.bifurcation-2-full}
+    \end{figure}
 
-      ...
+    \begin{figure}[!htbp]
+      \centering
+      \includegraphics[width=\textwidth]{bifurcation-2-qssa}
+      \caption{@FIXME.}
+      \label{fig.bifurcation-2-qssa}
+    \end{figure}
+
+    \begin{figure}[!htbp]
+      \centering
+      \includegraphics[width=\textwidth]{bifurcation-3}
+      \caption{@FIXME.}
+      \label{fig.bifurcation-3}
+    \end{figure}
+
+    \begin{figure}[!htbp]
+      \centering
+      \includegraphics[width=\textwidth]{bifurcation-4c1}
+      \caption{@FIXME.}
+      \label{fig.bifurcation-4c1}
+    \end{figure}
+
+    \begin{figure}[!htbp]
+      \centering
+      \includegraphics[width=\textwidth]{bifurcation-4c2}
+      \caption{@FIXME.}
+      \label{fig.bifurcation-4c2}
+    \end{figure}
+
+    Once again, oscillation amplitude differs between models, with R1 and R4 each peaking at \SI{35.60}{\nano M} and \SI{9.16}{\nano M} in the complete system (Figure \ref{fig.bifurcation-2-full}) while going up to \SI{30.08}{\nano M} and \SI{8.18}{\nano M} in the \ac{qssa} reduction (Figure \ref{fig.bifurcation-2-qssa}).
+    Other experiments do not present such significant offset.
 
 
   \subsection{Stochastic Simulations}

@@ -80,6 +80,7 @@
     Is = zeros(1, length(simulation));
 
     % reaction initial conditions for each run
+    names = {"1a", "1b", "2", "3", "4c_1", "4c_2"};
     multiI   = 1e-9 * [0.1, 0.1, 5 , 7.5, 10, 10]; % constant input concentration
     multiR12 = 1e-9 * [50 , 0  , 50, 50 , 50, 0 ];
     multiR34 = 1e-9 * [0  , 50 , 0 , 0  , 0 , 50];
@@ -162,7 +163,7 @@
 
         endfor
 
-        figure; % plot each graphic on a separate window
+        figure; % plot each graphic separately
         hold on;
 
         % scale data for easier visualization
@@ -178,9 +179,12 @@
         plot(x,yR1,'-m;R1;', x,yR2,'-k;R2;', x,yR3,'-r;R3;', x,yR4,'-g;R4;');
         xlabel("Time (10^5 seconds)");
         ylabel("Concentration (nM)");
-        title("Stability Analysis (Reduced Model)");
+        title(cstrcat("Bifurcation Analysis experiment ", names{sim})); %, " (Reduced Model)"));
 
         hold off;
+        names{sim}
+        maxR1 = max(yR1(6e5/dt:end))
+        maxR4 = max(yR4(6e5/dt:end))
+        print(strcat('bifurcation-', names{sim}, '-qssa.pdf')); % put in the folder the script is run from
 
     endfor
-    a = input("\nPress enter to exit ");
