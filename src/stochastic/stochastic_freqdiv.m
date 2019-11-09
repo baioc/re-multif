@@ -69,7 +69,10 @@
     simulation = 0 : dt : 4.0e5; % simulation length control
 
     % input vector
-    Is = (6 .- 25*cos(simulation .* 2*pi/0.9e5) .+ 25) * 1e-9; % sinusoidal
+    period = 0.9e5;
+    amplitude = 50e-9;
+    dc_level = 6e-9;
+    Is = (dc_level .- (amplitude/2)*cos(simulation .* 2*pi/period) .+ amplitude/2);
 
     % initial state concentrations (M)
     R1 = R2 = 50e-9;
@@ -84,7 +87,15 @@
     R3s = zeros(1, length(simulation));
     R4s = zeros(1, length(simulation));
 
-    % precompute loop invariants
+    % precompute loop invariants and reduced coefficients
+    a1 = Kt_R1 * Kb_P1 / Kd_mR1P1;
+    a2 = Kt_R1 * Kb_P3 / Kd_mR1P3;
+    b1 = Kt_R2 * Kb_P2 / Kd_mR2P2;
+    b2 = Kt_R2 * Kb_P4 / Kd_mR2P4;
+    c1 = Kt_R3 * Kb_P2 / Kd_mR3P2;
+    c2 = Kt_R3 * Kb_P5 / Kd_mR3P5;
+    d1 = Kt_R4 * Kb_P1 / Kd_mR4P1;
+    d2 = Kt_R4 * Kb_P6 / Kd_mR4P6;
     Ka_P1 ^= Na_P1;
     Ka_P2 ^= Na_P2;
     Kr_R2P1 ^= Nr_R2P1;
@@ -96,7 +107,7 @@
     Kr_R1P6 ^= Nr_R1P6;
     Kr_R2P6 ^= Nr_R2P6;
     V = 1e9;
-    isqrV = 1 / sqrt(V);
+    iSqrtV = 1 / sqrt(V);
 
     % abstractions for activation & repression Hill-function
     % these consider K^n is being passed in already precomputed
@@ -109,22 +120,21 @@
     endfunction
 
     % generate Gaussian noise with zero mean and variance one
-    % generate Gaussian noise with zero mean and variance one
-        random_seed = 73544911520192;
-        randn('seed', random_seed);
-
-        noise_a1 = randn(length(simulation), 1) / 14;
-        noise_a2 = randn(length(simulation), 1) / 14;
-        noise_a3 = randn(length(simulation), 1) / 14;
-        noise_b1 = randn(length(simulation), 1) / 14;
-        noise_b2 = randn(length(simulation), 1) / 14;
-        noise_b3 = randn(length(simulation), 1) / 14;
-        noise_c1 = randn(length(simulation), 1) / 14;
-        noise_c2 = randn(length(simulation), 1) / 14;
-        noise_c3 = randn(length(simulation), 1) / 14;
-        noise_d1 = randn(length(simulation), 1) / 14;
-        noise_d2 = randn(length(simulation), 1) / 14;
-        noise_d3 = randn(length(simulation), 1) / 14;
+    random_seed = 73544911520192
+    randn('seed', random_seed);
+    noise_scaling = 1/50;
+    noise_a1 = randn(length(simulation), 1) * noise_scaling;
+    noise_a2 = randn(length(simulation), 1) * noise_scaling;
+    noise_a3 = randn(length(simulation), 1) * noise_scaling;
+    noise_b1 = randn(length(simulation), 1) * noise_scaling;
+    noise_b2 = randn(length(simulation), 1) * noise_scaling;
+    noise_b3 = randn(length(simulation), 1) * noise_scaling;
+    noise_c1 = randn(length(simulation), 1) * noise_scaling;
+    noise_c2 = randn(length(simulation), 1) * noise_scaling;
+    noise_c3 = randn(length(simulation), 1) * noise_scaling;
+    noise_d1 = randn(length(simulation), 1) * noise_scaling;
+    noise_d2 = randn(length(simulation), 1) * noise_scaling;
+    noise_d3 = randn(length(simulation), 1) * noise_scaling;
 
     % actual simulation
     for t = 1 : length(simulation)
@@ -140,24 +150,24 @@
         repressionP1 = Hr(R2, Nr_R2P1, Kr_R2P1);
         activationP2 = Ha(Is(t), Na_P2, Ka_P2);
         repressionP2 = Hr(R4, Nr_R4P2, Kr_R4P2);
-        a1 = (Kt_R1 * Kb_P1 / Kd_mR1P1) * activationP1 * repressionP1;
-        a2 = (Kt_R1 * Kb_P3 / Kd_mR1P3) * Hr(R3, Nr_R3P3, Kr_R3P3);
-        a3 = Kd_R1 * R1;
-        b1 = (Kt_R2 * Kb_P2 / Kd_mR2P2) * activationP2 * repressionP2;
-        b2 = (Kt_R2 * Kb_P4 / Kd_mR2P4) * Hr(R3, Nr_R3P4, Kr_R3P4) * Hr(R4, Nr_R4P4, Kr_R4P4);
-        b3 = Kd_R2 * R2;
-        c1 = (Kt_R3 * Kb_P2 / Kd_mR3P2) * activationP2 * repressionP2;
-        c2 = (Kt_R3 * Kb_P5 / Kd_mR3P5) * Hr(R1, Nr_R1P5, Kr_R1P5);
-        c3 = Kd_R3 * R3;
-        d1 = (Kt_R4 * Kb_P1 / Kd_mR4P1) * activationP1 * repressionP1;
-        d2 = (Kt_R4 * Kb_P6 / Kd_mR4P6) * Hr(R1, Nr_R1P6, Kr_R1P6) * Hr(R2, Nr_R2P6, Kr_R2P6);
-        d3 = Kd_R4*R4;
+        a1_prime = a1 * activationP1 * repressionP1;
+        a2_prime = a2 * Hr(R3, Nr_R3P3, Kr_R3P3);
+        a3_prime = Kd_R1 * R1;
+        b1_prime = b1 * activationP2 * repressionP2;
+        b2_prime = b2 * Hr(R3, Nr_R3P4, Kr_R3P4) * Hr(R4, Nr_R4P4, Kr_R4P4);
+        b3_prime = Kd_R2 * R2;
+        c1_prime = c1 * activationP2 * repressionP2;
+        c2_prime = c2 * Hr(R1, Nr_R1P5, Kr_R1P5);
+        c3_prime = Kd_R3 * R3;
+        d1_prime = d1 * activationP1 * repressionP1;
+        d2_prime = d2 * Hr(R1, Nr_R1P6, Kr_R1P6) * Hr(R2, Nr_R2P6, Kr_R2P6);
+        d3_prime = Kd_R4 * R4;
 
         % compute variation
-        dR1dt = a1 + a2 - a3 + isqrV*(sqrt(a1)*noise_a1(t) + sqrt(a2)*noise_a2(t) - sqrt(a3)*noise_a3(t));
-        dR2dt = b1 + b2 - b3 + isqrV*(sqrt(b1)*noise_b1(t) + sqrt(b2)*noise_b2(t) - sqrt(b3)*noise_b3(t));
-        dR3dt = c1 + c2 - c3 + isqrV*(sqrt(c1)*noise_c1(t) + sqrt(c2)*noise_c2(t) - sqrt(c3)*noise_c3(t));
-        dR4dt = d1 + d2 - d3 + isqrV*(sqrt(d1)*noise_d1(t) + sqrt(d2)*noise_d2(t) - sqrt(d3)*noise_d3(t));
+        dR1dt = a1_prime + a2_prime - a3_prime + iSqrtV*(sqrt(a1_prime)*noise_a1(t) + sqrt(a2_prime)*noise_a2(t) - sqrt(a3_prime)*noise_a3(t));
+        dR2dt = b1_prime + b2_prime - b3_prime + iSqrtV*(sqrt(b1_prime)*noise_b1(t) + sqrt(b2_prime)*noise_b2(t) - sqrt(b3_prime)*noise_b3(t));
+        dR3dt = c1_prime + c2_prime - c3_prime + iSqrtV*(sqrt(c1_prime)*noise_c1(t) + sqrt(c2_prime)*noise_c2(t) - sqrt(c3_prime)*noise_c3(t));
+        dR4dt = d1_prime + d2_prime - d3_prime + iSqrtV*(sqrt(d1_prime)*noise_d1(t) + sqrt(d2_prime)*noise_d2(t) - sqrt(d3_prime)*noise_d3(t));
 
         % apply state changes
         R1 += dR1dt * dt;
@@ -188,7 +198,7 @@
     plot(x,yR1,'-m;R1;', x,yR2,'-k;R2;', x,yR3,'-r;R3;', x,yR4,'-g;R4;');
     xlabel("Time (10^5 seconds)");
     ylabel("Concentration (nM)");
-    title("Reduced Model Stochastics");
+    title("Frequency Division Stochastics");
 
     % input subplot
     subplot(2, 1, 2);
@@ -197,4 +207,4 @@
     ylabel("Concentration (nM)");
 
     hold off;
-    a = input("\nPress enter to exit ");
+    print('stochastic-freqdiv.pdf'); % put in the folder the script is run from
