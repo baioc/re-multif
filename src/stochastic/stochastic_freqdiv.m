@@ -122,7 +122,7 @@
     % generate Gaussian noise with zero mean and variance one
     random_seed = 73544911520192
     randn('seed', random_seed);
-    noise_scaling = 1/50;
+    noise_scaling = 1/55;
     noise_a1 = randn(length(simulation), 1) * noise_scaling;
     noise_a2 = randn(length(simulation), 1) * noise_scaling;
     noise_a3 = randn(length(simulation), 1) * noise_scaling;

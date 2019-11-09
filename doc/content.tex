@@ -17,7 +17,7 @@
   One study\supercite{clock} has shown that combining an oscillator with a toggle switch under certain circumstances will result in the generation of a clock-like near square wave signal.
 
   \citet{originals} presented the \textit{in silico} design of a novel genetic regulatory network which performs frequency division on an oscillating input.
-  During simulations, that model was discovered able to behave not only as a frequency multiplier, but also as a self-induced oscillator or toggle switch.
+  During experiments, that model was discovered able to behave not only as a frequency multiplier, but also as a self-induced oscillator or toggle switch.
   We believe such multi-functionality may lead to the creation of reusable programmable components in biological computing and this has led to the reproduction of the simulations described in that paper on an open-source implementation of the aforementioned model.
 
 
@@ -37,7 +37,7 @@
   The \ac{cles} described therein were implemented with Gaussian noise being generated through the use of built-in Octave functions.
 
   \citet{ingalls} states there is always some chance that thermal fluctuations cause \acs{rna} polymerase to find operators, even if in some cases effects of this phenomenon are negligible.
-  This represents a basal rate of transcription held for activated genes even in the absence of bound activators (in this case, the lack of input molecules) or a "leak" rate of repressible transcription coming from repressed promoters.
+  This represents a basal rate of transcription held for activated genes even in the absence of bound activators (in this case, the lack of input molecules) or a ``leak'' rate of repressible transcription coming from repressed promoters.
   Thus, in order to further investigate the proposed model's robustness, an extra set of experiments were performed with the \ac{ode} system modified to consider a non-zero baseline transcription rate taking place at every promoter.
   Values used for this constant follow from \citet{repressilator}, whose design pioneered oscillating genetic networks.
 
@@ -52,28 +52,28 @@
     \begin{figure}[!htbp]
       \centering
       \includegraphics[width=\textwidth]{freqdiv-square}
-      \caption{@FIXME.}
+      \caption{\textit{@FAVARIN: formatar figuras e adicionar na legenda de cada uma os parâmetros específicos dessa simulação.}}
       \label{fig.freqdiv-square}
     \end{figure}
 
     \begin{figure}[!htbp]
       \centering
       \includegraphics[width=\textwidth]{freqdiv-zero}
-      \caption{@FIXME.}
+      \caption{\textit{@FAVARIN: formatar figuras e adicionar na legenda de cada uma os parâmetros específicos dessa simulação.}}
       \label{fig.freqdiv-zero}
     \end{figure}
 
     \begin{figure}[!htbp]
       \centering
       \includegraphics[width=\textwidth]{freqdiv-qssa}
-      \caption{@FIXME.}
+      \caption{\textit{@FAVARIN: formatar figuras e adicionar na legenda de cada uma os parâmetros específicos dessa simulação.}}
       \label{fig.freqdiv-qssa}
     \end{figure}
 
     \begin{figure}[!htbp]
       \centering
       \includegraphics[width=\textwidth]{freqdiv-full}
-      \caption{@FIXME.}
+      \caption{\textit{@FAVARIN: formatar figuras e adicionar na legenda de cada uma os parâmetros específicos dessa simulação.}}
       \label{fig.freqdiv-full}
     \end{figure}
 
@@ -87,6 +87,10 @@
     In the approximation, the former reactions are assumed to reach equilibrium instantaneously relative to the latter.
     Thus, the difference is a consequence of the fact that the original model maintains itself in a dynamic state that never actually reaches equilibrium, as it perpetually oscillates \cite{ingalls}.
 
+    \texit{@FAVARIN: testar a resposta em frequência do modelo operando como divisor de frequencia.
+    Queremos ver em que faixas de frequência a rede funciona como esperado e procuramos o ponto de duplicação de período mecionado no texto.
+    Replicar a Figura 7A do texto original.}
+
 
   \subsection{Bifurcation Analysis}
 
@@ -99,49 +103,49 @@
     \begin{figure}[!htbp]
       \centering
       \includegraphics[width=\textwidth]{bifurcation-1a}
-      \caption{@FIXME.}
+      \caption{\textit{@FAVARIN: formatar figuras e adicionar na legenda de cada uma os parâmetros específicos dessa simulação.}}
       \label{fig.bifurcation-1a}
     \end{figure}
 
     \begin{figure}[!htbp]
       \centering
       \includegraphics[width=\textwidth]{bifurcation-1b}
-      \caption{@FIXME.}
+      \caption{\textit{@FAVARIN: formatar figuras e adicionar na legenda de cada uma os parâmetros específicos dessa simulação.}}
       \label{fig.bifurcation-1b}
     \end{figure}
 
     \begin{figure}[!htbp]
       \centering
       \includegraphics[width=\textwidth]{bifurcation-2-full}
-      \caption{@FIXME.}
+      \caption{\textit{@FAVARIN: formatar figuras e adicionar na legenda de cada uma os parâmetros específicos dessa simulação.}}
       \label{fig.bifurcation-2-full}
     \end{figure}
 
     \begin{figure}[!htbp]
       \centering
       \includegraphics[width=\textwidth]{bifurcation-2-qssa}
-      \caption{@FIXME.}
+      \caption{\textit{@FAVARIN: formatar figuras e adicionar na legenda de cada uma os parâmetros específicos dessa simulação.}}
       \label{fig.bifurcation-2-qssa}
     \end{figure}
 
     \begin{figure}[!htbp]
       \centering
       \includegraphics[width=\textwidth]{bifurcation-3}
-      \caption{@FIXME.}
+      \caption{\textit{@FAVARIN: formatar figuras e adicionar na legenda de cada uma os parâmetros específicos dessa simulação.}}
       \label{fig.bifurcation-3}
     \end{figure}
 
     \begin{figure}[!htbp]
       \centering
       \includegraphics[width=\textwidth]{bifurcation-4c1}
-      \caption{@FIXME.}
+      \caption{\textit{@FAVARIN: formatar figuras e adicionar na legenda de cada uma os parâmetros específicos dessa simulação.}}
       \label{fig.bifurcation-4c1}
     \end{figure}
 
     \begin{figure}[!htbp]
       \centering
       \includegraphics[width=\textwidth]{bifurcation-4c2}
-      \caption{@FIXME.}
+      \caption{\textit{@FAVARIN: formatar figuras e adicionar na legenda de cada uma os parâmetros específicos dessa simulação.}}
       \label{fig.bifurcation-4c2}
     \end{figure}
 
@@ -151,63 +155,109 @@
 
   \subsection{Self-induced Oscillator}
 
-    @TODO
+    \texit{@FAVARIN: testar a resposta em frequência do modelo operando como oscilador.
+    Queremos ver o quão configurável é esse modo de operação.
+    Replicar a Figura 6A do texto original.}
 
 
   \subsection{Toggle Switch}
 
     As revealed during bifurcation analysis, the network exhibits bistability when input concentration is held constant outside the oscillatory range.
-    Figures \ref{fig.switch-A} to \ref{fig.switch-D} illustrate simulations with the system being used as a toggle switch which is "triggered" by varying binding affinity of particular repressors.
+    Figures \ref{fig.switch-A} to \ref{fig.switch-D} illustrate simulations with the system being used as a toggle switch which is ``triggered'' by varying binding affinity of particular repressors.
     These experiments were exactly reproduced from the reference work without any difficulties, as all parameters are given, and no significant difference is found between reduced and full models.
 
     \begin{figure}[!htbp]
       \centering
       \includegraphics[width=\textwidth]{switch-A}
-      \caption{@FIXME.}
+      \caption{\textit{@FAVARIN: formatar figuras e adicionar na legenda de cada uma os parâmetros específicos dessa simulação.}}
       \label{fig.switch-A}
     \end{figure}
 
     \begin{figure}[!htbp]
       \centering
       \includegraphics[width=\textwidth]{switch-B}
-      \caption{@FIXME.}
+      \caption{\textit{@FAVARIN: formatar figuras e adicionar na legenda de cada uma os parâmetros específicos dessa simulação.}}
       \label{fig.switch-B}
     \end{figure}
 
     \begin{figure}[!htbp]
       \centering
       \includegraphics[width=\textwidth]{switch-C}
-      \caption{@FIXME.}
+      \caption{\textit{@FAVARIN: formatar figuras e adicionar na legenda de cada uma os parâmetros específicos dessa simulação.}}
       \label{fig.switch-C}
     \end{figure}
 
     \begin{figure}[!htbp]
       \centering
       \includegraphics[width=\textwidth]{switch-D}
-      \caption{@FIXME.}
+      \caption{\textit{@FAVARIN: formatar figuras e adicionar na legenda de cada uma os parâmetros específicos dessa simulação.}}
       \label{fig.switch-D}
     \end{figure}
 
 
   \subsection{Stochastic Simulations}
 
-    % # 1/14
-    % seed=2.832228911341789e-220 # 3 red
-    % seed=1.093374056741564e-12  # normal
-    % seed=3.079242033197292e-283 # 2 magenta, negative
-    % seed=4.644825783344441e+132 # 2 red, 3 magente, negative
+    We implemented the \ac{cles} shown in the related supporting information document provided by \citet{originals}, but it was not possible to verify similar results without modifications to the noise-inducing function.
+    While original authors state the usage of Gaussian noise with zero mean and variance of 1, simply employing Octave's \code{randn} function -- which provides such a random distribution \cite{randn} -- proved being too noisy as stochastic fluctuations began dominating the model's behaviour.
+    It was found through trial and error that downscaling random numbers by a factor of $s \in [\frac{1}{100}, \frac{1}{10}]$ (and consequently scaling variance by $s^2$) would bring results closer to what is seen in the reference work.
+
+    \begin{figure}[!htbp]
+      \centering
+      \includegraphics[width=\textwidth]{stochastic-oscillator}
+      \caption{\textit{@FAVARIN: formatar figuras e adicionar na legenda de cada uma os parâmetros específicos dessa simulação.}}
+      \label{fig.stochastic-oscillator}
+    \end{figure}
+
+    \begin{figure}[!htbp]
+      \centering
+      \includegraphics[width=\textwidth]{stochastic-switch-4}
+      \caption{\textit{@FAVARIN: formatar figuras e adicionar na legenda de cada uma os parâmetros específicos dessa simulação.}}
+      \label{fig.stochastic-switch-4}
+    \end{figure}
+
+    \begin{figure}[!htbp]
+      \centering
+      \includegraphics[width=\textwidth]{stochastic-switch-3}
+      \caption{\textit{@FAVARIN: formatar figuras e adicionar na legenda de cada uma os parâmetros específicos dessa simulação.}}
+      \label{fig.stochastic-switch-3}
+    \end{figure}
+
+    \begin{figure}[!htbp]
+      \centering
+      \includegraphics[width=\textwidth]{stochastic-freqdiv-normal}
+      \caption{\textit{@FAVARIN: formatar figuras e adicionar na legenda de cada uma os parâmetros específicos dessa simulação.}}
+      \label{fig.stochastic-freqdiv-normal}
+    \end{figure}
+
+    \begin{figure}[!htbp]
+      \centering
+      \includegraphics[width=\textwidth]{stochastic-freqdiv-skip}
+      \caption{\textit{@FAVARIN: formatar figuras e adicionar na legenda de cada uma os parâmetros específicos dessa simulação.}}
+      % scaling = 1/26
+      % seed = 8.977812586558097e-01 # 2 red, 2 magenta
+      % seed = 3.588309295243656e-01 # 4 red in a row
+      \label{fig.stochastic-freqdiv-skip}
+    \end{figure}
+
+    We verified that among the three functionalities, frequency multiplication possesses less robustness to intrinsic noise.
+    During the stage where input is applied and proteins are all at a low concentration, random fluctuations may cause unintended oscillations as a pair of repressors rise in concentration and prevent transcription of the other two.
+    An example of such irregular oscillating behaviour is given in Figure \ref{fig.stochastic-freqdiv-skip}.
 
 
-  \subsection{Leaky Promoter Experiments}
+  \subsection{Promoter Leakiness}
 
-    ...
+    \texit{@FAVARIN: testar a robustez dos diferentes modos de operação da rede.
+    Isso será feito adicionando aos sistemas de EDOs a taxa basal mencionada no livro do Ingalls, seção 7.1.2
+    Para valor numérico, ver artigo original do repressilator.}
 
 
 \section{Conclusion}
 
+  \textit{@FAVARIN: Relembrar objetivos e explicar como foi possível replicar o artigo original e a maior parte dos experimentos.
+  Destacar as diferenças entre modelo completo e reduzido e especialmente os resultados que obtivemos dos nossos experimentos proprios: estocasticos com ruido aumentado e testes de robustez com taxa basal.
+  Caso o modelo não funcione em alguns casos específicos, mencionar que isso já era esperado como evidenciado pelos poucos experimentos com parâmetros assimétricos que os autores fizeram e que também falharam (informação suplementar S5).
+  Eles mencionam isso na parte de implementação in vivo do modelo.
+  Tirar conclusões do trabalho e mencionar como seriam os trabalhos futuros.}
+
   % We highlight the idea that as synthetic networks grow in complexity and size, multi-functionality may arise more frequently and become difficult to avoid.
   % While this can bring the benefits of reusable programmable components, it might also end up becoming a nuisance if models start behaving unexpectedly under the influence of certain inputs.
-
-  \textit{Relembrar objetivos.
-  Explicar como foi (ou não) possível replicar o artigo original, destacando quaisquer diferenças nos trabalhos.
-  Apresentar trabalhos futuros.}
