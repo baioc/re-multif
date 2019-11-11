@@ -51,29 +51,29 @@
 
     \begin{figure}[!htbp]
       \centering
-      \includegraphics[width=\textwidth]{freqdiv-square}
-      \caption{\textit{FAVARIN: formatar figuras e adicionar na legenda de cada uma os parâmetros específicos dessa simulação.}}
+      \includegraphics[width=0.85\textwidth]{img/freqdiv-square-1.png}
+      \caption{Initial conditions: $R1 = R2 = 50nM$, $R3 = R4 = 0nM$.}
       \label{fig.freqdiv-square}
     \end{figure}
 
     \begin{figure}[!htbp]
       \centering
-      \includegraphics[width=\textwidth]{freqdiv-zero}
-      \caption{\textit{FAVARIN: formatar figuras e adicionar na legenda de cada uma os parâmetros específicos dessa simulação.}}
+      \includegraphics[width=0.7\textwidth]{img/freqdiv-zero-1.png}
+      \caption{Initial conditions of the repressors: $R1 = R2 = 50nM$, $R3 = R4 = 0nM$. Sine function: $I(t) = \alpha - a\cdot(\cos(\frac{2\pi}{p}\cdot t) + 1)$, where $a$ is the amplitude, $p$ is the period and $\alpha = 0nM$.}
       \label{fig.freqdiv-zero}
     \end{figure}
 
     \begin{figure}[!htbp]
       \centering
-      \includegraphics[width=\textwidth]{freqdiv-qssa}
-      \caption{\textit{FAVARIN: formatar figuras e adicionar na legenda de cada uma os parâmetros específicos dessa simulação.}}
+      \includegraphics[width=0.7\textwidth]{img/freqdiv-qssa-1.png}
+      \caption{Initial conditions of the repressors: $R1 = R2 = 50nM$, $R3 = R4 = 0nM$. Sine function: $I(t) = \alpha - a\cdot(\cos(\frac{2\pi}{p}\cdot t) + 1)$, where $a$ is the amplitude, $p$ is the period and $\alpha = 6nM$.}
       \label{fig.freqdiv-qssa}
     \end{figure}
 
     \begin{figure}[!htbp]
       \centering
-      \includegraphics[width=\textwidth]{freqdiv-full}
-      \caption{\textit{FAVARIN: formatar figuras e adicionar na legenda de cada uma os parâmetros específicos dessa simulação.}}
+      \includegraphics[width=0.7\textwidth]{img/freqdiv-full-1.png}
+      \caption{Initial conditions of the repressors: $R1 = R2 = 50nM$, $R3 = R4 = 0nM$. Sine function: $I(t) = \alpha - a\cdot(\cos(\frac{2\pi}{p}\cdot t) + 1)$, where $a$ is the amplitude, $p$ is the period and $\alpha = 6nM$.}
       \label{fig.freqdiv-full}
     \end{figure}
 
@@ -87,10 +87,14 @@
     In the approximation, the former reactions are assumed to reach equilibrium instantaneously relative to the latter.
     Thus, the difference is a consequence of the fact that the original model maintains itself in a dynamic state that never actually reaches equilibrium, as it perpetually oscillates \cite{ingalls}.
 
-    \textit{FAVARIN: testar a resposta em frequência do modelo operando como divisor de frequencia.
-    Queremos ver em que faixas de frequência a rede funciona como esperado e procuramos o ponto de duplicação de período mecionado no texto.
-    Replicar a Figura 7A do texto original.}
+    As show in the original work, the period of the proteins are proportional to the sinoidal input; however, there's a point that this proportion doubles. By changing the sine period and doing 14 simulations in the period range of $[0.18, 1.74] * 10^{-9}$, we managed to replicate this behavior and confirm that the period doubling occurs at approximately 8 hours in.
 
+    \begin{figure}[!htbp]
+      \centering
+      \includegraphics[width=0.71\textwidth]{img/period.png}
+      \caption{Initial conditions of the repressors: $R1 = R2 = 50nM$, $R3 = R4 = 0nM$. Sine function: $I(t) = \alpha - a\cdot(\cos(\frac{2\pi}{p}\cdot t) + 1)$, where $a$ is the amplitude, $p$ is the period in the range $[0.18, 1.74] * 10^{-9}$ and $\alpha = 6nM$.}
+      \label{fig.bifurcation-1a}
+    \end{figure}
 
   \subsection{Bifurcation Analysis}
 
@@ -102,50 +106,50 @@
 
     \begin{figure}[!htbp]
       \centering
-      \includegraphics[width=\textwidth]{bifurcation-1a}
-      \caption{\textit{FAVARIN: formatar figuras e adicionar na legenda de cada uma os parâmetros específicos dessa simulação.}}
+      \includegraphics[width=0.71\textwidth]{img/bifurcation-1a-1.png}
+      \caption{Concentration $= 0.1nM$. Initial condition of the repressors: $R1 = R2 = 50nM$, $R3 = R4 = 0nM$.}
       \label{fig.bifurcation-1a}
     \end{figure}
 
     \begin{figure}[!htbp]
       \centering
-      \includegraphics[width=\textwidth]{bifurcation-1b}
-      \caption{\textit{FAVARIN: formatar figuras e adicionar na legenda de cada uma os parâmetros específicos dessa simulação.}}
+      \includegraphics[width=0.71\textwidth]{img/bifurcation-1b-1.png}
+      \caption{Concentration $= 0.1nM$. Initial condition of the repressors: $R1 = R2 = 0nM$, $R3 = R4 = 50nM$.}
       \label{fig.bifurcation-1b}
     \end{figure}
 
     \begin{figure}[!htbp]
       \centering
-      \includegraphics[width=\textwidth]{bifurcation-2-full}
-      \caption{\textit{FAVARIN: formatar figuras e adicionar na legenda de cada uma os parâmetros específicos dessa simulação.}}
+      \includegraphics[width=0.71\textwidth]{img/bifurcation-2-full-1.png}
+      \caption{Concentration $= 5nM$. Initial condition of the repressors: $R1 = R2 = 50nM$, $R3 = R4 = 0nM$.}
       \label{fig.bifurcation-2-full}
     \end{figure}
 
     \begin{figure}[!htbp]
       \centering
-      \includegraphics[width=\textwidth]{bifurcation-2-qssa}
-      \caption{\textit{FAVARIN: formatar figuras e adicionar na legenda de cada uma os parâmetros específicos dessa simulação.}}
+      \includegraphics[width=0.71\textwidth]{img/bifurcation-2-qssa-1.png}
+      \caption{Concentration $= 5nM$. Initial condition of the repressors: $R1 = R2 = 50nM$, $R3 = R4 = 0nM$.}
       \label{fig.bifurcation-2-qssa}
     \end{figure}
 
     \begin{figure}[!htbp]
       \centering
-      \includegraphics[width=\textwidth]{bifurcation-3}
-      \caption{\textit{FAVARIN: formatar figuras e adicionar na legenda de cada uma os parâmetros específicos dessa simulação.}}
+      \includegraphics[width=0.71\textwidth]{img/bifurcation-3-1.png}
+      \caption{Concentration $= 7.5nM$. Initial condition of the repressors: $R1 = R2 = 50nM$, $R3 = R4 = 0nM$.}
       \label{fig.bifurcation-3}
     \end{figure}
 
     \begin{figure}[!htbp]
       \centering
-      \includegraphics[width=\textwidth]{bifurcation-4c1}
-      \caption{\textit{FAVARIN: formatar figuras e adicionar na legenda de cada uma os parâmetros específicos dessa simulação.}}
+      \includegraphics[width=0.71\textwidth]{img/bifurcation-4c1-1.png}
+      \caption{Concentration $= 10nM$. Initial condition of the repressors: $R1 = R2 = 50nM$, $R3 = R4 = 0nM$.}
       \label{fig.bifurcation-4c1}
     \end{figure}
 
     \begin{figure}[!htbp]
       \centering
-      \includegraphics[width=\textwidth]{bifurcation-4c2}
-      \caption{\textit{FAVARIN: formatar figuras e adicionar na legenda de cada uma os parâmetros específicos dessa simulação.}}
+      \includegraphics[width=0.71\textwidth]{img/bifurcation-4c2-1.png}
+      \caption{Concentration $= 10nM$. Initial condition of the repressors: $R1 = R2 = 0nM$, $R3 = R4 = 50nM$.}
       \label{fig.bifurcation-4c2}
     \end{figure}
 
@@ -155,10 +159,14 @@
 
   \subsection{Self-induced Oscillator}
 
-    \textit{FAVARIN: testar a resposta em frequência do modelo operando como oscilador.
-    Queremos ver o quão configurável é esse modo de operação.
-    Replicar a Figura 6A do texto original.}
+    The original work explains that: "If the input concentration is held constant, such that the system is in the region of the bifurcation structure between the saddle-node bifurcation and the Hopf bifurcation, a stable limit cycle exists and the dynamics are oscillatory.". We proceed to run $56$ simulations using the input range $[0.4, 6.0]$ $nM$, and measuring the period in each simulation. Once we have the period for each simulation, we proceed to plot it over the concentration input to investigate it's behavior. Finally, we managed to verify the behavior of the period of oscillation in comparison to the input concentration without any further difficulties. Investigating the simulation we noticed a quite curious behavior happening when approaching the zero concentration, as the period time approaches infinity. This suggests that an infinite period bifurcation takes place.
 
+    \begin{figure}[!htbp]
+      \centering
+      \includegraphics[width=1\textwidth]{img/period6a.png}
+      \caption{Period analysis. Concentration $= 0.4nM$ to $6nM$. Initial condition of the repressors: $R1 = R2 = 50nM$, $R3 = R4 = 0nM$.}
+      \label{fig.switch-A}
+    \end{figure}
 
   \subsection{Toggle Switch}
 
@@ -168,29 +176,29 @@
 
     \begin{figure}[!htbp]
       \centering
-      \includegraphics[width=\textwidth]{switch-A}
-      \caption{\textit{FAVARIN: formatar figuras e adicionar na legenda de cada uma os parâmetros específicos dessa simulação.}}
+      \includegraphics[width=1.1\textwidth]{img/switch-A-1.png}
+      \caption{Concentration $= 0.1nM$. Initial condition of the repressors: $R1 = R2 = 50nM$, $R3 = R4 = 0nM$.}
       \label{fig.switch-A}
     \end{figure}
 
     \begin{figure}[!htbp]
       \centering
-      \includegraphics[width=\textwidth]{switch-B}
-      \caption{\textit{FAVARIN: formatar figuras e adicionar na legenda de cada uma os parâmetros específicos dessa simulação.}}
+      \includegraphics[width=0.71\textwidth]{img/switch-B-1.png}
+      \caption{Concentration $= 0.1nM$. Initial condition of the repressors: $R1 = R2 = 0nM$, $R3 = R4 = 50nM$.}
       \label{fig.switch-B}
     \end{figure}
 
     \begin{figure}[!htbp]
       \centering
-      \includegraphics[width=\textwidth]{switch-C}
-      \caption{\textit{FAVARIN: formatar figuras e adicionar na legenda de cada uma os parâmetros específicos dessa simulação.}}
+      \includegraphics[width=0.71\textwidth]{img/switch-C-1.png}
+      \caption{Concentration $= 50nM$. Initial condition of the repressors: $R1 = R2 = 50nM$, $R3 = R4 = 0nM$.}
       \label{fig.switch-C}
     \end{figure}
 
     \begin{figure}[!htbp]
       \centering
-      \includegraphics[width=\textwidth]{switch-D}
-      \caption{\textit{FAVARIN: formatar figuras e adicionar na legenda de cada uma os parâmetros específicos dessa simulação.}}
+      \includegraphics[width=0.71\textwidth]{img/switch-D-1.png}
+      \caption{Concentration $= 50nM$. Initial condition of the repressors: $R1 = R2 = 0nM$, $R3 = R4 = 50nM$.}
       \label{fig.switch-D}
     \end{figure}
 
@@ -203,36 +211,36 @@
 
     \begin{figure}[!htbp]
       \centering
-      \includegraphics[width=\textwidth]{stochastic-oscillator}
-      \caption{\textit{FAVARIN: formatar figuras e adicionar na legenda de cada uma os parâmetros específicos dessa simulação.}}
+      \includegraphics[width=0.71\textwidth]{img/stochastic-oscillator-1.png}
+      \caption{Concentration $= 5nM$. Initial condition of the repressors: $R1 = R2 = 50nM$, $R3 = R4 = 0nM$.}
       \label{fig.stochastic-oscillator}
     \end{figure}
 
     \begin{figure}[!htbp]
       \centering
-      \includegraphics[width=\textwidth]{stochastic-switch-4}
-      \caption{\textit{FAVARIN: formatar figuras e adicionar na legenda de cada uma os parâmetros específicos dessa simulação.}}
+      \includegraphics[width=0.71\textwidth]{img/stochastic-switch-4-1.png}
+      \caption{Concentration $= 50nM$. Initial condition of the repressors: $R1 = R2 = 0nM$, $R3 = R4 = 50nM$.}
       \label{fig.stochastic-switch-4}
     \end{figure}
 
     \begin{figure}[!htbp]
       \centering
-      \includegraphics[width=\textwidth]{stochastic-switch-3}
-      \caption{\textit{FAVARIN: formatar figuras e adicionar na legenda de cada uma os parâmetros específicos dessa simulação.}}
+      \includegraphics[width=0.71\textwidth]{img/stochastic-switch-3-1.png}
+      \caption{Concentration $= 50nM$. Initial condition of the repressors: $R1 = R2 = 50nM$, $R3 = R4 = 0nM$.}
       \label{fig.stochastic-switch-3}
     \end{figure}
 
     \begin{figure}[!htbp]
       \centering
-      \includegraphics[width=\textwidth]{stochastic-freqdiv-normal}
-      \caption{\textit{FAVARIN: formatar figuras e adicionar na legenda de cada uma os parâmetros específicos dessa simulação.}}
+      \includegraphics[width=0.71\textwidth]{img/stochastic-freqdiv-normal-1.png}
+      \caption{Initial conditions of the repressors: $R1 = R2 = 50nM$, $R3 = R4 = 0nM$.}
       \label{fig.stochastic-freqdiv-normal}
     \end{figure}
 
     \begin{figure}[!htbp]
       \centering
-      \includegraphics[width=\textwidth]{stochastic-freqdiv-skip}
-      \caption{\textit{FAVARIN: formatar figuras e adicionar na legenda de cada uma os parâmetros específicos dessa simulação.}}
+      \includegraphics[width=0.71\textwidth]{img/stochastic-freqdiv-skip-1.png}
+      \caption{Initial conditions of the repressors: $R1 = R2 = 50nM$, $R3 = R4 = 0nM$. Different random seed.}
       % scaling = 1/26
       % seed = 8.977812586558097e-01 # 2 red, 2 magenta
       % seed = 3.588309295243656e-01 # 4 red in a row
@@ -253,11 +261,9 @@
 
 \section{Conclusion}
 
-  \textit{FAVARIN: Relembrar objetivos e explicar como foi possível replicar o artigo original e a maior parte dos experimentos.
-  Destacar as diferenças entre modelo completo e reduzido e especialmente os resultados que obtivemos dos nossos experimentos proprios: estocasticos com ruido aumentado e testes de robustez com taxa basal.
-  Caso o modelo não funcione em alguns casos específicos, mencionar que isso já era esperado como evidenciado pelos poucos experimentos com parâmetros assimétricos que os autores fizeram e que também falharam (informação suplementar S5).
-  Eles mencionam isso na parte de implementação in vivo do modelo.
-  Tirar conclusões do trabalho e mencionar como seriam os trabalhos futuros.}
+    We conclude that it was possible to replicate the generic oscillators, genetic switches and frequency divider experiments of the original work. We decided to replicate both the full models and the reduced models - the full model takes into consideration the input being a sine function while the reduced model work with a constant input. By comparing the results of those models, we conclude that the reduced model is a really good approximation of the full model after the first period. The first period of the full model usually have a higher concentration value compared to the reduced model, for example in the oscillator analysis, the full model had values up to $10nM$ of concentration higher than the reduced model; however, as time goes by, the system tends to become more stable and the reduced model ends up being a really good approximation of the full model.
+
+    The second part of our replication added noises to our simulations to replicate a stochastic behavior. Despite not being successful to replicate the model as described by the original authors, we managed to scale the noise and replicate an approximation of their results. We found an interesting behaviour regarding the randomness of the noise: depending on it's variation, we could get cycles to skip.
 
   % We highlight the idea that as synthetic networks grow in complexity and size, multi-functionality may arise more frequently and become difficult to avoid.
   % While this can bring the benefits of reusable programmable components, it might also end up becoming a nuisance if models start behaving unexpectedly under the influence of certain inputs.
