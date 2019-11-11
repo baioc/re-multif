@@ -1,7 +1,17 @@
 \documentclass{rescience}
 
+\usepackage[nolist]{acronym}
+\usepackage{siunitx}
+\usepackage{graphicx}
+\usepackage{subcaption}
+
+\graphicspath{{img/}}
+\setlength{\parindent}{15pt}
+\def\code#1{\texttt{#1}}
+
 \begin{document}
 \input{header.tex}
+\input{acronym.tex}
 \input{content.tex}
 
 \hypersetup{linkcolor=black,urlcolor=darkgray}

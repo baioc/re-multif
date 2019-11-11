@@ -1,0 +1,114 @@
+# To be filled by the author(s) at the time of submission
+# -------------------------------------------------------
+
+# Title of the article:
+#  - For a successful replication, it shoudl be prefixed with "[Re]"
+#  - For a failed replication, it should be prefixed with "[¬Re]"
+#  - For other article types, no instruction (but please, not too long)
+title: "[Re] A Multi-Functional Synthetic Gene Network"
+
+# List of authors with name, orcid number, email and affiliation
+# Affiliation "*" means contact author
+authors:
+  - name: Gabriel Baiocchi de Sant'Anna
+    orcid: 0000-0001-8364-8969
+    email: baiocchi.gabriel@gmail.com
+    affiliations: 1,*
+  - name: Mateus Favarin Costa
+    orcid:
+    email: mateusfavarinc@gmail.com
+    affiliations: 1
+
+# List of affiliations with code (corresponding to author affiliations), name
+# and address. You can also use these affiliations to add text such as "Equal
+# contributions" as name (with no address).
+affiliations:
+  - code:    1
+    name:    Universidade Federal de Santa Catarina (UFSC)
+    address: Florianópolis, Brazil
+
+# List of keywords (adding the programming language might be a good idea)
+keywords: rescience c, octave, synthetic biology, biological computing, genetic circuit, frequency multiplier, oscillator, switch
+
+
+# Code URL and DOI (url is mandatory for replication, doi after acceptance)
+# You can get a DOI for your code from Zenodo,
+#   see https://guides.github.com/activities/citable-code/
+code:
+  - url: https://github.com/baioc/ReBioComp
+  - doi:
+
+# Data URL and DOI (optional if no data)
+data:
+  - url:
+  - doi:
+
+# Information about the original article that has been replicated
+replication:
+ - cite: "Purcell O, di Bernardo M, Grierson CS, Savery NJ
+          (2011) A Multi-Functional Synthetic Gene Network: A Frequency Multiplier, Oscillator and Switch.
+          PLOS ONE 6(2): e16140. https://doi.org/10.1371/journal.pone.0016140" # Full textual citation
+ - bib:  originals # Bibtex key (if any) in your bibliography file
+ - url:  https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3040778/pdf/pone.0016140.pdf # URL to the PDF, try to link to a non-paywall version
+ - doi:  https://doi.org/10.1371/journal.pone.0016140 # Regular digital object identifier
+
+# Don't forget to surround abstract with double quotes
+abstract: "Studies in the field of synthetic biology make constant additions to existing repositories of biological circuits as well as to the theoretical understanding of their capabilities.
+           Although many synthetic gene networks have been demonstrated to posses the ability to perform computations using biomolecules, until recently the majority of such models were engineered to implement the functionality of single reusable circuit parts.
+           Purcell et al. have proposed a network capable of multiple functions, allowing for the selection of three different behaviours in a programmable fashion.
+           This work provides a reference open-source implementation which is used to replicate their in silico experiments."
+
+# Bibliography file (yours)
+bibliography: bibliography.bib
+
+# Type of the article
+# Type can be:
+#  * Editorial
+#  * Letter
+#  * Replication
+type: Replication
+
+# Scientific domain of the article (e.g. Computational Neuroscience)
+#  (one domain only & try to be not overly specific)
+domain: Biological Computing
+
+# Coding language (main one only if several)
+language: Octave
+
+
+# To be filled by the author(s) after acceptance
+# -----------------------------------------------------------------------------
+
+# For example, the URL of the GitHub issue where review actually occured
+review:
+  - url:
+
+contributors:
+  - name:
+    orcid:
+    role: editor
+  - name:
+    orcid:
+    role: reviewer
+  - name:
+    orcid:
+    role: reviewer
+
+# This information will be provided by the editor
+dates:
+  - received:  (Date)
+  - accepted:
+  - published:
+
+# This information will be provided by the editor
+article:
+  - number: # Article number will be automatically assigned during publication
+  - doi:    # DOI from Zenodo
+  - url:    # Final PDF URL (Zenodo or rescience website?)
+
+# This information will be provided by the editor
+journal:
+  - name:   "ReScience C"
+  - issn:   2430-3658
+  - volume: 4
+  - issue:  1

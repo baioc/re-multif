@@ -9,3 +9,7 @@
 *.run.xml
 *.out
 
+*.fdb_latexmk
+*.fls
+
+__pycache__/
