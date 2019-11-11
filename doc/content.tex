@@ -4,7 +4,6 @@
   Although many synthetic gene networks have been demonstrated able to perform computations using biomolecules, until recently the majority of such models were engineered to implement the functionality of single reusable circuit parts.
   \citet{originals} have proposed a network capable of multiple functions, allowing for the selection of three different behaviours in a programmable fashion.
   This work provides a reference open-source implementation which is used to replicate that study.
-  % We reproduce their simulations and include new experiments to explore parameter space. % @XXX: not yet
 
 
 \section{Introduction}
@@ -36,12 +35,6 @@
   We present a brief comparison of these models' quantitative results and highlight their differences.
   While stochastic experiments are only briefly mentioned on the main text, more details can be found inside supporting information documents provided by \citet{originals}.
   The \ac{cles} described therein were implemented with Gaussian noise being generated through the use of built-in Octave functions.
-
-  %% @TODO: Promoter Leakiness
-  % \citet{ingalls} states there is always some chance that thermal fluctuations cause \acs{rna} polymerase to find operators, even if in some cases effects of this phenomenon are negligible.
-  % This represents a basal rate of transcription held for activated genes even in the absence of bound activators (in this case, the lack of input molecules) or a ``leak'' rate of repressible transcription coming from repressed promoters.
-  % Thus, in order to further investigate the proposed model's robustness, an extra set of experiments were performed with the \ac{ode} system modified to consider a non-zero baseline transcription rate taking place at every promoter.
-  % Values used for this constant follow from \citet{repressilator}, whose design pioneered oscillating genetic networks.
 
 
 \section{Results}
@@ -99,18 +92,18 @@
     In the approximation, the former reactions are assumed to reach equilibrium instantaneously relative to the latter.
     Thus, the difference is a consequence of the fact that the original model maintains itself in a dynamic state that never actually reaches equilibrium, as it perpetually oscillates \cite{ingalls}.
 
-    As mentioned in the original study, the frequency division functionality can only be observed after a specific period threshold.
-    We ran simulations under the full model on a range of input frequencies and found the period-doubling bifurcation to be located near values of $8 \times 10^4$ seconds ($\sim 22.22$ hours).
-    Results are shown in Figure \ref{fig.freqdiv-period}.
-    These diverge from the reference work, where it is stated that this threshold could be observed at input periods of $\sim 27500$ seconds ($\sim 8$ hours). % @XXX: same on QSSA?
-    This confirms the proposed network is better suited to interfacing with long-period oscillators, although a more in-depth parameter exploration is needed in order to verify its compatibility with higher frequencies.
-
     \begin{figure}[!htb]
       \centering
-      \includegraphics[width=0.8\textwidth]{freqdiv-period}
+      \includegraphics[width=0.65\textwidth]{freqdiv-period}
       \caption{\textbf{Locating the period-doubling bifurcation.} Output frequency was detected by measuring the distance between peaks of R1 concentration. Other than input frequency and simulation length (each run was configured to take as long as five times the input period), parameters are the same as in Figure \ref{fig.freqdiv-sinusoidal}.}
       \label{fig.freqdiv-period}
     \end{figure}
+
+    As mentioned in the original study, the frequency division functionality can only be observed after a specific period threshold.
+    We ran simulations under the full model on a range of input frequencies and found the period-doubling bifurcation to be located near values of $8 \times 10^4$ seconds ($\sim 22.22$ hours).
+    Results are shown in Figure \ref{fig.freqdiv-period}.
+    These diverge from the reference work, where it is stated that this threshold could be observed at input periods of $\sim 27500$ seconds ($\sim 8$ hours).
+    This confirms the proposed network is better suited to interfacing with long-period oscillators, although a more in-depth parameter exploration is needed in order to verify its compatibility with higher frequencies.
 
 
   \subsection{Bifurcation Analysis}
@@ -163,21 +156,21 @@
 
     \begin{figure}[!htb]
       \centering
-      \includegraphics[width=0.5\textwidth]{bifurcation-3}
+      \includegraphics[width=0.6\textwidth]{bifurcation-3}
       \caption{\textbf{Evidence for pitchfork bifurcation in experiment $3$.} $I = 7.5nM$.}
       \label{fig.bifurcation-3}
     \end{figure}
 
     \begin{figure}[!htb]
       \centering
-      \begin{subfigure}[t]{0.4\textwidth}
+      \begin{subfigure}[t]{0.45\textwidth}
         \centering
         \includegraphics[width=\linewidth]{bifurcation-4c1}
         \caption{\textbf{Experiment $4c_{1}$.} Protein concentrations are initially set to $R1 = R2 = 50nM$ and $R3 = R4 = 0nM$.}
         \label{fig.bifurcation-4c1}
       \end{subfigure}
       \hspace{1em}
-      \begin{subfigure}[t]{0.4\textwidth}
+      \begin{subfigure}[t]{0.45\textwidth}
         \centering
         \includegraphics[width=\linewidth]{bifurcation-4c2}
         \caption{\textbf{Experiment $4c_{2}$.} Protein concentrations are initially set to $R1 = R2 = 0nM$ and $R3 = R4 = 50nM$.}
@@ -192,11 +185,11 @@
 
     We verified the network's oscillatory dynamics in the region between saddle-node and Hopf bifurcations by measuring its output period for each given input concentration level.
     Thus, the analysis presented in the original work was reproduced without further difficulties: results describe a relation with similar behaviour and the same near-vertical increase in period as input approaches the lower bistability region.
-    This is presented in Figure \ref{fig.oscillator-astable}. % @XXX: same on QSSA?
+    This is presented in Figure \ref{fig.oscillator-astable}.
 
     \begin{figure}[!htb]
       \centering
-      \includegraphics[width=0.65\textwidth]{oscillator-astable}
+      \includegraphics[width=0.9\textwidth]{oscillator-astable}
       \caption{\textbf{Analysing oscillatory dynamics.} Simulation configuration is the same as in Figure \ref{fig.bifurcation-2} except for input levels, which are held in the range $[0.4 \times 10^{-9}, 7 \times 10^{-9}]$. Output frequency was detected by measuring the distance between peaks of R1 concentration.}
       \label{fig.oscillator-astable}
     \end{figure}
@@ -210,14 +203,14 @@
 
     \begin{figure}[!htb]
       \centering
-      \begin{subfigure}[t]{0.4\textwidth}
+      \begin{subfigure}[t]{0.45\textwidth}
         \centering
         \includegraphics[width=\linewidth]{switch-A}
         \caption{Switch active state from R1 \& R2 to R3 \& R4. Initial conditions: $R1 = R2 = 50nM$, $R3 = R4 = 0nM$.}
         \label{fig.switch-A}
       \end{subfigure}
       \hspace{1em}
-      \begin{subfigure}[t]{0.4\textwidth}
+      \begin{subfigure}[t]{0.45\textwidth}
         \centering
         \includegraphics[width=\linewidth]{switch-B}
         \caption{Switch active state from R3 \& R4 to R1 \& R2. Initial conditions: $R1 = R2 = 0nM$, $R3 = R4 = 50nM$.}
@@ -300,13 +293,6 @@
     We verified that among the three functionalities, frequency division possesses less robustness to intrinsic noise.
     During the stage where input is applied and proteins are all at a low concentration, random fluctuations may cause unintended oscillations as a pair of repressors rise in concentration and prevent transcription of the other two.
     An example of such irregular oscillating behaviour is given in Figure \ref{fig.stochastic-freqdiv-skip}.
-
-
-  % \subsection{Promoter Leakiness}
-
-  %   \textit{@FAVARIN: testar a robustez dos diferentes modos de operação da rede.
-  %   Isso será feito adicionando aos sistemas de EDOs a taxa basal mencionada no livro do Ingalls, seção 7.1.2
-  %   Para valor numérico, ver artigo original do repressilator (está no Dropbox).}
 
 
 \section{Conclusion}
