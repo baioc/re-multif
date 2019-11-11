@@ -73,31 +73,20 @@
 % ============================ INPUT PARAMETERS ================================
 
     % time settings
-    dt = 60;                     % 1 minute timesteps
-    simulation = 0 : dt : 8.0e5; % simulation length control
+    dt = 60;
+    simulation = 0 : dt : 10e5;
 
-    % initial state concentrations (M)
-    R1 = 50e-9;
-    R2 = 50e-9;
-    R3 = 0e-9;
-    R4 = 0e-9;
-    mR1P1 = 0e-9;
-    mR4P1 = 0e-9;
-    mR2P2 = 0e-9;
-    mR3P2 = 0e-9;
-    mR1P3 = 0e-9;
-    mR2P4 = 0e-9;
-    mR3P5 = 0e-9;
-    mR4P6 = 0e-9;
+    % input range
+    min_input = 0.4e-9;
+    max_outout = 7e-9;
+    input_steps = 50;
+    ins = min_input : (max_outout - min_input)/input_steps : max_outout;
 
 
-% =============================== SIMULATION ===================================
+% ================================ MULTISIM ====================================
 
-    % preallocate arrays to store concentrations over time
-    R1s = zeros(1, length(simulation));
-    R2s = zeros(1, length(simulation));
-    R3s = zeros(1, length(simulation));
-    R4s = zeros(1, length(simulation));
+    % store frequency response
+    outs = [];
 
     % precompute loop invariants
     Ka_P1 ^= Na_P1;
@@ -111,78 +100,39 @@
     Kr_R1P6 ^= Nr_R1P6;
     Kr_R2P6 ^= Nr_R2P6;
 
-    period_vector = zeros(1, 14);
-    sin_vector = zeros(1, 14);
+    % period variation
+    for s = 1 : length(ins)
 
-    var = -1;
+        % constant input concentration
+        It = ins(s);
 
-    for s = 1:14
+        % initial state concentrations (M)
+        R1 = 50e-9;
+        R2 = 50e-9;
+        R3 = 0e-9;
+        R4 = 0e-9;
+        mR1P1 = 0e-9;
+        mR4P1 = 0e-9;
+        mR2P2 = 0e-9;
+        mR3P2 = 0e-9;
+        mR1P3 = 0e-9;
+        mR2P4 = 0e-9;
+        mR3P5 = 0e-9;
+        mR4P6 = 0e-9;
 
-        low_value = 40e-9;
-        high_value = 60e-9;
-        is_period = 0;
-        is_period_2 = 0;
-        end_time_2 = -1;
-        begin_time_2 = -1;
-        time_stamp_begin = -1;
-        time_stamp_end = -1;
-        % input vector
-        period = 0.18 + (s - 1)*0.12;
-        period_time_2 = -1;
-        if period == 0
-            period_vector(s) = 0;
-            continue
-        endif
-        Is = (6 .- 25*cos(simulation .* 2*pi/(period*1e5)) .+ 25) * 1e-9; % sinusoidal
+        % detecting output period
+        out_period = 0;
+        last = 0;
+        peak = 0;
 
         % actual simulation
         for t = 1 : length(simulation)
 
-            % store current state
-            R1s(t) = R1;
-            R2s(t) = R2;
-            R3s(t) = R3;
-            R4s(t) = R4;
-
-            if Is(t) > 50e-9
-                if is_period_2 == 0
-                    is_period_2 = 1;
-                    if begin_time_2 == -1
-                        begin_time_2 = t;
-                    else
-                        end_time_2 = t;
-                        period_time_2 = (end_time_2 - begin_time_2) * 60;
-                        begin_time_2 = -1;
-                    endif
-                endif
-            endif
-            if Is(t) < 15e-9 && is_period_2 == 1
-                is_period_2 = 0;
-            endif
-
-            if R2 < low_value && is_period == 1
-                is_period = 0;
-                if time_stamp_begin == -1
-                    time_stamp_begin = t;
-                else
-                    time_stamp_end = t;
-                    h = (time_stamp_end - time_stamp_begin) * 60;
-                    if h > period_vector(s)
-                        period_vector(s) = h;
-                    endif
-                    time_stamp_begin = -1;
-                endif
-            endif
-
-            if R2 > high_value && is_period == 0
-                is_period = 1;
-            endif
-
             % common subexpression optimization (used below)
-            IsP1 = Is(t)^Na_P1;
+            IsP1 = It^Na_P1;
             activationP1 = IsP1 / (Ka_P1 + IsP1);
             repressionP1 = 1 / (1 + (R2^Nr_R2P1 / Kr_R2P1));
-            IsP2 = Is(t)^Na_P2;
+            IsP2 = It^Na_P2;
             activationP2 = IsP2 / (Ka_P2 + IsP2);
             repressionP2 = 1 / (1 + (R4^Nr_R4P2 / Kr_R4P2));
 
@@ -200,6 +150,14 @@
             dmR3P5dt = Kc_P5 + Kb_P5 * (1 / (1 + (R1^Nr_R1P5 / Kr_R1P5))) - Kd_mR3P5*mR3P5;
             dmR4P6dt = Kc_P6 + Kb_P6 * (1 / (1 + (R1^Nr_R1P6 / Kr_R1P6))) * (1 / (1 + (R2^Nr_R2P6 / Kr_R2P6))) - Kd_mR4P6*mR4P6;
 
+            % detect peaks using direction change
+            if last > 0 && last * dR1dt < 0
+                new_peak = (t-1) * dt;
+                out_period = new_peak - peak;
+                peak = new_peak;
+            endif
+            last = dR1dt;
+
             % apply state changes
             R1 += dR1dt * dt;
             R2 += dR2dt * dt;
@@ -215,10 +173,9 @@
             mR4P6 += dmR4P6dt * dt;
 
         endfor
-        if period_vector(s) == 0
-            period_vector(s) = period_time_2;
-        endif
-        sin_vector(s) = period_time_2;
+
+        outs = [outs, out_period];
+
     endfor
 
 
@@ -227,22 +184,17 @@
     figure;
     hold on;
 
-    %% scale data for easier visualization
-    %timescale = 1e5;
-    %quantscale = 1e-9;
-    %x = simulation / timescale;
-    %yI = Is / quantscale;
-    %yR1 = R1s / quantscale;
-    %yR2 = R2s / quantscale;
-    %yR3 = R3s / quantscale;
-    %yR4 = R4s / quantscale;
+    % scale data for easier visualization
+    quantscale = 1e-9;
+    timescale = 1e4;
+    x = ins / quantscale;
+    y = outs / timescale;
 
     % model subplot
-    plot(sin_vector, period_vector, '@r');
-    xlabel("Sin(x) period increment");
-    ylabel("Period increase");
-    title("Full Model");
+    plot(x, y, 'b');
+    xlabel("Input concentration (nM)");
+    ylabel("Period (10^4 seconds)");
+    title("Self-induced Oscillator Frequency Configuration");
 
     hold off;
-    print('period.png');
-    a = input("\nPress enter to exit ");
+    print('oscillator.png'); % put in the folder the script is run from

@@ -1,19 +1,20 @@
 % \subsection*{Abstract}
 
-  \noindent Studies in the field of synthetic biology make constant additions to existing repositories of biological circuits as well as to the theoretical understanding of their capabilities.
-  Although many synthetic gene networks have been demonstrated to posses the ability to perform computations using biomolecules, until recently the majority of such models were engineered to implement the functionality of single reusable circuit parts.
+  \noindent Studies in the field of synthetic biology make constant additions to existing repositories of biological circuits, as well as to the theoretical understanding of their capabilities.
+  Although many synthetic gene networks have been demonstrated able to perform computations using biomolecules, until recently the majority of such models were engineered to implement the functionality of single reusable circuit parts.
   \citet{originals} have proposed a network capable of multiple functions, allowing for the selection of three different behaviours in a programmable fashion.
-  This work provides a reference open-source implementation which is used to replicate their study.
+  This work provides a reference open-source implementation which is used to replicate that study.
+  % We reproduce their simulations and include new experiments to explore parameter space. % @XXX: not yet
 
 
 \section{Introduction}
 
   The field of biomolecular computing -- and \acs{dna}-based computing in particular -- has advanced remarkably over the last years \cite{analog}.
-  There are numerous designs of biological parts which implement the behavior of digital logic gates\supercite{async}, continuous-time systems\supercite{analog}, oscillators\supercite{repressilator}, memory components\supercite{async}, asynchronous circuits\supercite{async} and so on.
+  There are numerous designs of biological parts which implement the behavior of digital logic gates \supercite{async}, continuous-time systems \supercite{analog}, oscillators \supercite{repressilator}, memory components \supercite{async}, asynchronous circuits \supercite{async} and so on.
   Such recent developments allow one to consider the possibility of exploting biologically derived materials and their aspects of massive parallelism and self-replication to build practical computing systems on biological \textit{substrata} \cite{youtuber}.
 
   Amidst forward-engineered biochemical systems, genetic oscillators have been a focus of research as they are required for the correct operation of sequential circuits and can also provide persistent periodic \textit{stimulus} to other regulatory networks which may rely on them \cite{ingalls}.
-  Genetic switches present another functionality specially useful to digital logic: the ability to toggle between on or off states by either activating or repressing the expression of a certain gene, thus being equivalent to a cellular memory unit \cite{youtuber}.
+  Genetic switches present another functionality specially useful to digital logic: the ability to toggle between on or off states by either activating or repressing the expression of a certain gene makes them equivalent to a cellular memory unit \cite{youtuber}.
   One study\supercite{clock} has shown that combining an oscillator with a toggle switch under certain circumstances will result in the generation of a clock-like near square wave signal.
 
   \citet{originals} presented the \textit{in silico} design of a novel genetic regulatory network which performs frequency division on an oscillating input.
@@ -36,10 +37,11 @@
   While stochastic experiments are only briefly mentioned on the main text, more details can be found inside supporting information documents provided by \citet{originals}.
   The \ac{cles} described therein were implemented with Gaussian noise being generated through the use of built-in Octave functions.
 
-  \citet{ingalls} states there is always some chance that thermal fluctuations cause \acs{rna} polymerase to find operators, even if in some cases effects of this phenomenon are negligible.
-  This represents a basal rate of transcription held for activated genes even in the absence of bound activators (in this case, the lack of input molecules) or a ``leak'' rate of repressible transcription coming from repressed promoters.
-  Thus, in order to further investigate the proposed model's robustness, an extra set of experiments were performed with the \ac{ode} system modified to consider a non-zero baseline transcription rate taking place at every promoter.
-  Values used for this constant follow from \citet{repressilator}, whose design pioneered oscillating genetic networks.
+  %% @TODO: Promoter Leakiness
+  % \citet{ingalls} states there is always some chance that thermal fluctuations cause \acs{rna} polymerase to find operators, even if in some cases effects of this phenomenon are negligible.
+  % This represents a basal rate of transcription held for activated genes even in the absence of bound activators (in this case, the lack of input molecules) or a ``leak'' rate of repressible transcription coming from repressed promoters.
+  % Thus, in order to further investigate the proposed model's robustness, an extra set of experiments were performed with the \ac{ode} system modified to consider a non-zero baseline transcription rate taking place at every promoter.
+  % Values used for this constant follow from \citet{repressilator}, whose design pioneered oscillating genetic networks.
 
 
 \section{Results}
@@ -47,39 +49,49 @@
   \subsection{Frequency Divider}
 
     Although the network is said to be a frequency multiplier, it actually performs frequency division as concentrations of repressor proteins oscillate in one half of the input frequency or, equivalently, with a period that is twice as long.
-    This behaviour can be observed by feeding the model with a continuously oscillating input -- this would be often the case considering existing genetic oscillators -- but also works with square waves, as shown in Figures \ref{fig.freqdiv-square} to \ref{fig.freqdiv-full}.
+    This behaviour can be observed by feeding the model with a continuously oscillating input -- this would be often the case considering existing genetic oscillators -- but also works with square waves, as shown in Figure \ref{fig.freqdiv-square-zero}.
 
-    \begin{figure}[!htbp]
+    \begin{figure}[!htb]
       \centering
-      \includegraphics[width=0.85\textwidth]{img/freqdiv-square-1.png}
-      \caption{Initial conditions: $R1 = R2 = 50nM$, $R3 = R4 = 0nM$.}
-      \label{fig.freqdiv-square}
+      \begin{subfigure}[t]{0.4\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{freqdiv-square}
+        \caption{Input signal is a square wave with amplitude of \SI{50}{\nano M}, period of $1.6 \times 10^5$ seconds and a duty cycle of $50\%$. The period-doubling effect is highlighted by repressor R3.}
+        \label{fig.freqdiv-square}
+      \end{subfigure}
+      \hspace{1em}
+      \begin{subfigure}[t]{0.4\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{freqdiv-zero}
+        \caption{Sinusoidal input with \SI{50}{\nano M} amplitude and period of $0.9 \times 10^5$ seconds with valleys reaching zero concentration.}
+        \label{fig.freqdiv-zero}
+      \end{subfigure}
+      \caption{\textbf{Frequency division for discrete and continuous inputs.} Initial conditions are $R1 = R2 = 50nM$ and $R3 = R4 = 0nM$. Reaction parameters from the reference text are used.}
+      \label{fig.freqdiv-square-zero}
     \end{figure}
 
-    \begin{figure}[!htbp]
+    \begin{figure}[!htb]
       \centering
-      \includegraphics[width=0.7\textwidth]{img/freqdiv-zero-1.png}
-      \caption{Initial conditions of the repressors: $R1 = R2 = 50nM$, $R3 = R4 = 0nM$. Sine function: $I(t) = \alpha - a\cdot(\cos(\frac{2\pi}{p}\cdot t) + 1)$, where $a$ is the amplitude, $p$ is the period and $\alpha = 0nM$.}
-      \label{fig.freqdiv-zero}
+      \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{freqdiv-full}
+        \caption{}
+        \label{fig.freqdiv-full}
+      \end{subfigure}
+      \hspace{1em}
+      \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{freqdiv-qssa}
+        \caption{}
+        \label{fig.freqdiv-qssa}
+      \end{subfigure}
+      \caption{\textbf{Comparing frequency division outputs between full and reduced models.} Initial conditions are $R1 = R2 = 50nM$, $R3 = R4 = 0nM$ and reaction parameters from the reference text are used. In both simulations the input signal has an amplitude of \SI{50}{\nano M}, period is $0.9 \times 10^5$ seconds and minimum concentrations reached are \SI{6}{\nano M}.}
+      \label{fig.freqdiv-sinusoidal}
     \end{figure}
 
-    \begin{figure}[!htbp]
-      \centering
-      \includegraphics[width=0.7\textwidth]{img/freqdiv-qssa-1.png}
-      \caption{Initial conditions of the repressors: $R1 = R2 = 50nM$, $R3 = R4 = 0nM$. Sine function: $I(t) = \alpha - a\cdot(\cos(\frac{2\pi}{p}\cdot t) + 1)$, where $a$ is the amplitude, $p$ is the period and $\alpha = 6nM$.}
-      \label{fig.freqdiv-qssa}
-    \end{figure}
-
-    \begin{figure}[!htbp]
-      \centering
-      \includegraphics[width=0.7\textwidth]{img/freqdiv-full-1.png}
-      \caption{Initial conditions of the repressors: $R1 = R2 = 50nM$, $R3 = R4 = 0nM$. Sine function: $I(t) = \alpha - a\cdot(\cos(\frac{2\pi}{p}\cdot t) + 1)$, where $a$ is the amplitude, $p$ is the period and $\alpha = 6nM$.}
-      \label{fig.freqdiv-full}
-    \end{figure}
-
-    Notice that with a sinusoidal input, the output signals from the \ac{qssa} model have constant amplitude, whereas in the full model the first concentration peak of proteins R2 and R3 are higher than the following ones.
+    With a sinusoidal input, output signals from the \ac{qssa} model have constant amplitude, whereas in the full model the first concentration peak of proteins R2 and R3 are higher than the following ones.
     This suggests \acs{mrna} reactions stabilize quicker in the first $10^5$ seconds and thus the approximation is more accurate at those instants.
-    After that moment, however, the reduced model exhibits a persistent error in relation to the complete one, which can be observed by comparing concentration levels reached during oscillation peaks in Figures \ref{fig.freqdiv-qssa} and \ref{fig.freqdiv-full}.
+    After that moment, however, the reduced model exhibits a persistent error in relation to the complete one, which can be observed by comparing concentration levels reached during oscillation peaks in Figures \ref{fig.freqdiv-full} and \ref{fig.freqdiv-qssa}.
 
     In those simulations, while R1 and R4 concentrations in the full model reach \textit{maxima} valued at \SI{238.29}{\nano M} and \SI{87.62}{\nano M} respectively, the reduced model (again, this is the one presented in the original paper) goes up to \SI{283.96}{\nano M} and \SI{113.05}{\nano M} for each of these proteins.
     Peak values of R3 follow R1 closely and the same happens with R2 and R4.
@@ -87,119 +99,151 @@
     In the approximation, the former reactions are assumed to reach equilibrium instantaneously relative to the latter.
     Thus, the difference is a consequence of the fact that the original model maintains itself in a dynamic state that never actually reaches equilibrium, as it perpetually oscillates \cite{ingalls}.
 
-    As show in the original work, the period of the proteins are proportional to the sinoidal input; however, there's a point that this proportion doubles. By changing the sine period and doing 14 simulations in the period range of $[0.18, 1.74] * 10^{-9}$, we managed to replicate this behavior and confirm that the period doubling occurs at approximately 8 hours in.
+    As mentioned in the original study, the frequency division functionality can only be observed after a specific period threshold.
+    We ran simulations under the full model on a range of input frequencies and found the period-doubling bifurcation to be located near values of $8 \times 10^4$ seconds ($\sim 22.22$ hours).
+    Results are shown in Figure \ref{fig.freqdiv-period}.
+    These diverge from the reference work, where it is stated that this threshold could be observed at input periods of $\sim 27500$ seconds ($\sim 8$ hours). % @XXX: same on QSSA?
+    This confirms the proposed network is better suited to interfacing with long-period oscillators, although a more in-depth parameter exploration is needed in order to verify its compatibility with higher frequencies.
 
-    \begin{figure}[!htbp]
+    \begin{figure}[!htb]
       \centering
-      \includegraphics[width=0.71\textwidth]{img/period.png}
-      \caption{Initial conditions of the repressors: $R1 = R2 = 50nM$, $R3 = R4 = 0nM$. Sine function: $I(t) = \alpha - a\cdot(\cos(\frac{2\pi}{p}\cdot t) + 1)$, where $a$ is the amplitude, $p$ is the period in the range $[0.18, 1.74] * 10^{-9}$ and $\alpha = 6nM$.}
-      \label{fig.bifurcation-1a}
+      \includegraphics[width=0.8\textwidth]{freqdiv-period}
+      \caption{\textbf{Locating the period-doubling bifurcation.} Output frequency was detected by measuring the distance between peaks of R1 concentration. Other than input frequency and simulation length (each run was configured to take as long as five times the input period), parameters are the same as in Figure \ref{fig.freqdiv-sinusoidal}.}
+      \label{fig.freqdiv-period}
     \end{figure}
+
 
   \subsection{Bifurcation Analysis}
 
-    As in the original work, we observe different behaviours can be obtained by holding input concentration constant at certain ranges.
-    More importantly, it is how \citet{originals} discovered the model's multiple extra functionalities.
-    The six experiments in the bifurcation analysis were reproduced, where input levels are the same as given and initial conditions used are $R1=R2=0nM$ and $R3=R4=50nM$ for simulations $1b$ and $4c_{2}$ and $R1=R2=50nM$ and $R3=R4=0nM$ for all others.
+    \citet{originals} discovered the model's multiple extra functionalities by verifying different behaviours could be attained by holding input concentration constant at specific ranges.
+    Six bifurcation analysis experiments were reproduced, where reaction parameters and input levels are the same as in the original work and initial conditions used are $R1=R2=0nM$ and $R3=R4=50nM$ for simulations $1b$ and $4c_{2}$ and $R1=R2=50nM$ and $R3=R4=0nM$ for all others.
     The original text states simulations labeled $4c_{1}$ and $1b$ use the same initial conditions as $4c_{2}$ and $1a$ respectively.
     We believe these were typographical errors, as such settings would lead the mentioned experiments to be exactly the same under deterministic semantics and this is not what is exhibited.
 
-    \begin{figure}[!htbp]
+    \begin{figure}[!htb]
       \centering
-      \includegraphics[width=0.71\textwidth]{img/bifurcation-1a-1.png}
-      \caption{Concentration $= 0.1nM$. Initial condition of the repressors: $R1 = R2 = 50nM$, $R3 = R4 = 0nM$.}
-      \label{fig.bifurcation-1a}
+      \begin{subfigure}[t]{0.4\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{bifurcation-1a}
+        \caption{\textbf{Experiment $1a$.} Protein concentrations are initially set to $R1 = R2 = 50nM$ and $R3 = R4 = 0nM$.}
+        \label{fig.bifurcation-1a}
+      \end{subfigure}
+      \hspace{1em}
+      \begin{subfigure}[t]{0.4\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{bifurcation-1b}
+        \caption{\textbf{Experiment $1b$.} Protein concentrations are initially set to $R1 = R2 = 0nM$ and $R3 = R4 = 50nM$.}
+        \label{fig.bifurcation-1b}
+      \end{subfigure}
+      \caption{\textbf{Low concentration bistable behaviour.} $I = 0.1 nM$}
+      \label{fig.bifurcation-1}
     \end{figure}
 
-    \begin{figure}[!htbp]
+    \begin{figure}[!htb]
       \centering
-      \includegraphics[width=0.71\textwidth]{img/bifurcation-1b-1.png}
-      \caption{Concentration $= 0.1nM$. Initial condition of the repressors: $R1 = R2 = 0nM$, $R3 = R4 = 50nM$.}
-      \label{fig.bifurcation-1b}
-    \end{figure}
-
-    \begin{figure}[!htbp]
-      \centering
-      \includegraphics[width=0.71\textwidth]{img/bifurcation-2-full-1.png}
-      \caption{Concentration $= 5nM$. Initial condition of the repressors: $R1 = R2 = 50nM$, $R3 = R4 = 0nM$.}
-      \label{fig.bifurcation-2-full}
-    \end{figure}
-
-    \begin{figure}[!htbp]
-      \centering
-      \includegraphics[width=0.71\textwidth]{img/bifurcation-2-qssa-1.png}
-      \caption{Concentration $= 5nM$. Initial condition of the repressors: $R1 = R2 = 50nM$, $R3 = R4 = 0nM$.}
-      \label{fig.bifurcation-2-qssa}
-    \end{figure}
-
-    \begin{figure}[!htbp]
-      \centering
-      \includegraphics[width=0.71\textwidth]{img/bifurcation-3-1.png}
-      \caption{Concentration $= 7.5nM$. Initial condition of the repressors: $R1 = R2 = 50nM$, $R3 = R4 = 0nM$.}
-      \label{fig.bifurcation-3}
-    \end{figure}
-
-    \begin{figure}[!htbp]
-      \centering
-      \includegraphics[width=0.71\textwidth]{img/bifurcation-4c1-1.png}
-      \caption{Concentration $= 10nM$. Initial condition of the repressors: $R1 = R2 = 50nM$, $R3 = R4 = 0nM$.}
-      \label{fig.bifurcation-4c1}
-    \end{figure}
-
-    \begin{figure}[!htbp]
-      \centering
-      \includegraphics[width=0.71\textwidth]{img/bifurcation-4c2-1.png}
-      \caption{Concentration $= 10nM$. Initial condition of the repressors: $R1 = R2 = 0nM$, $R3 = R4 = 50nM$.}
-      \label{fig.bifurcation-4c2}
+      \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{bifurcation-2-full}
+        \caption{}
+        \label{fig.bifurcation-2-full}
+      \end{subfigure}
+      \hspace{1em}
+      \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{bifurcation-2-qssa}
+        \caption{}
+        \label{fig.bifurcation-2-qssa}
+      \end{subfigure}
+      \caption{\textbf{Comparing oscillation amplitude in experiment $2$.} Initial conditions are $R1 = R2 = 50nM$, $R3 = R4 = 0nM$ and input is held at a constant level of \SI{5}{\nano M}.}
+      \label{fig.bifurcation-2}
     \end{figure}
 
     Once again, oscillation amplitude differs between models, with R1 and R4 each peaking at \SI{35.60}{\nano M} and \SI{9.16}{\nano M} in the complete system (Figure \ref{fig.bifurcation-2-full}) while going up to \SI{30.08}{\nano M} and \SI{8.18}{\nano M} in the \ac{qssa} reduction (Figure \ref{fig.bifurcation-2-qssa}).
     Other experiments do not present such significant offset.
 
+    \begin{figure}[!htb]
+      \centering
+      \includegraphics[width=0.5\textwidth]{bifurcation-3}
+      \caption{\textbf{Evidence for pitchfork bifurcation in experiment $3$.} $I = 7.5nM$.}
+      \label{fig.bifurcation-3}
+    \end{figure}
+
+    \begin{figure}[!htb]
+      \centering
+      \begin{subfigure}[t]{0.4\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{bifurcation-4c1}
+        \caption{\textbf{Experiment $4c_{1}$.} Protein concentrations are initially set to $R1 = R2 = 50nM$ and $R3 = R4 = 0nM$.}
+        \label{fig.bifurcation-4c1}
+      \end{subfigure}
+      \hspace{1em}
+      \begin{subfigure}[t]{0.4\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{bifurcation-4c2}
+        \caption{\textbf{Experiment $4c_{2}$.} Protein concentrations are initially set to $R1 = R2 = 0nM$ and $R3 = R4 = 50nM$.}
+        \label{fig.bifurcation-4c2}
+      \end{subfigure}
+      \caption{\textbf{High concentration bistable behaviour.} $I = 10 nM$}
+      \label{fig.bifurcation-4}
+    \end{figure}
+
 
   \subsection{Self-induced Oscillator}
 
-    The original work explains that: "If the input concentration is held constant, such that the system is in the region of the bifurcation structure between the saddle-node bifurcation and the Hopf bifurcation, a stable limit cycle exists and the dynamics are oscillatory.". We proceed to run $56$ simulations using the input range $[0.4, 6.0]$ $nM$, and measuring the period in each simulation. Once we have the period for each simulation, we proceed to plot it over the concentration input to investigate it's behavior. Finally, we managed to verify the behavior of the period of oscillation in comparison to the input concentration without any further difficulties. Investigating the simulation we noticed a quite curious behavior happening when approaching the zero concentration, as the period time approaches infinity. This suggests that an infinite period bifurcation takes place.
+    We verified the network's oscillatory dynamics in the region between saddle-node and Hopf bifurcations by measuring its output period for each given input concentration level.
+    Thus, the analysis presented in the original work was reproduced without further difficulties: results describe a relation with similar behaviour and the same near-vertical increase in period as input approaches the lower bistability region.
+    This is presented in Figure \ref{fig.oscillator-astable}. % @XXX: same on QSSA?
 
-    \begin{figure}[!htbp]
+    \begin{figure}[!htb]
       \centering
-      \includegraphics[width=1\textwidth]{img/period6a.png}
-      \caption{Period analysis. Concentration $= 0.4nM$ to $6nM$. Initial condition of the repressors: $R1 = R2 = 50nM$, $R3 = R4 = 0nM$.}
-      \label{fig.switch-A}
+      \includegraphics[width=0.65\textwidth]{oscillator-astable}
+      \caption{\textbf{Analysing oscillatory dynamics.} Simulation configuration is the same as in Figure \ref{fig.bifurcation-2} except for input levels, which are held in the range $[0.4 \times 10^{-9}, 7 \times 10^{-9}]$. Output frequency was detected by measuring the distance between peaks of R1 concentration.}
+      \label{fig.oscillator-astable}
     \end{figure}
+
 
   \subsection{Toggle Switch}
 
-    As revealed during bifurcation analysis, the network exhibits bistability when input concentration is held constant outside the oscillatory range.
-    Figures \ref{fig.switch-A} to \ref{fig.switch-D} illustrate simulations with the system being used as a toggle switch which is ``triggered'' by varying binding affinity of particular repressors.
-    These experiments were exactly reproduced from the reference work without any difficulties, as all parameters are given, and no significant difference is found between reduced and full models.
+    As revealed during bifurcation analysis, the network exhibits bistability when input concentration is held outside the oscillatory range.
+    Figures \ref{fig.switch-low} and \ref{fig.switch-high} illustrate simulations with the system being used as a toggle switch which is ``triggered'' by varying binding affinity of particular repressors.
+    This set of experiments were exactly reproduced from the reference work, as all parameters are given, and no significant difference is found between reduced and full models.
 
-    \begin{figure}[!htbp]
+    \begin{figure}[!htb]
       \centering
-      \includegraphics[width=1.1\textwidth]{img/switch-A-1.png}
-      \caption{Concentration $= 0.1nM$. Initial condition of the repressors: $R1 = R2 = 50nM$, $R3 = R4 = 0nM$.}
-      \label{fig.switch-A}
+      \begin{subfigure}[t]{0.4\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{switch-A}
+        \caption{Switch active state from R1 \& R2 to R3 \& R4. Initial conditions: $R1 = R2 = 50nM$, $R3 = R4 = 0nM$.}
+        \label{fig.switch-A}
+      \end{subfigure}
+      \hspace{1em}
+      \begin{subfigure}[t]{0.4\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{switch-B}
+        \caption{Switch active state from R3 \& R4 to R1 \& R2. Initial conditions: $R1 = R2 = 0nM$, $R3 = R4 = 50nM$.}
+        \label{fig.switch-B}
+      \end{subfigure}
+      \caption{\textbf{Toggle switch behaviour at low concentration.} $I = 0.1 nM$}
+      \label{fig.switch-low}
     \end{figure}
 
-    \begin{figure}[!htbp]
+    \begin{figure}[!htb]
       \centering
-      \includegraphics[width=0.71\textwidth]{img/switch-B-1.png}
-      \caption{Concentration $= 0.1nM$. Initial condition of the repressors: $R1 = R2 = 0nM$, $R3 = R4 = 50nM$.}
-      \label{fig.switch-B}
-    \end{figure}
-
-    \begin{figure}[!htbp]
-      \centering
-      \includegraphics[width=0.71\textwidth]{img/switch-C-1.png}
-      \caption{Concentration $= 50nM$. Initial condition of the repressors: $R1 = R2 = 50nM$, $R3 = R4 = 0nM$.}
-      \label{fig.switch-C}
-    \end{figure}
-
-    \begin{figure}[!htbp]
-      \centering
-      \includegraphics[width=0.71\textwidth]{img/switch-D-1.png}
-      \caption{Concentration $= 50nM$. Initial condition of the repressors: $R1 = R2 = 0nM$, $R3 = R4 = 50nM$.}
-      \label{fig.switch-D}
+      \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{switch-C}
+        \caption{Switch active state from R2 \& R3 to R1 \& R4. Initial conditions: $R1 = R2 = 50nM$, $R3 = R4 = 0nM$.}
+        \label{fig.switch-C}
+      \end{subfigure}
+      \hspace{1em}
+      \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{switch-D}
+        \caption{Switch active state from R1 \& R4 to R2 \& R3. Initial conditions: $R1 = R2 = 0nM$, $R3 = R4 = 50nM$.}
+        \label{fig.switch-D}
+      \end{subfigure}
+      \caption{\textbf{Toggle switch behaviour at high concentration.} $I = 50 nM$}
+      \label{fig.switch-high}
     \end{figure}
 
 
@@ -209,61 +253,74 @@
     While original authors state the usage of Gaussian noise with zero mean and variance of 1, simply employing Octave's \code{randn} function -- which provides such a random distribution \cite{randn} -- proved being too noisy as stochastic fluctuations began dominating the model's behaviour.
     It was found through trial and error that downscaling random numbers by a factor of $s \in [\frac{1}{100}, \frac{1}{10}]$ (and consequently scaling variance by $s^2$) would bring results closer to what is seen in the reference work.
 
-    \begin{figure}[!htbp]
+    Wishing to increase reproductibility, stochastic simulations mentioned in this text were performed with a hardcoded random seed for the noise-generating function.
+
+    \begin{figure}[!htb]
       \centering
-      \includegraphics[width=0.71\textwidth]{img/stochastic-oscillator-1.png}
-      \caption{Concentration $= 5nM$. Initial condition of the repressors: $R1 = R2 = 50nM$, $R3 = R4 = 0nM$.}
+      \includegraphics[width=0.55\textwidth]{stochastic-oscillator}
+      \caption{\textbf{Effect of noise on oscillator function.} Input is set to \SI{5}{\nano M}, initial repressor state is $R1 = R2 = 50nM$, $R3 = R4 = 0nM$ and noise is scaled by $\frac{1}{55}$.}
       \label{fig.stochastic-oscillator}
     \end{figure}
 
-    \begin{figure}[!htbp]
+    \begin{figure}[!htb]
       \centering
-      \includegraphics[width=0.71\textwidth]{img/stochastic-switch-4-1.png}
-      \caption{Concentration $= 50nM$. Initial condition of the repressors: $R1 = R2 = 0nM$, $R3 = R4 = 50nM$.}
-      \label{fig.stochastic-switch-4}
+      \begin{subfigure}[t]{0.4\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{stochastic-switch-4}
+        \caption{Initially, $R1 = R2 = 0nM$ and $R3 = R4 = 50nM$.}
+        \label{fig.stochastic-switch-4}
+      \end{subfigure}
+      \hspace{2em}
+      \begin{subfigure}[t]{0.4\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{stochastic-switch-3}
+        \caption{Initially, $R1 = R2 = 50nM$ and $R3 = R4 = 0nM$.}
+        \label{fig.stochastic-switch-3}
+      \end{subfigure}
+      \caption{\textbf{Effect of noise on switching function.} Input is set to \SI{50}{\nano M} and random fluctuations are scaled by $\frac{1}{55}$.}
+      \label{fig.stochastic-switch}
     \end{figure}
 
-    \begin{figure}[!htbp]
+    \begin{figure}[!ht]
       \centering
-      \includegraphics[width=0.71\textwidth]{img/stochastic-switch-3-1.png}
-      \caption{Concentration $= 50nM$. Initial condition of the repressors: $R1 = R2 = 50nM$, $R3 = R4 = 0nM$.}
-      \label{fig.stochastic-switch-3}
-    \end{figure}
-
-    \begin{figure}[!htbp]
-      \centering
-      \includegraphics[width=0.71\textwidth]{img/stochastic-freqdiv-normal-1.png}
-      \caption{Initial conditions of the repressors: $R1 = R2 = 50nM$, $R3 = R4 = 0nM$.}
+      \includegraphics[width=0.55\textwidth]{stochastic-freqdiv-normal}
+      \caption{\textbf{Usual frequency division behaviour.} Noise is scaled by $\frac{1}{55}$ and initial conditions are $R1 = R2 = 50nM$ and $R3 = R4 = 0nM$.}
       \label{fig.stochastic-freqdiv-normal}
     \end{figure}
-
-    \begin{figure}[!htbp]
+    \begin{figure}[!hb]
       \centering
-      \includegraphics[width=0.71\textwidth]{img/stochastic-freqdiv-skip-1.png}
-      \caption{Initial conditions of the repressors: $R1 = R2 = 50nM$, $R3 = R4 = 0nM$. Different random seed.}
+      \includegraphics[width=0.55\textwidth]{stochastic-freqdiv-skip}
+      \caption{\textbf{Irregular oscillations caused by stochastic fluctuations.} When noise is scaled by $\frac{1}{26}$, unintended behaviour is verified. Initial conditions are $R1 = R2 = 50nM$ and $R3 = R4 = 0nM$.}
       % scaling = 1/26
       % seed = 8.977812586558097e-01 # 2 red, 2 magenta
       % seed = 3.588309295243656e-01 # 4 red in a row
       \label{fig.stochastic-freqdiv-skip}
     \end{figure}
 
-    We verified that among the three functionalities, frequency multiplication possesses less robustness to intrinsic noise.
+    We verified that among the three functionalities, frequency division possesses less robustness to intrinsic noise.
     During the stage where input is applied and proteins are all at a low concentration, random fluctuations may cause unintended oscillations as a pair of repressors rise in concentration and prevent transcription of the other two.
     An example of such irregular oscillating behaviour is given in Figure \ref{fig.stochastic-freqdiv-skip}.
 
 
-  \subsection{Promoter Leakiness}
+  % \subsection{Promoter Leakiness}
 
-    \textit{FAVARIN: testar a robustez dos diferentes modos de operação da rede.
-    Isso será feito adicionando aos sistemas de EDOs a taxa basal mencionada no livro do Ingalls, seção 7.1.2
-    Para valor numérico, ver artigo original do repressilator (está no Dropbox).}
+  %   \textit{@FAVARIN: testar a robustez dos diferentes modos de operação da rede.
+  %   Isso será feito adicionando aos sistemas de EDOs a taxa basal mencionada no livro do Ingalls, seção 7.1.2
+  %   Para valor numérico, ver artigo original do repressilator (está no Dropbox).}
 
 
 \section{Conclusion}
 
-    We conclude that it was possible to replicate the generic oscillators, genetic switches and frequency divider experiments of the original work. We decided to replicate both the full models and the reduced models - the full model takes into consideration the input being a sine function while the reduced model work with a constant input. By comparing the results of those models, we conclude that the reduced model is a really good approximation of the full model after the first period. The first period of the full model usually have a higher concentration value compared to the reduced model, for example in the oscillator analysis, the full model had values up to $10nM$ of concentration higher than the reduced model; however, as time goes by, the system tends to become more stable and the reduced model ends up being a really good approximation of the full model.
+  All operation modes in the multi-functional synthetic gene network were verified and to a large degree the results presented in \cite{originals} were replicated.
+  It should be emphasised that the original work stands as an example of reproducible science, with detailed descriptions of model derivation, parameter decisions and extra experiments inside openly available supplementary material.
+  Simplifications made using the \ac{qssa} to reduce the full \ac{ode} system proved being a good approximation as even though some small quantitative differences were observed, there was no impact on the network's qualitative dynamics.
 
-    The second part of our replication added noises to our simulations to replicate a stochastic behavior. Despite not being successful to replicate the model as described by the original authors, we managed to scale the noise and replicate an approximation of their results. We found an interesting behaviour regarding the randomness of the noise: depending on it's variation, we could get cycles to skip.
+  However, stochastic simulations would not provide the expected results without a significant reduction to noise variance.
+  In fact, random fluctuations seem to be able to undermine the frequency division functionality to some degree.
+  Additionally, the period-doubling bifurcation was empirically found to be at a much lower frequency than what is stated in the reference text.
+  While this may have been a typographical mistake, it is a critical piece of information which can be used to know whether or not the model would work with existing or future oscillators.
 
-  % We highlight the idea that as synthetic networks grow in complexity and size, multi-functionality may arise more frequently and become difficult to avoid.
-  % While this can bring the benefits of reusable programmable components, it might also end up becoming a nuisance if models start behaving unexpectedly under the influence of certain inputs.
+  We highlight the idea that as synthetic networks grow in complexity and size, multi-functionality may arise more frequently and become difficult to avoid.
+  While this can bring the benefits of reusable programmable components, it might also end up becoming a nuisance if models start behaving unexpectedly under the influence of certain inputs.
+  At last, we believe further works should focus on a deeper exploration of parameter space.
+  The motivation for this is double: it may allow for the characterisation of \textit{in vivo} implementation designs with reusable biological parts and will potentially verify the full set of specifications for this programmable genetic component and its multiple operating configurations.
