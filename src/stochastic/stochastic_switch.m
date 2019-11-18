@@ -228,12 +228,13 @@
         yR4 = R4s / quantscale;
 
         % plot results
-        plot(x,yR1,'-m;R1;', x,yR2,'-k;R2;', x,yR3,'-r;R3;', x,yR4,'-g;R4;');
+        plot(x,yR1,'--m;R1;', x,yR2,':k;R2;', x,yR3,'-r;R3;', x,yR4,'-.g;R4;');
+        pbaspect([1 0.334 1]);
+        legend('location', 'east');
         xlabel("Time (10^5 seconds)");
         ylabel("Concentration (nM)");
-        title("Toggle Switch Stochastics");
 
         hold off;
-        print(sim, strcat('stochastic-switch-', num2str(sim), '.pdf')); % put in the folder the script is run from
+        print(sim, strcat('stochastic-switch-', num2str(sim), '_.pdf')); % put in the folder the script is run from
 
     endfor

@@ -28,15 +28,15 @@ affiliations:
     address: Florianópolis, Brazil
 
 # List of keywords (adding the programming language might be a good idea)
-keywords: rescience c, octave, synthetic biology, biological computing, genetic circuit, frequency multiplier, oscillator, switch
+keywords: rescience c, octave, biological computing, synthetic biology, programmable genetic circuit, frequency multiplier, oscillator, toggle switch
 
 
 # Code URL and DOI (url is mandatory for replication, doi after acceptance)
 # You can get a DOI for your code from Zenodo,
 #   see https://guides.github.com/activities/citable-code/
 code:
-  - url: https://github.com/baioc/ReBioComp
-  - doi:
+  - url: https://github.com/baioc/re-multif
+  - doi: # @TODO
 
 # Data URL and DOI (optional if no data)
 data:
@@ -47,16 +47,16 @@ data:
 replication:
  - cite: "Purcell O, di Bernardo M, Grierson CS, Savery NJ
           (2011) A Multi-Functional Synthetic Gene Network: A Frequency Multiplier, Oscillator and Switch.
-          PLOS ONE 6(2): e16140. https://doi.org/10.1371/journal.pone.0016140" # Full textual citation
- - bib:  originals # Bibtex key (if any) in your bibliography file
+          PLOS ONE 6(2): e16140." # Full textual citation
+ - bib:  multif # Bibtex key (if any) in your bibliography file
  - url:  https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3040778/pdf/pone.0016140.pdf # URL to the PDF, try to link to a non-paywall version
  - doi:  https://doi.org/10.1371/journal.pone.0016140 # Regular digital object identifier
 
 # Don't forget to surround abstract with double quotes
-abstract: "Studies in the field of synthetic biology make constant additions to existing repositories of biological circuits as well as to the theoretical understanding of their capabilities.
-           Although many synthetic gene networks have been demonstrated to posses the ability to perform computations using biomolecules, until recently the majority of such models were engineered to implement the functionality of single reusable circuit parts.
-           Purcell et al. have proposed a network capable of multiple functions, allowing for the selection of three different behaviours in a programmable fashion.
-           This work provides a reference open-source implementation which is used to replicate their in silico experiments."
+abstract: "Studies in the field of synthetic biology make constant additions to existing repositories of biological circuits, as well as to the theoretical understanding of their capabilities.
+          Although many synthetic gene networks have been demonstrated able to perform computations using biomolecules, until recently the majority of such models were engineered to implement the functionality of single reusable circuit parts.
+          Purcell et al. have proposed a network capable of multiple functions, allowing for the selection of three different behaviours in a programmable fashion.
+          This work provides an open-source reference implementation with which their in silico experiments are replicated and that can be reused by future studies."
 
 # Bibliography file (yours)
 bibliography: bibliography.bib

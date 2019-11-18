@@ -186,15 +186,14 @@
 
     % scale data for easier visualization
     quantscale = 1e-9;
-    timescale = 1e4;
+    timescale = 1e5;
     x = ins / quantscale;
     y = outs / timescale;
 
     % model subplot
     plot(x, y, 'b');
     xlabel("Input concentration (nM)");
-    ylabel("Period (10^4 seconds)");
-    title("Self-induced Oscillator Frequency Configuration");
+    ylabel("Period (10^5 seconds)");
 
     hold off;
-    print('oscillator.png'); % put in the folder the script is run from
+    print('oscillator-full_.pdf'); % put in the folder the script is run from

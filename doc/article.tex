@@ -1,22 +1,28 @@
 \documentclass{rescience}
 
 \usepackage[nolist]{acronym}
-\usepackage{siunitx}
 \usepackage{graphicx}
 \usepackage{subcaption}
+\usepackage{siunitx}
+\usepackage{bookmark}
+\usepackage{hyperref}
 
 \graphicspath{{img/}}
 \setlength{\parindent}{15pt}
 \def\code#1{\texttt{#1}}
 
 \begin{document}
-\input{header.tex}
-\input{acronym.tex}
-\input{content.tex}
 
-\hypersetup{linkcolor=black,urlcolor=darkgray}
-\renewcommand\emph[1]{{\bfseries #1}}
-\setlength\bibitemsep{0pt}
-\printbibliography
+    \input{header.tex}
+    \input{acronym.tex}
+    \input{content.tex}
+
+    \hypersetup{linkcolor=black,urlcolor=darkgray}
+    \renewcommand\emph[1]{{\bfseries #1}}
+    \setlength\bibitemsep{0pt}
+
+    \bookmarksetup{startatroot}
+    \belowpdfbookmark{References}{sec:references}
+    \printbibliography
 
 \end{document}
