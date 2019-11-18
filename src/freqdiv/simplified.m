@@ -23,7 +23,7 @@
     % input vector
     period = 1.6e5;
     amplitude = 50e-9;
-    dc_level = 0e-9;
+    minimum = 0e-9;
     duty_cycle = 0.5;
     Is = zeros(1, length(simulation));
     % square wave
@@ -31,7 +31,7 @@
         if mod(t*dt, period) > duty_cycle*period
             Is(t) = amplitude;
         else
-            Is(t) = dc_level;
+            Is(t) = minimum;
         endif
     endfor
 
@@ -111,17 +111,18 @@
 
     % model subplot
     subplot(2, 1, 1);
-    plot(x,yR1,'--m;R1;', x,yR2,'--k;R2;', x,yR3,'-r;R3;', x,yR4,'--g;R4;');
+    plot(x,yR1,'--m;R1;', x,yR2,':k;R2;', x,yR3,'-r;R3;', x,yR4,'-.g;R4;');
+    pbaspect([1 0.334 1]);
     xlabel("Time (10^5 seconds)");
     ylabel("Concentration (nM)");
-    title("Frequency Division (Simplified Model)");
 
     % input subplot
     subplot(2, 1, 2);
     plot(x, yI, 'b;I;');
-    axis([-Inf,+Inf, 0,amplitude*1.21/quantscale]);
+    axis([-Inf,+Inf, 0,amplitude*1.23/quantscale]);
+    pbaspect([1 0.334 1]);
     xlabel("Time (10^5 seconds)");
     ylabel("Concentration (nM)");
 
     hold off;
-    print('freqdiv.pdf'); % put in the folder the script is run from
+    print('freqdiv-square_.pdf'); % put in the folder the script is run from

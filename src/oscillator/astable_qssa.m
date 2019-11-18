@@ -72,21 +72,31 @@
 
 % ============================ INPUT PARAMETERS ================================
 
+    % time settings
     dt = 60;
-    amplitude = 50e-9;
-    minimum = 6e-9;
-    min_period = 2e4;
-    max_period = 16e4;
-    period_step = 0.5e4;
+    simulation = 0 : dt : 10e5;
+
+    % input range
+    min_input = 0.4e-9;
+    max_outout = 7e-9;
+    input_steps = 50;
+    ins = min_input : (max_outout - min_input)/input_steps : max_outout;
 
 
 % ================================ MULTISIM ====================================
 
     % store frequency response
-    ins = [];
     outs = [];
 
-    % precompute loop invariants
+    % precompute loop invariants and reduced coefficients
+    a1 = Kt_R1 * Kb_P1 / Kd_mR1P1;
+    a2 = Kt_R1 * Kb_P3 / Kd_mR1P3;
+    b1 = Kt_R2 * Kb_P2 / Kd_mR2P2;
+    b2 = Kt_R2 * Kb_P4 / Kd_mR2P4;
+    c1 = Kt_R3 * Kb_P2 / Kd_mR3P2;
+    c2 = Kt_R3 * Kb_P5 / Kd_mR3P5;
+    d1 = Kt_R4 * Kb_P1 / Kd_mR4P1;
+    d2 = Kt_R4 * Kb_P6 / Kd_mR4P6;
     Ka_P1 ^= Na_P1;
     Ka_P2 ^= Na_P2;
     Kr_R2P1 ^= Nr_R2P1;
@@ -98,29 +108,27 @@
     Kr_R1P6 ^= Nr_R1P6;
     Kr_R2P6 ^= Nr_R2P6;
 
-    % period variation
-    for period = min_period : period_step : max_period
+    % abstractions for activation & repression Hill-function
+    % these consider K^n is being passed in already precomputed
+    function y = Ha(X, n, Kn)
+        Xn = X^n;
+        y = Xn / (Kn + Xn);
+    endfunction
+    function y = Hr(X, n, Kn)
+        y = 1 / (1 + (X^n / Kn));
+    endfunction
 
-        % time settings
-        simulation = 0 : dt : 5*period;
-        Is = minimum .- (amplitude/2)*cos(simulation .* 2*pi/period) .+ amplitude/2;
+    % period variation
+    for s = 1 : length(ins)
+
+        % constant input concentration
+        It = ins(s);
 
         % initial state concentrations (M)
-        R1 = 50e-9;
-        R2 = 50e-9;
-        R3 = 0e-9;
-        R4 = 0e-9;
-        mR1P1 = 0e-9;
-        mR4P1 = 0e-9;
-        mR2P2 = 0e-9;
-        mR3P2 = 0e-9;
-        mR1P3 = 0e-9;
-        mR2P4 = 0e-9;
-        mR3P5 = 0e-9;
-        mR4P6 = 0e-9;
+        R1 = R2 = 50e-9;
+        R3 = R4 = 0e-9;
 
         % detecting output period
-        ins = [ins, period];
         out_period = 0;
         last = 0;
         peak = 0;
@@ -129,26 +137,16 @@
         for t = 1 : length(simulation)
 
             % common subexpression optimization (used below)
-            IsP1 = Is(t)^Na_P1;
-            activationP1 = IsP1 / (Ka_P1 + IsP1);
-            repressionP1 = 1 / (1 + (R2^Nr_R2P1 / Kr_R2P1));
-            IsP2 = Is(t)^Na_P2;
-            activationP2 = IsP2 / (Ka_P2 + IsP2);
-            repressionP2 = 1 / (1 + (R4^Nr_R4P2 / Kr_R4P2));
+            activationP1 = Ha(It, Na_P1, Ka_P1);
+            repressionP1 = Hr(R2, Nr_R2P1, Kr_R2P1);
+            activationP2 = Ha(It, Na_P2, Ka_P2);
+            repressionP2 = Hr(R4, Nr_R4P2, Kr_R4P2);
 
             % compute variation
-            dR1dt = Kt_R1*(mR1P1 + mR1P3) - Kd_R1*R1;
-            dR2dt = Kt_R2*(mR2P2 + mR2P4) - Kd_R2*R2;
-            dR3dt = Kt_R3*(mR3P2 + mR3P5) - Kd_R3*R3;
-            dR4dt = Kt_R4*(mR4P1 + mR4P6) - Kd_R4*R4;
-            dmR1P1dt = Kc_P1 + Kb_P1*activationP1*repressionP1 - Kd_mR1P1*mR1P1;
-            dmR4P1dt = Kc_P1 + Kb_P1*activationP1*repressionP1 - Kd_mR4P1*mR4P1;
-            dmR2P2dt = Kc_P2 + Kb_P2*activationP2*repressionP2 - Kd_mR2P2*mR2P2;
-            dmR3P2dt = Kc_P2 + Kb_P2*activationP2*repressionP2 - Kd_mR3P2*mR3P2;
-            dmR1P3dt = Kc_P3 + Kb_P3 * (1 / (1 + (R3^Nr_R3P3 / Kr_R3P3))) - Kd_mR1P3*mR1P3;
-            dmR2P4dt = Kc_P4 + Kb_P4 * (1 / (1 + (R3^Nr_R3P4 / Kr_R3P4))) * (1 / (1 + (R4^Nr_R4P4 / Kr_R4P4))) - Kd_mR2P4*mR2P4;
-            dmR3P5dt = Kc_P5 + Kb_P5 * (1 / (1 + (R1^Nr_R1P5 / Kr_R1P5))) - Kd_mR3P5*mR3P5;
-            dmR4P6dt = Kc_P6 + Kb_P6 * (1 / (1 + (R1^Nr_R1P6 / Kr_R1P6))) * (1 / (1 + (R2^Nr_R2P6 / Kr_R2P6))) - Kd_mR4P6*mR4P6;
+            dR1dt = Kc_P1+Kc_P3 + a1*activationP1*repressionP1 + a2*Hr(R3, Nr_R3P3, Kr_R3P3) - Kd_R1*R1;
+            dR2dt = Kc_P2+Kc_P4 + b1*activationP2*repressionP2 + b2*Hr(R3, Nr_R3P4, Kr_R3P4)*Hr(R4, Nr_R4P4, Kr_R4P4) - Kd_R2*R2;
+            dR3dt = Kc_P2+Kc_P5 + c1*activationP2*repressionP2 + c2*Hr(R1, Nr_R1P5, Kr_R1P5) - Kd_R3*R3;
+            dR4dt = Kc_P1+Kc_P6 + d1*activationP1*repressionP1 + d2*Hr(R1, Nr_R1P6, Kr_R1P6)*Hr(R2, Nr_R2P6, Kr_R2P6) - Kd_R4*R4;
 
             % detect peaks using direction change
             if last > 0 && last * dR1dt < 0
@@ -163,14 +161,6 @@
             R2 += dR2dt * dt;
             R3 += dR3dt * dt;
             R4 += dR4dt * dt;
-            mR1P1 += dmR1P1dt * dt;
-            mR4P1 += dmR4P1dt * dt;
-            mR2P2 += dmR2P2dt * dt;
-            mR3P2 += dmR3P2dt * dt;
-            mR1P3 += dmR1P3dt * dt;
-            mR2P4 += dmR2P4dt * dt;
-            mR3P5 += dmR3P5dt * dt;
-            mR4P6 += dmR4P6dt * dt;
 
         endfor
 
@@ -185,14 +175,15 @@
     hold on;
 
     % scale data for easier visualization
+    quantscale = 1e-9;
     timescale = 1e5;
-    x = ins / timescale;
+    x = ins / quantscale;
     y = outs / timescale;
 
     % model subplot
-    plot(x, y, '@b');
-    xlabel("Input period (10^5 seconds)");
-    ylabel("Output period (10^5 seconds)");
+    plot(x, y, 'b');
+    xlabel("Input concentration (nM)");
+    ylabel("Period (10^5 seconds)");
 
     hold off;
-    print('period-full_.pdf'); % put in the folder the script is run from
+    print('oscillator-qssa_.pdf'); % put in the folder the script is run from

@@ -71,8 +71,8 @@
     % input vector
     period = 0.9e5;
     amplitude = 50e-9;
-    dc_level = 6e-9;
-    Is = (dc_level .- (amplitude/2)*cos(simulation .* 2*pi/period) .+ amplitude/2);
+    minimum = 6e-9;
+    Is = minimum .- (amplitude/2)*cos(simulation .* 2*pi/period) .+ amplitude/2;
 
     % initial state concentrations (M)
     R1 = R2 = 50e-9;
@@ -187,24 +187,16 @@
     timescale = 1e5;
     quantscale = 1e-9;
     x = simulation / timescale;
-    yI = Is / quantscale;
     yR1 = R1s / quantscale;
     yR2 = R2s / quantscale;
     yR3 = R3s / quantscale;
     yR4 = R4s / quantscale;
 
-    % model subplot
-    subplot(2, 1, 1);
-    plot(x,yR1,'-m;R1;', x,yR2,'-k;R2;', x,yR3,'-r;R3;', x,yR4,'-g;R4;');
-    xlabel("Time (10^5 seconds)");
-    ylabel("Concentration (nM)");
-    title("Frequency Division Stochastics");
-
-    % input subplot
-    subplot(2, 1, 2);
-    plot(x, yI, 'b;I;');
+    plot(x,yR1,'--m;R1;', x,yR2,':k;R2;', x,yR3,'-r;R3;', x,yR4,'-.g;R4;');
+    pbaspect([1 0.334 1]);
+    legend('location', 'east');
     xlabel("Time (10^5 seconds)");
     ylabel("Concentration (nM)");
 
     hold off;
-    print('stochastic-freqdiv.pdf'); % put in the folder the script is run from
+    print('stochastic-freqdiv_.pdf'); % put in the folder the script is run from

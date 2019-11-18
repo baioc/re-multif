@@ -74,7 +74,7 @@
 
     % time settings
     dt = 60;                     % 1 minute timesteps
-    simulation = 0 : dt : 1.4e6; % simulation length control
+    simulation = 0 : dt : 4e5; % simulation length control
 
     % input vector
     Is = zeros(1, length(simulation));
@@ -184,15 +184,18 @@
         yR4 = R4s / quantscale;
 
         % plot results
-        plot(x,yR1,'-m;R1;', x,yR2,'-k;R2;', x,yR3,'-r;R3;', x,yR4,'-g;R4;');
+        plot(x,yR1,'--m;R1;', x,yR2,':k;R2;', x,yR3,'-r;R3;', x,yR4,'-.g;R4;');
+        pbaspect([1 0.334 1]);
+        legend('location', 'east');
         xlabel("Time (10^5 seconds)");
         ylabel("Concentration (nM)");
-        title(cstrcat("Bifurcation Analysis experiment ", names{sim}, " (Full Model)"));
 
         hold off;
         names{sim}
-        maxR1 = max(yR1(6e5/dt:end))
-        maxR4 = max(yR4(6e5/dt:end))
-        print(strcat('bifurcation-', names{sim}, '-full.pdf')); % put in the folder the script is run from
+        maxR1 = max(yR1(round(length(yR1)/2):end))
+        maxR2 = max(yR2)
+        maxR3 = max(yR3)
+        maxR4 = max(yR4(round(length(yR4)/2):end))
+        print(strcat('bifurcation-', names{sim}, '-full_.pdf')); % put in the folder the script is run from
 
     endfor
