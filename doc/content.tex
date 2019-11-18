@@ -3,7 +3,7 @@
   \noindent Studies in the field of synthetic biology make constant additions to existing repositories of biological circuits, as well as to the theoretical understanding of their capabilities.
   Although many synthetic gene networks have been demonstrated able to perform computations using biomolecules, until recently the majority of such models were engineered to implement the functionality of single reusable circuit parts.
   \citet{multif} have proposed a network capable of multiple functions, allowing for the selection of three different behaviours in a programmable fashion.
-  This work provides an open-source reference implementation with which their \textit{in silico} experiments are replicated and that can be reused by future studies. % @TODO: refactor simulations into reusable functions
+  This work provides an open-source reference implementation with which their \textit{in silico} experiments are replicated and that can be reused by future studies.
 
 
 \section{Introduction}
@@ -37,12 +37,6 @@
   Figures show quantitative results in the complete model, but differences between that and the reduced one are highlighted.
   While stochastic experiments are only briefly mentioned on the main text, more details can be found inside supporting information documents.
   The \ac{cles} described therein were implemented with Gaussian noise being generated through the use of built-in Octave functions.
-
-  %% @TODO: Promoter Leakiness Exploration
-  % \citet{ingalls} states there is always some chance that thermal fluctuations cause \acs{rna} polymerase to find operators, even if in some cases effects of this phenomenon are negligible.
-  % This represents a basal rate of transcription held for activated genes even in the absence of bound activators (in this case, the lack of input molecules) or a ``leak'' rate of repressible transcription coming from repressed promoters.
-  % Thus, in order to further investigate the proposed model's robustness, an extra set of experiments were performed with the \ac{ode} system modified to consider a non-zero baseline transcription rate taking place at every promoter.
-  % Values used for this constant follow from \citet{repressilator}, whose design pioneered oscillating genetic networks \cite{history}.
 
 
 \section{Results}
@@ -125,7 +119,7 @@
     \end{figure}
 
     Once again, oscillatory amplitude differs between models in experiment $2$, with R1 and R4 each peaking at \SI{35.60}{\nano M} and \SI{9.16}{\nano M} in the complete system (Figure \ref{fig:bifurcation-2}) while going up to \SI{30.08}{\nano M} and \SI{8.18}{\nano M} in the \ac{qssa} reduction (not shown).
-    Other experiments do not present such significant offset. % @XXX: really? confirm with actual data
+    Other experiments do not present such significant offset.
 
     \begin{figure}[!htbp]
       \centering
@@ -163,7 +157,7 @@
   \subsection{Self-induced Oscillator}
 
     We verified the network's oscillatory dynamics in the region between saddle-node and Hopf bifurcations by measuring its output period for each given input concentration level.
-    Results illustrated in Figure \ref{fig:oscillator-astable} describe a relation with similar behaviour and the same near-vertical increase in period as input approaches the lower bistability region. % @XXX: confirm ressonancy in range limits and compare full & qssa frequency response
+    Results illustrated in Figure \ref{fig:oscillator-astable} describe a relation with similar behaviour and the same near-vertical increase in period as input approaches the lower bistability region.
 
     \begin{figure}[!htb]
       \centering
@@ -177,9 +171,7 @@
 
     As revealed during bifurcation analysis, the network exhibits bistability when input concentration is held outside the oscillatory range, that is, at levels lower than \SI{0.4}{\nano M} or greater than \SI{7}{\nano M}.
     Figures \ref{fig:switch-A}-\ref{fig:switch-D} illustrate simulations with the system being used as a toggle switch which is ``triggered'' by varying binding affinity of particular repressors as described in the reference work.
-    This set of experiments were exactly reproduced and no significant difference is found between reduced and full models. % @XXX: again, show this comparison data
-
-    % @FIXME: toggle switch function must be tested from non-pristine (previously used) states
+    This set of experiments were exactly reproduced and no significant difference is found between reduced and full models.
 
     \begin{figure}[!htb]
       \centering
@@ -259,13 +251,6 @@
     We verified that among the three functionalities, frequency division possesses less robustness to intrinsic noise.
     During the stage where input is applied and proteins are all at low concentrations, random fluctuations may cause unintended oscillations as a pair of repressors rise in concentration and prevent transcription of the other two.
     An example of such irregular oscillatory behaviour is given in Figure \ref{fig:stochastic-freqdiv-skip}.
-
-
-  % \subsection{Promoter Leakiness}
-
-  %   \textit{@TODO: testar a robustez dos diferentes modos de operação do modelo.
-  %   Isso será feito adicionando aos sistemas de EDOs a taxa basal mencionada no livro do Ingalls, seção 7.1.2.
-  %   Para valor numérico dessas constantes, ver artigo original do repressilator e paper do bio-register.}
 
 
 \section{Conclusion}
