@@ -1,4 +1,6 @@
-# Replicating a Multi-Functional Synthetic Gene Network in Biological Computing
+# Replicating a Multi-Functional Synthetic Gene Network
+
+[![DOI](https://zenodo.org/badge/214520225.svg)](https://zenodo.org/badge/latestdoi/214520225)
 
 Here we replicate the work of Purcell, di Bernardo, Grierson and Savery on [A Multi-Functional Synthetic Gene Network: A Frequency Multiplier, Oscillator and Switch](https://dx.doi.org/10.1371%2Fjournal.pone.0016140) for [ReScience](https://rescience.github.io/).
 
@@ -27,16 +29,9 @@ Simply swapping the exported filename extension in the scripts to ".png" is an a
 ## Study Documentation
 
 The [article](article.pdf) was written over a [ReScience submission template](https://github.com/ReScience/template) with a [custom makefile](doc/Makefile).
-Compiling this document may require the presence of several TeX packages and a Python installation.
+Compiling this document may require several TeX packages and a Python installation.
 
 ```bash
 $ cd doc
 $ make
 ```
-
-
-## License
-
-Our implementation is provided under the terms of the [Educational Community License (ECL) v2.0](src/LICENSE).
-
-The compiled document and its LaTeX sources, including images but not fonts, follow the [Creative Commons Attribution 4.0 International](doc/LICENSE) license.

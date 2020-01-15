@@ -119,7 +119,7 @@
     % input subplot
     subplot(2, 1, 2);
     plot(x, yI, 'b;I;');
-    axis([-Inf,+Inf, 0,amplitude*1.23/quantscale]);
+    axis([-Inf, +Inf, 0, amplitude*1.23/quantscale]);
     pbaspect([1 0.334 1]);
     xlabel("Time (10^5 seconds)");
     ylabel("Concentration (nM)");

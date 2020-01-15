@@ -73,23 +73,15 @@
 % ============================ INPUT PARAMETERS ================================
 
     % time settings
-    dt = 60;                     % 1 minute timesteps
-    simulation = 0 : dt : 3.5e5; % simulation length control
+    dt = 60;                   % 1 minute timesteps
+    simulation = 0 : dt : 4e5; % simulation length control
 
-    % input vector
+    % constant input vector
     Is = zeros(1, length(simulation));
-
-    % reaction initial conditions for each run
-    multiI   = 1e-9 * [0.1, 0.1, 50, 50]; % constant input
-    multiR12 = 1e-9 * [50 , 0  , 50, 0 ];
-    multiR34 = 1e-9 * [0  , 50 , 0 , 50];
-
-    % trigger hold & release times
-    t_hold = 1.5e5 / dt;
-    t_release = 1.55e5 / dt;
+    Is(:) = 0.1e-9;
 
     % induced decrease in repressor binding affinity used to trigger the switch
-    switch_trigger = 6e-10 - 4e-6;
+    switch_trigger = 4e-6 - 6e-10;
 
     % save original Hill repression constants
     Kr_R2P1_ori = Kr_R2P1;
@@ -101,8 +93,20 @@
     Kr_R1P6_ori = Kr_R1P6;
     Kr_R2P6_ori = Kr_R2P6;
 
+    % initial state concentrations (M)
+    R1 = R2 = 50e-9;
+    R3 = R4 = 0e-9;
 
-% ================================ MULTISIM ====================================
+
+% =============================== SIMULATION ===================================
+
+    % preallocate arrays to store concentrations over time
+    R1s = zeros(1, length(simulation));
+    R2s = zeros(1, length(simulation));
+    R3s = zeros(1, length(simulation));
+    R4s = zeros(1, length(simulation));
+    T12s = zeros(1, length(simulation));
+    T34s = zeros(1, length(simulation));
 
     % precompute loop invariants and reduced coefficients
     a1 = Kt_R1 * Kb_P1 / Kd_mR1P1;
@@ -123,95 +127,97 @@
         y = 1 / (1 + (X/K)^n);
     endfunction
 
-    % for each set of parameters, make a simulation run and display its results
-    for sim = 1 : length(multiI)
+    % actual simulation
+    for t = 1 : length(simulation)
 
-        % set initial state concentrations
-        Is(:) = multiI(sim);
-        R1 = multiR12(sim);
-        R2 = multiR12(sim);
-        R3 = multiR34(sim);
-        R4 = multiR34(sim);
+        % store current state
+        R1s(t) = R1;
+        R2s(t) = R2;
+        R3s(t) = R3;
+        R4s(t) = R4;
 
-        % preallocate arrays to store concentrations over time
-        R1s = zeros(1, length(simulation));
-        R2s = zeros(1, length(simulation));
-        R3s = zeros(1, length(simulation));
-        R4s = zeros(1, length(simulation));
+        % change binding following hold or release of switch trigger
+        if t >= 1e5 / dt && t <= 1.05e5 / dt
+            Kr_R1P5 = Kr_R1P5_ori + switch_trigger;
+            Kr_R1P6 = Kr_R1P6_ori + switch_trigger;
+            Kr_R2P6 = Kr_R2P6_ori + switch_trigger;
+            Kr_R2P1 = Kr_R2P1_ori + switch_trigger;
+            T12s(t) = Kr_R2P1_ori + switch_trigger;
+            Kr_R3P3 = Kr_R3P3_ori;
+            Kr_R3P4 = Kr_R3P4_ori;
+            Kr_R4P4 = Kr_R4P4_ori;
+            Kr_R4P2 = Kr_R4P2_ori;
+        elseif t >= 2.50e5 / dt && t <= 2.55e5 / dt
+            Kr_R1P5 = Kr_R1P5_ori;
+            Kr_R1P6 = Kr_R1P6_ori;
+            Kr_R2P6 = Kr_R2P6_ori;
+            Kr_R2P1 = Kr_R2P1_ori;
+            Kr_R3P3 = Kr_R3P3_ori + switch_trigger;
+            Kr_R3P4 = Kr_R3P4_ori + switch_trigger;
+            Kr_R4P4 = Kr_R4P4_ori + switch_trigger;
+            Kr_R4P2 = Kr_R4P2_ori + switch_trigger;
+            T34s(t) = Kr_R4P2_ori + switch_trigger;
+        else
+            Kr_R2P1 = Kr_R2P1_ori;
+            Kr_R4P2 = Kr_R4P2_ori;
+            Kr_R3P3 = Kr_R3P3_ori;
+            Kr_R3P4 = Kr_R3P4_ori;
+            Kr_R4P4 = Kr_R4P4_ori;
+            Kr_R1P5 = Kr_R1P5_ori;
+            Kr_R1P6 = Kr_R1P6_ori;
+            Kr_R2P6 = Kr_R2P6_ori;
+            T12s(t) = Kr_R2P1_ori;
+            T34s(t) = Kr_R4P2_ori;
+        endif
 
-        % actual simulation
-        for t = 1 : length(simulation)
+        % common subexpression optimization (used below)
+        activationP1 = Ha(Is(t), Na_P1, Ka_P1);
+        repressionP1 = Hr(R2, Nr_R2P1, Kr_R2P1);
+        activationP2 = Ha(Is(t), Na_P2, Ka_P2);
+        repressionP2 = Hr(R4, Nr_R4P2, Kr_R4P2);
 
-            % store current state
-            R1s(t) = R1;
-            R2s(t) = R2;
-            R3s(t) = R3;
-            R4s(t) = R4;
+        % compute variation
+        dR1dt = Kc_P1+Kc_P3 + a1*activationP1*repressionP1 + a2*Hr(R3, Nr_R3P3, Kr_R3P3) - Kd_R1*R1;
+        dR2dt = Kc_P2+Kc_P4 + b1*activationP2*repressionP2 + b2*Hr(R3, Nr_R3P4, Kr_R3P4)*Hr(R4, Nr_R4P4, Kr_R4P4) - Kd_R2*R2;
+        dR3dt = Kc_P2+Kc_P5 + c1*activationP2*repressionP2 + c2*Hr(R1, Nr_R1P5, Kr_R1P5) - Kd_R3*R3;
+        dR4dt = Kc_P1+Kc_P6 + d1*activationP1*repressionP1 + d2*Hr(R1, Nr_R1P6, Kr_R1P6)*Hr(R2, Nr_R2P6, Kr_R2P6) - Kd_R4*R4;
 
-            % change binding following hold or release of switch trigger
-            if t >= t_hold && t <= t_release
-                if sim == 1 || sim == 3
-                    Kr_R1P5 = Kr_R1P5_ori + switch_trigger;
-                    Kr_R1P6 = Kr_R1P6_ori + switch_trigger;
-                    Kr_R2P1 = Kr_R2P1_ori + switch_trigger;
-                    Kr_R2P6 = Kr_R2P6_ori + switch_trigger;
-                elseif sim == 2 || sim == 4
-                    Kr_R3P3 = Kr_R3P3_ori + switch_trigger;
-                    Kr_R3P4 = Kr_R3P4_ori + switch_trigger;
-                    Kr_R4P2 = Kr_R4P2_ori + switch_trigger;
-                    Kr_R4P4 = Kr_R4P4_ori + switch_trigger;
-                endif
-            else
-                Kr_R2P1 = Kr_R2P1_ori;
-                Kr_R4P2 = Kr_R4P2_ori;
-                Kr_R3P3 = Kr_R3P3_ori;
-                Kr_R3P4 = Kr_R3P4_ori;
-                Kr_R4P4 = Kr_R4P4_ori;
-                Kr_R1P5 = Kr_R1P5_ori;
-                Kr_R1P6 = Kr_R1P6_ori;
-                Kr_R2P6 = Kr_R2P6_ori;
-            endif
-
-            % common subexpression optimization (used below)
-            activationP1 = Ha(Is(t), Na_P1, Ka_P1);
-            repressionP1 = Hr(R2, Nr_R2P1, Kr_R2P1);
-            activationP2 = Ha(Is(t), Na_P2, Ka_P2);
-            repressionP2 = Hr(R4, Nr_R4P2, Kr_R4P2);
-
-            % compute variation
-            dR1dt = Kc_P1+Kc_P3 + a1*activationP1*repressionP1 + a2*Hr(R3, Nr_R3P3, Kr_R3P3) - Kd_R1*R1;
-            dR2dt = Kc_P2+Kc_P4 + b1*activationP2*repressionP2 + b2*Hr(R3, Nr_R3P4, Kr_R3P4)*Hr(R4, Nr_R4P4, Kr_R4P4) - Kd_R2*R2;
-            dR3dt = Kc_P2+Kc_P5 + c1*activationP2*repressionP2 + c2*Hr(R1, Nr_R1P5, Kr_R1P5) - Kd_R3*R3;
-            dR4dt = Kc_P1+Kc_P6 + d1*activationP1*repressionP1 + d2*Hr(R1, Nr_R1P6, Kr_R1P6)*Hr(R2, Nr_R2P6, Kr_R2P6) - Kd_R4*R4;
-
-            % apply state changes
-            R1 += dR1dt * dt;
-            R2 += dR2dt * dt;
-            R3 += dR3dt * dt;
-            R4 += dR4dt * dt;
-
-        endfor
-
-        figure(sim); % plot each graphic separately
-        hold on;
-
-        % scale data for easier visualization
-        timescale = 1e5;
-        quantscale = 1e-9;
-        x = simulation / timescale;
-        yR1 = R1s / quantscale;
-        yR2 = R2s / quantscale;
-        yR3 = R3s / quantscale;
-        yR4 = R4s / quantscale;
-
-        % plot results
-        plot(x,yR1,'--m;R1;', x,yR2,':k;R2;', x,yR3,'-r;R3;', x,yR4,'-.g;R4;');
-        pbaspect([1 0.334 1]);
-        legend('location', 'east');
-        xlabel("Time (10^5 seconds)");
-        ylabel("Concentration (nM)");
-
-        hold off;
-        print(sim, strcat('switch-qssa-', num2str(sim), '_.pdf')); % put in the folder the script is run from
+        % apply state changes
+        R1 += dR1dt * dt;
+        R2 += dR2dt * dt;
+        R3 += dR3dt * dt;
+        R4 += dR4dt * dt;
 
     endfor
+
+
+% ================================ RESULTS =====================================
+
+    figure;
+    hold on;
+
+    % scale data for easier visualization
+    timescale = 1e5;
+    quantscale = 1e-9;
+    x = simulation / timescale;
+    yR1 = R1s / quantscale;
+    yR2 = R2s / quantscale;
+    yR3 = R3s / quantscale;
+    yR4 = R4s / quantscale;
+
+    % result subplot
+    subplot(2, 1, 1);
+    plot(x,yR1,'--m;R1;', x,yR2,':k;R2;', x,yR3,'-r;R3;', x,yR4,'-.g;R4;');
+    pbaspect([1 0.334 1]);
+    legend('location', 'east');
+    ylabel("Concentration (nM)");
+
+    % trigger subplot
+    subplot(2, 1, 2);
+    plot(x,T12s,'-b;k_A for R1 & R2;', x,T34s,'-r;k_A for R3 & R4;');
+    axis([-Inf, +Inf, 0, max(T12s)*1.1]);
+    xlabel("Time (10^5 seconds)");
+    ylabel("Repressor k_A (M)");
+
+    hold off;
+    print(strcat('switch-qssa-', num2str(Is(1)/quantscale), '_.pdf')); % put in the folder the script is run from
