@@ -3,19 +3,18 @@
 # You want latexmk to *always* run, because make does not have all the info.
 # Also, include non-file targets in .PHONY so they are run regardless of any
 # file of the given name existing.
-.PHONY: clean
+.PHONY: clean all
 
 # The first rule in a Makefile is the one executed by default ("make"). It
 # should always be the "all" rule, so that "make" and "make all" are identical.
 
-all: article
-article: article.pdf
+all: article.pdf
 
 
 # CUSTOM BUILD RULES
 # -----------------------------------------------------------------------------
 metadata.tex: metadata.yaml
-	./yaml-to-latex.py -i $< -o $@
+	@ ./yaml-to-latex.py -i $< -o $@
 
 
 # MAIN LATEXMK RULE
@@ -27,10 +26,10 @@ metadata.tex: metadata.yaml
 # missing file reference and interactively asking you for an alternative.
 
 article.pdf: article.tex acronym.tex bibliography.bib img/* content.tex metadata.tex rescience.cls
-	latexmk -pdf -pdflatex="xelatex -interaction=nonstopmode" -use-make article.tex
+	@ latexmk -pdf -pdflatex="xelatex -interaction=nonstopmode" -use-make article.tex
 
 clean:
-	@latexmk -CA
-	@rm -f *.bbl
-	@rm -f *.run.xml
-	@rm -R __pycache__/
+	@- latexmk -CA
+	@- rm -f *.bbl
+	@- rm -f *.run.xml
+	@- rm -R __pycache__/

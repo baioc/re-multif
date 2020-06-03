@@ -1,0 +1,66 @@
+# name: experiment_class
+# type: string
+# elements: 1
+# length: 6
+period
+
+# name: model
+# type: string
+# elements: 1
+# length: 4
+Full
+
+
+# name: R1
+# type: scalar
+50e-9
+
+# name: R2
+# type: scalar
+50e-9
+
+# name: R3
+# type: scalar
+0
+
+# name: R4
+# type: scalar
+0
+
+
+# name: input_type
+# type: string
+# elements: 1
+# length: 4
+sine
+
+# name: input_dc_level
+# type: scalar
+6e-9
+
+# name: period_experiment_range
+# type: matrix
+# rows: 1
+# columns: 3
+ 2e4 0.5e4 16e4
+
+# name: input_amplitude
+# type: scalar
+50e-9
+
+# name: simulation_step
+# type: scalar
+60
+
+
+# name: plot_output_filename
+# type: string
+# elements: 1
+# length: 18
+freqdiv-period.pdf
+
+# name: plot_aspect
+# type: string
+# elements: 1
+# length: 4
+auto

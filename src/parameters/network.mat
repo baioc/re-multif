@@ -1,0 +1,31 @@
+# name: k_tl
+# type: scalar
+6e-4
+
+# name: delta_m
+# type: scalar
+2.5e-3
+
+# name: delta_x
+# type: scalar
+4e-4
+
+# name: N
+# type: scalar
+1.3
+
+# name: k_a
+# type: scalar
+2e-8
+
+# name: k_r
+# type: scalar
+6e-10
+
+# name: beta
+# type: scalar
+4e-10
+
+# name: P_tc
+# type: scalar
+4e-10

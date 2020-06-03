@@ -1,0 +1,77 @@
+# name: experiment_class
+# type: string
+# elements: 1
+# length: 6
+switch
+
+# name: model
+# type: string
+# elements: 1
+# length: 4
+Full
+
+
+# name: R1
+# type: scalar
+50e-9
+
+# name: R2
+# type: scalar
+50e-9
+
+# name: R3
+# type: scalar
+0
+
+# name: R4
+# type: scalar
+0
+
+
+# name: input_type
+# type: string
+# elements: 1
+# length: 8
+constant
+
+# name: input_dc_level
+# type: scalar
+0.1e-9
+
+
+# name: simulation_total_time
+# type: scalar
+3.5e5
+
+# name: switch_trigger_delta
+# type: scalar
+39994e-10
+
+# name: switch_trigger_time
+# type: matrix
+# rows: 1
+# columns: 2
+ 1.50e5 1.55e5
+
+# name: switch_R
+# type: matrix
+# rows: 1
+# columns: 4
+ 1 1 0 0
+
+# name: simulation_step
+# type: scalar
+60
+
+
+# name: plot_output_filename
+# type: string
+# elements: 1
+# length: 12
+switch-A.pdf
+
+# name: plot_aspect
+# type: string
+# elements: 1
+# length: 4
+auto

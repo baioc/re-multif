@@ -1,0 +1,63 @@
+# name: experiment_class
+# type: string
+# elements: 1
+# length: 10
+oscillator
+
+# name: model
+# type: string
+# elements: 1
+# length: 4
+Full
+
+
+# name: R1
+# type: scalar
+50e-9
+
+# name: R2
+# type: scalar
+50e-9
+
+# name: R3
+# type: scalar
+0
+
+# name: R4
+# type: scalar
+0
+
+
+# name: input_type
+# type: string
+# elements: 1
+# length: 8
+constant
+
+# name: oscillator_input_range
+# type: matrix
+# rows: 1
+# columns: 3
+ 0.4e-9 0.1e-9 7e-9
+
+
+# name: simulation_total_time
+# type: scalar
+1.5e6
+
+# name: simulation_step
+# type: scalar
+60
+
+
+# name: plot_output_filename
+# type: string
+# elements: 1
+# length: 22
+oscillator-astable.pdf
+
+# name: plot_aspect
+# type: string
+# elements: 1
+# length: 4
+auto

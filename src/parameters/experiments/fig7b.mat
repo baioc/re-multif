@@ -1,0 +1,65 @@
+# name: experiment_class
+# type: string
+# elements: 1
+# length: 6
+single
+
+# name: model
+# type: string
+# elements: 1
+# length: 4
+Full
+
+
+# name: plot_output_filename
+# type: string
+# elements: 1
+# length: 19
+bifurcation-4c2.pdf
+
+# name: plot_include_input_signal
+# type: bool
+0
+
+# name: plot_aspect
+# type: string
+# elements: 1
+# length: 4
+auto
+
+
+# name: R1
+# type: scalar
+0
+
+# name: R2
+# type: scalar
+0
+
+# name: R3
+# type: scalar
+50e-9
+
+# name: R4
+# type: scalar
+50e-9
+
+
+# name: input_type
+# type: string
+# elements: 1
+# length: 8
+constant
+
+# name: input_dc_level
+# type: scalar
+10e-9
+
+
+# name: simulation_total_time
+# type: scalar
+1.5e6
+
+# name: simulation_step
+# type: scalar
+60

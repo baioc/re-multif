@@ -1,0 +1,82 @@
+# name: experiment_class
+# type: string
+# elements: 1
+# length: 6
+single
+
+# name: model
+# type: string
+# elements: 1
+# length: 10
+Stochastic
+
+
+# name: random_seed
+# type: scalar
+0.8977812586558097
+
+# name: noise_scaling
+# type: scalar
+0.038461538461538464
+
+
+# name: R1
+# type: scalar
+50e-9
+
+# name: R2
+# type: scalar
+50e-9
+
+# name: R3
+# type: scalar
+0
+
+# name: R4
+# type: scalar
+0
+
+
+# name: input_type
+# type: string
+# elements: 1
+# length: 4
+sine
+
+# name: input_dc_level
+# type: scalar
+6e-9
+
+# name: input_period
+# type: scalar
+0.9e5
+
+# name: input_amplitude
+# type: scalar
+50e-9
+
+
+# name: simulation_total_time
+# type: scalar
+4.0e5
+
+# name: simulation_step
+# type: scalar
+60
+
+
+# name: plot_output_filename
+# type: string
+# elements: 1
+# length: 27
+stochastic-freqdiv-skip.pdf
+
+# name: plot_include_input_signal
+# type: bool
+0
+
+# name: plot_aspect
+# type: matrix
+# rows: 1
+# columns: 3
+ 1 0.334 1

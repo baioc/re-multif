@@ -56,7 +56,7 @@ replication:
 abstract: "Studies in the field of synthetic biology make constant additions to existing repositories of biological circuits, as well as to the theoretical understanding of their capabilities.
           Although many synthetic gene networks have been demonstrated able to perform computations using biomolecules, until recently the majority of such models were engineered to implement the functionality of single reusable circuit parts.
           Purcell et al. have proposed a network capable of multiple functions, allowing for the selection of three different behaviours in a programmable fashion.
-          This work provides an open-source reference implementation with which their in silico experiments are replicated and that can be reused by future studies."
+          This work provides an open-source reference implementation with which their in silico experiments were replicated."
 
 # Bibliography file (yours)
 bibliography: bibliography.bib
