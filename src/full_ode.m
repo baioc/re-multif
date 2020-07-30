@@ -24,29 +24,21 @@ function dR = full_ode(R, t, I, Ha, Hr, k_a, k_r, k_tl, beta, P_tc, delta_x, del
   dm = zeros(size(m));
 
   % mRNA equations
-  dm(R1P1) = beta * Ha(I(t), k_a(5)) * Hr(R(2), k_r(2)) ...
-             - delta_m * m(R1P1);
+  dm(R1P1) = beta * Ha(I(t), k_a(5)) * Hr(R(2), k_r(2)) - delta_m * m(R1P1);
 
-  dm(R4P1) = beta * Ha(I(t), k_a(5)) * Hr(R(2), k_r(2)) ...
-             - delta_m * m(R4P1);
+  dm(R4P1) = beta * Ha(I(t), k_a(5)) * Hr(R(2), k_r(2)) - delta_m * m(R4P1);
 
-  dm(R2P2) = beta * Ha(I(t), k_a(5)) * Hr(R(4), k_r(4)) ...
-             - delta_m * m(R2P2);
+  dm(R2P2) = beta * Ha(I(t), k_a(5)) * Hr(R(4), k_r(4)) - delta_m * m(R2P2);
 
-  dm(R3P2) = beta * Ha(I(t), k_a(5)) * Hr(R(4), k_r(4)) ...
-             - delta_m * m(R3P2);
+  dm(R3P2) = beta * Ha(I(t), k_a(5)) * Hr(R(4), k_r(4)) - delta_m * m(R3P2);
 
-  dm(R1P3) = P_tc * Hr(R(3), k_r(3)) ...
-             - delta_m * m(R1P3);
+  dm(R1P3) = P_tc * Hr(R(3), k_r(3))                    - delta_m * m(R1P3);
 
-  dm(R2P4) = P_tc * Hr(R(3), k_r(3)) * Hr(R(4), k_r(4)) ...
-             - delta_m * m(R2P4);
+  dm(R2P4) = P_tc * Hr(R(3), k_r(3)) * Hr(R(4), k_r(4)) - delta_m * m(R2P4);
 
-  dm(R3P5) = P_tc * Hr(R(1), k_r(1)) ...
-             - delta_m * m(R3P5);
+  dm(R3P5) = P_tc * Hr(R(1), k_r(1))                    - delta_m * m(R3P5);
 
-  dm(R4P6) = P_tc * Hr(R(1), k_r(1)) * Hr(R(2), k_r(2)) ...
-             - delta_m * m(R4P6);
+  dm(R4P6) = P_tc * Hr(R(1), k_r(1)) * Hr(R(2), k_r(2)) - delta_m * m(R4P6);
 
   % protein equations
   dR(1) = k_tl * (m(R1P1) + m(R1P3)) - delta_x * R(1);

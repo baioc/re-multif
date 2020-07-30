@@ -22,8 +22,7 @@ R = [R1 R2 R3 R4];
 if strcmp(input_type, 'sine')
   I = @(t, T) input_amplitude * (-cos(t * 2*pi/T) + 1) / 2 + input_dc_level;
 elseif strcmp(input_type, 'square')
-  I = @(t, T) square_wave(t, T, ...
-                          input_amplitude, input_dc_level, input_duty_cycle);
+  I = @(t, T) square_wave(t, T, input_amplitude, input_dc_level, input_duty_cycle);
 elseif strcmp(input_type, 'constant')
   I = @(t, T) input_dc_level;
   input_period = Inf;
@@ -190,7 +189,6 @@ elseif strcmp(experiment_class, 'oscillator')
   output_periods /= timescale;
   plot(DC_range, output_periods, 'b');
   pbaspect(plot_aspect);
-  legend('location', 'east');
   xlabel("Input concentration (nM)");
   ylabel("Period (10^5 seconds)");
 

@@ -1,10 +1,10 @@
 # [Re] A Multi-Functional Synthetic Gene Network
 
-[![DOI](https://zenodo.org/badge/214520225.svg)](https://zenodo.org/badge/latestdoi/214520225)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3545451.svg)](https://doi.org/10.5281/zenodo.3545451)
 
-Here we replicate the work of Purcell, di Bernardo, Grierson and Savery on [A Multi-Functional Synthetic Gene Network: A Frequency Multiplier, Oscillator and Switch](https://dx.doi.org/10.1371%2Fjournal.pone.0016140) for [ReScience](https://rescience.github.io/).
+Here we replicate the work of Purcell, di Bernardo, Grierson and Savery on [A Multi-Functional Synthetic Gene Network: A Frequency Multiplier, Oscillator and Switch](https://doi.org/10.1371/journal.pone.0016140) for [ReScience](https://rescience.github.io/).
 
-![Network designed by Purcell et al.](network.png)
+![Network designed by Purcell et al.](sbol.png)
 
 
 ## Reproducing our work

@@ -36,7 +36,7 @@ keywords: rescience c, octave, biological computing, synthetic biology, programm
 #   see https://guides.github.com/activities/citable-code/
 code:
   - url: https://github.com/baioc/re-multif
-  - doi: 10.5281/zenodo.3545452
+  - doi: 10.5281/zenodo.3545451
 
 # Data URL and DOI (optional if no data)
 data:
