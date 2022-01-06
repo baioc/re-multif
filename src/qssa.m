@@ -5,7 +5,7 @@
 % constant k; and alpha, gamma and delta are reaction constants extracted from
 % the network. k_a and k_r are vectors with the binding affinity for each
 % repressor protein + input.
-function dR = qssa(R, t, I, Ha, Hr, k_a, k_r, alpha, gamma, delta)
+function dR = qssa(t, R, I, Ha, Hr, k_a, k_r, alpha, gamma, delta)
 
   dR = zeros(size(R));
 

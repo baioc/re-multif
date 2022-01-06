@@ -2,10 +2,10 @@
 % model) for given molecule concentrations R at instant t. I(t) should evaluate
 % to the input signal at time t; Ha(X,k) and Hr(X,k) must compute the Hill
 % functions for activation and repression of protein X given half-saturation
-% constant k; and k_tl beta, P_tc, delta_x and delta_m are reaction constants
+% constant k; and k_tl, beta, P_tc, delta_x and delta_m are reaction constants
 % extracted from the network. k_a and k_r are vectors with the binding affinity
 % for each repressor protein + input.
-function dR = full_ode(R, t, I, Ha, Hr, k_a, k_r, k_tl, beta, P_tc, delta_x, delta_m)
+function dR = full_ode(t, R, I, Ha, Hr, k_a, k_r, k_tl, beta, P_tc, delta_x, delta_m)
 
   % these are just indexes for the mRNAs
   R1P1 = 1;
@@ -20,8 +20,8 @@ function dR = full_ode(R, t, I, Ha, Hr, k_a, k_r, k_tl, beta, P_tc, delta_x, del
   m = R(5:end); % mRNAs
   R = R(1:4);   % proteins
 
-  dR = zeros(size(R));
-  dm = zeros(size(m));
+  dR = zeros(1, size(R));
+  dm = zeros(1, size(m));
 
   % mRNA equations
   dm(R1P1) = beta * Ha(I(t), k_a(5)) * Hr(R(2), k_r(2)) - delta_m * m(R1P1);

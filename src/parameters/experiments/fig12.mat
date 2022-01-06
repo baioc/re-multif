@@ -10,10 +10,16 @@ single
 # length: 10
 Stochastic
 
+# name: method
+# type: sq_string
+# elements: 1
+# length: 5
+Euler
+
 
 # name: random_seed
 # type: scalar
-0.8977812586558097
+5.83346446892352
 
 # name: noise_scaling
 # type: scalar

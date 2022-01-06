@@ -24,7 +24,7 @@ authors:
 # contributions" as name (with no address).
 affiliations:
   - code:    1
-    name:    Universidade Federal de Santa Catarina (UFSC)
+    name:    Federal University of Santa Catarina (UFSC)
     address: Florianópolis, Brazil
 
 # List of keywords (adding the programming language might be a good idea)
@@ -53,10 +53,10 @@ replication:
  - doi:  https://doi.org/10.1371/journal.pone.0016140 # Regular digital object identifier
 
 # Don't forget to surround abstract with double quotes
-abstract: "Studies in the field of synthetic biology make constant additions to existing repositories of biological circuits, as well as to the theoretical understanding of their capabilities.
-          Although many synthetic gene networks have been demonstrated able to perform computations using biomolecules, until recently the majority of such models were engineered to implement the functionality of single reusable circuit parts.
-          Purcell et al. have proposed a network capable of multiple functions, allowing for the selection of three different behaviours in a programmable fashion.
-          This work provides an open-source reference implementation with which their in silico experiments were replicated."
+abstract: "Studies in the field of synthetic biology are constantly making additions to biological circuit repositories, as well as to the theoretical understanding of their capabilities.
+          The ability to compute with biomolecules has been demonstrated by many synthetic gene networks, but until recently the majority of such models were engineered to implement the functionality of a single circuit part.
+          Purcell et al. have proposed a network capable of multiple functions, switching between three different behaviours in a programmable fashion.
+          This work provides an open-source implementation in which their in silico experiments were replicated."
 
 # Bibliography file (yours)
 bibliography: bibliography.bib

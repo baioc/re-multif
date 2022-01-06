@@ -35,7 +35,7 @@
              {\reviewerIINAME\ifdefempty{\reviewerIIORCID}{}{$^{\orcid{\reviewerIIORCID}}$}\\}
   ~\\
   }
-  %%           
+  %%
   \textbf{Received}\\
   \ifdefempty{\dateRECEIVED}{---}{\dateRECEIVED}\\
   ~\\
@@ -47,7 +47,7 @@
   \textbf{DOI}\\
   \ifdefempty{\articleDOI}{---}{\articleDOI}
 }
- 
+
 
 %% --- Bottom statement -------------------------------------------------------
 \newcommand{\container}[1]{\def\@container{#1}}
@@ -58,10 +58,10 @@
       \hrule \vskip .5em
       Copyright © \articleYEAR~\authorsABBRV,
       released under a Creative Commons Attribution 4.0 International license.
-      
+
       Correspondence should be addressed to
       \contactNAME~(\href{mailto:\contactEMAIL}{\contactEMAIL})
-  
+
       The authors have declared that no competing interests exists.
 
       \ifdefempty{\codeURL}{}
@@ -80,9 +80,9 @@
 
 
 %% --- Abstract ---------------------------------------------------------------
-%% \ifdefempty{\articleABSTRACT}{}{
-%%   {\small \sffamily \textbf{Abstract} \articleABSTRACT \par}
-%% }
+\ifdefempty{\articleABSTRACT}{}{
+  {\small \sffamily \textbf{Abstract} \articleABSTRACT \par}
+}
 
 
 %% --- Replication ------------------------------------------------------------
