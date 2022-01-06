@@ -2,19 +2,19 @@
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3545451.svg)](https://doi.org/10.5281/zenodo.3545451)
 
-Here we replicate the work of Purcell, di Bernardo, Grierson and Savery on [A Multi-Functional Synthetic Gene Network: A Frequency Multiplier, Oscillator and Switch](https://doi.org/10.1371/journal.pone.0016140) for [ReScience](https://rescience.github.io/).
+Here we replicate the work of Purcell, di Bernardo, Grierson and Savery on [A Multi-Functional Synthetic Gene Network: A Frequency Multiplier, Oscillator and Switch](https://doi.org/10.1371/journal.pone.0016140), for [ReScience](https://rescience.github.io/).
 
-![Network designed by Purcell et al.](sbol.png)
+![SBOL](sbol.png)
 
 
 ## Reproducing our work
 
-The simulated model is implemented in Octave (v5.2.0) and needs an additional `signal` package (v1.4.1) - which in turn depends on the `control` extension (v3.2.0).
-These are available at [Octave Forge](https://octave.sourceforge.io/) and can be installed directly from the Octave command line:
+The simulated model is implemented in Octave (tested in versions 5.2.0 and 6.2.0) and needs an additional [`signal`](https://octave.sourceforge.io/signal/) package (1.4.1) - which in turn depends on the [`control`](https://octave.sourceforge.io/control/) extension (3.2.0).
+These are available in [Octave Forge](https://octave.sourceforge.io/) and can be installed directly from the **Octave command line**:
 
 ```octave
-> pkg install -forge control
-> pkg install -forge signal
+> pkg install 'https://octave.sourceforge.io/download.php?package=control-3.2.0.tar.gz'
+> pkg install 'https://octave.sourceforge.io/download.php?package=signal-1.4.1.tar.gz'
 ```
 
 Each experiment is configured in a separate `.mat` file following Octave's standard human-readable ASCII format.
@@ -25,7 +25,7 @@ The network's reaction parameters do not change and are separately loaded from [
 
 To reproduce our experiments, make sure `octave` is installed and has access to the aforementioned packages, `python3` is also required.
 The script [experiments.py](experiments.py) drives the execution of all simulations and figure generation, so it takes a while to complete.
-It uses the `pdfcrop` command line tool to trim pdf whitespaces, so that is needed as well.
+It uses the `pdfcrop` command line tool to trim pdf whitespaces, so that is needed as well (albeit figure cropping is optional for the purpose of reproduction).
 After all is ready, simply run:
 
 ```bash
@@ -50,33 +50,32 @@ This repository is structured as follows:
 
 ```
 .
-├── doc                          #                         article sources
+├── doc                         # article sources
 |   |
-│   ├── img                      #                       generated figures
+│   ├── img                     #   generated figures
 │   │   ├── bifurcation-1a.pdf
 │   │   └── ...
 |   |
-│   ├── Makefile                 #         makefile to compile the article
+│   ├── Makefile                #   makefile to compile the article
 │   └── ...
 |
-├── src                          #                  implementation sources
+├── src                         # implementation sources
 |   |
 │   ├── parameters
 |   |   |
-│   │   ├── experiments          #                   experimental settings
+│   │   ├── experiments         #   experimental settings
 │   │   │   ├── fig1.mat
 │   │   │   └── ...
 |   |   |
-│   │   └── network.mat          #                      network parameters
+│   │   └── network.mat         #   network parameters
 |   |
-│   ├── run_experiment.m         #       script to run a single experiment
+│   ├── run_experiment.m        #   script to run a single experiment
 │   └── ...
 |
-├── article.pdf                  #           compiled replication document
-├── experiments.py               # runs all experiments, generates figures
+├── experiments.py              # runs all experiments, generates figures
+├── article.pdf                 # compiled replication document
 └── ...
 ```
-
 
 ### License
 

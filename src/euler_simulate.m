@@ -1,20 +1,26 @@
-% Simulates the model defined by function f, for m steps of dt seconds over an
-% initial state X (a row vector). f(X, t) should return the gradient at time t.
+% Simulates the model defined by function f, for a number of steps -- defined
+% based on the given interval -- of dt seconds each, over an initial state X.
+% f(t, X) should return the gradient Y at time t, where X and Y are vectors.
 %
-% Returns a matrix Y, where rows correspond to protein concentrations
-% at each simulation step.
-function Y = euler_simulate(f, X, m, dt)
+% Returns a vector T and a matrix Y, corresponding to each time step and protein
+% concentrations at each of those steps.
+function [T, Y] = euler_simulate(f, X, interval, dt)
 
   assert(size(X, 1) == 1);
-  assert(m > 0);
+  assert(interval(1) >= 0);
+  assert(interval(2) > interval(1));
   assert(dt >= 1);
 
+  m = ceil((interval(2) - interval(1)) / dt);
   n = length(X);
   Y = zeros(m, n);
+  T = zeros(m, 1);
 
   for i = 1 : m
     Y(i,:) = X;
-    dX = f(X, (i-1) * dt);
+    t = (i-1) * dt;
+    T(i,1) = interval(1) + t;
+    dX = f(t, X);
     X += dX * dt;
   endfor
 

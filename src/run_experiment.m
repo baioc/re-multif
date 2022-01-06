@@ -36,39 +36,42 @@ k_r = [k_r k_r k_r k_r];
 Ha = @(X, k) hill_activation(X, N, k);
 Hr = @(X, k) hill_repression(X, N, k);
 
-% defaults to zero noise, this is overrided when using stochastic model
-noise = @(t, len) 0;
-
 % choose the network's internal model (input I and constant k_r left unfixed)
 if strcmp(model, 'QSSA')
   alpha = k_tl * beta / delta_m;
   gamma = k_tl * P_tc / delta_m;
-  model = @(R, t, I, k_r) qssa(R, t, I, ...
+  model = @(t, R, I, k_r) qssa(t, R, I, ...
                                Ha, Hr, k_a, k_r, ...
                                alpha, gamma, delta_x);
 elseif strcmp(model, 'Full')
   R = [R [0 0 0 0 0 0 0 0]]; % insert starting mRNAs into molecule vector
-  model = @(R, t, I, k_r) full_ode(R, t, I, ...
+  model = @(t, R, I, k_r) full_ode(t, R, I, ...
                                    Ha, Hr, k_a, k_r, ...
                                    k_tl, beta, P_tc, delta_x, delta_m);
 elseif strcmp(model, 'Stochastic')
   assert(strcmp(experiment_class, 'single') || strcmp(experiment_class, 'switch'));
 
-  % pre-generate Gaussian noise
+  % prepare Gaussian noise
   randn('seed', random_seed);
-  steps = ceil(simulation_total_time / simulation_step);
-  noise = zeros(steps, 12);
-  for j = 1 : size(noise, 2)
-    noise(:,j) = randn(steps, 1) * noise_scaling;
-  endfor
-  noise_fn = @(t, col) noise(round(t / simulation_step) + 1, col);
+  noise_fn = @(t, col) randn() * noise_scaling;
 
   % set model constructor
-  model = @(R, t, I, k_r) stochastic(R, t, I, noise_fn, ...
+  model = @(t, R, I, k_r) stochastic(t, R, I, noise_fn, ...
                                      Ha, Hr, k_a, k_r, ...
                                      k_tl, beta, P_tc, delta_x, delta_m);
 else
   error("Undefined model type: %s.", model);
+endif
+
+% choose integration method to be used
+dt = simulation_step;
+if strcmp(method, 'Euler')
+  simulate = @(fun, interval, init) euler_simulate(fun, init, interval, dt);
+elseif strcmp(method, 'ode45')
+  odeopts = odeset("RelTol", 1e-10, "AbsTol", 1e-10, "InitialStep", dt);
+  simulate = @(fun, interval, init) ode45(fun, interval, init, odeopts);
+else
+  error("Undefined integration method: %s.", method);
 endif
 
 
@@ -77,12 +80,12 @@ timescale = 1e5; % 10^5 seconds
 molscale = 1e-9; % nM
 
 % peak-based period detection, uses the last period for more stability
-function T = period(Y, dt = 1)
+function T = period(Y, timeof = @(i) i)
   [pks, idx] = findpeaks(Y);
   if length(pks) < 2
     T = 0;
   else
-    T = (idx(end) - idx(end-1)) * dt;
+    T = timeof(idx(end)) - timeof(idx(end-1));
   endif
 endfunction
 
@@ -91,24 +94,22 @@ endfunction
 if strcmp(experiment_class, 'single')
   % fix period and model
   I = @(t) I(t, input_period);
-  model = @(R, t) model(R, t, I, k_r);
+  model = @(t, R) model(t, R, I, k_r);
 
   % run single simulatin
-  step_number = ceil(simulation_total_time / simulation_step);
-  Rs = euler_simulate(model, R, step_number, simulation_step);
+  [t, Rs] = simulate(model, [0.0, simulation_total_time], R);
 
   % get time, protein and input concentration series
   R1s = Rs(:,1) / molscale;
   R2s = Rs(:,2) / molscale;
   R3s = Rs(:,3) / molscale;
   R4s = Rs(:,4) / molscale;
-  n = length(R1s);
-  t = (0 : simulation_step : simulation_total_time)' / timescale;
-  t = t(1:n);
+  n = length(t);
   Is = zeros(n, 1);
   for i = 1 : n
-    Is(i) = I(i * simulation_step) / molscale;
+    Is(i) = I(t(i)) / molscale;
   endfor
+  t = t / timescale;
 
   % plot input behaviour (if needed)
   if plot_include_input_signal
@@ -139,18 +140,17 @@ elseif strcmp(experiment_class, 'period')
   for input_period = T_range(1) : T_range(2) : T_range(3)
     % fix this iteration's input and model
     temp_I = @(t) I(t, input_period);
-    temp_model = @(R, t) model(R, t, temp_I, k_r);
+    temp_model = @(t, R) model(t, R, temp_I, k_r);
 
     % actual simulation
     simulation_total_time = 5 * input_period;
-    step_number = ceil(simulation_total_time / simulation_step);
-    Rs = euler_simulate(temp_model, R, step_number, simulation_step);
+    [t, Rs] = simulate(temp_model, [0.0, simulation_total_time], R);
 
     % detecting output period through [R1] peaks
-    out_period = period(Rs(:,1), simulation_step);
+    out_period = period(Rs(:,1), t);
 
     % store frequency response
-    input_periods =  [input_periods  input_period];
+    input_periods = [input_periods input_period];
     output_periods = [output_periods out_period];
   endfor
 
@@ -171,14 +171,13 @@ elseif strcmp(experiment_class, 'oscillator')
   for input_dc_level = DC_range % foreach
     % fix this iteration's input and model
     temp_I = @(t) input_dc_level;
-    temp_model = @(R, t) model(R, t, temp_I, k_r);
+    temp_model = @(t, R) model(t, R, temp_I, k_r);
 
     % actual simulation
-    step_number = ceil(simulation_total_time / simulation_step);
-    Rs = euler_simulate(temp_model, R, step_number, simulation_step);
+    [t, Rs] = simulate(temp_model, [0.0, simulation_total_time], R);
 
     % detecting output period through [R1] peaks
-    out_period = period(Rs(:,1), simulation_step);
+    out_period = period(Rs(:,1), t);
 
     % store frequency response
     output_periods = [output_periods out_period];
@@ -193,42 +192,30 @@ elseif strcmp(experiment_class, 'oscillator')
   ylabel("Period (10^5 seconds)");
 
 elseif strcmp(experiment_class, 'switch')
-  % calculate trigger boundaries
-  step_number = ceil(simulation_total_time / simulation_step);
-  trigger_start = round(switch_trigger_time(1) / simulation_step);
-  trigger_stop = round(switch_trigger_time(2) / simulation_step);
-  prelude_steps = trigger_start;
-  interlude_steps = trigger_stop - trigger_start;
-  postlude_steps = step_number - (prelude_steps + interlude_steps);
-
   % fix input and models
   I = @(t) I(t, input_period);
-  normal_model = @(R, t) model(R, t, I, k_r);
-  triggered_model = @(R, t) model(R, t, I, k_r + switch_R*switch_trigger_delta);
+  normal_model = @(t, R) model(t, R, I, k_r);
+  triggered_model = @(t, R) model(t, R, I, k_r + switch_R*switch_trigger_delta);
 
   % 3-step simulation with different binding affinities
-  prelude = euler_simulate(normal_model, R, prelude_steps, simulation_step);
-
-  interlude = euler_simulate(triggered_model, prelude(end,:), ...
-                             interlude_steps, simulation_step);
-
-  postlude = euler_simulate(normal_model, interlude(end,:), ...
-                            postlude_steps, simulation_step);
+  [t1, prelude] = simulate(normal_model, [0.0, switch_trigger_time(1)], R);
+  [t2, interlude] = simulate(triggered_model, [switch_trigger_time(1), switch_trigger_time(2)], prelude(end,:));
+  [t3, postlude] = simulate(normal_model, [switch_trigger_time(2), simulation_total_time], interlude(end,:));
 
   Rs = [prelude; interlude; postlude];
+  t = [t1; t2; t3];
 
   % get time, protein and input concentration series
   R1s = Rs(:,1) / molscale;
   R2s = Rs(:,2) / molscale;
   R3s = Rs(:,3) / molscale;
   R4s = Rs(:,4) / molscale;
-  n = length(R1s);
-  t = (0 : simulation_step : simulation_total_time)' / timescale;
-  t = t(1:n);
+  n = length(t);
   Is = zeros(n, 1);
   for i = 1 : n
-    Is(i) = I(i * simulation_step) / molscale;
+    Is(i) = I(t(i)) / molscale;
   endfor
+  t = t / timescale;
 
   % plot model behaviour
   plot(t,R1s,'--m;R1;', t,R2s,':k;R2;', t,R3s,'-r;R3;', t,R4s,'-.g;R4;');

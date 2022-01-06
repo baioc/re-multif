@@ -10,6 +10,12 @@ oscillator
 # length: 4
 Full
 
+# name: method
+# type: sq_string
+# elements: 1
+# length: 5
+Euler
+
 
 # name: R1
 # type: scalar

@@ -31,6 +31,7 @@ except FileExistsError:
     if input("\nWARNING: 'doc/img/' already exists, continue? [y/n]: " ) != 'y':
         exit(errno.EEXIST)
 
+print("Cropping figures (requires pdfcrop) ...")
 for fig in os.listdir():
     crop = ['pdfcrop', fig, figures + fig]
     proc = subprocess.run(crop, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
