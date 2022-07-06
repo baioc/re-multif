@@ -37,6 +37,7 @@ keywords: rescience c, octave, biological computing, synthetic biology, programm
 code:
   - url: https://github.com/baioc/re-multif
   - doi: 10.5281/zenodo.3545451
+  - swh: swh:1:dir:bc0c0e990a078df838de14b8745e12e6c471eb38
 
 # Data URL and DOI (optional if no data)
 data:
@@ -81,34 +82,34 @@ language: Octave
 
 # For example, the URL of the GitHub issue where review actually occured
 review:
-  - url:
+  - url: https://github.com/ReScience/submissions/issues/13
 
 contributors:
-  - name:
-    orcid:
+  - name: Konrad Hinsen
+    orcid: 0000-0003-0330-9428
     role: editor
-  - name:
-    orcid:
+  - name: Aaron Shifman
+    orcid: 0000-0003-2140-7590
     role: reviewer
-  - name:
-    orcid:
+  - name: Konrad Hinsen
+    orcid: 0000-0003-0330-9428
     role: reviewer
 
 # This information will be provided by the editor
 dates:
-  - received:  (Date)
-  - accepted:
-  - published:
+  - received:  January 15, 2020
+  - accepted:  July 5, 2022
+  - published: July 6, 2022
 
 # This information will be provided by the editor
 article:
-  - number: # Article number will be automatically assigned during publication
-  - doi:    # DOI from Zenodo
-  - url:    # Final PDF URL (Zenodo or rescience website?)
+  - number: 5
+  - doi:    10.5281/zenodo.6801765
+  - url:    https://zenodo.org/record/6801765/files/article.pdf
 
 # This information will be provided by the editor
 journal:
   - name:   "ReScience C"
   - issn:   2430-3658
-  - volume: 4
+  - volume: 8
   - issue:  1
