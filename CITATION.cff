@@ -1,0 +1,15 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: '[Re] A Multi-Functional Synthetic Gene Network'
+message: Please cite this software using these metadata.
+type: software
+authors:
+  - given-names: Gabriel
+    family-names: Baiocchi de Sant'Anna
+    affiliation: Federal University of Santa Catarina (UFSC)
+    orcid: 'https://orcid.org/0000-0001-8364-8969'
+  - given-names: Mateus
+    family-names: Favarin Costa
+    affiliation: Federal University of Santa Catarina (UFSC)

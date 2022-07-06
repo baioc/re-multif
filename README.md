@@ -1,8 +1,9 @@
 # [Re] A Multi-Functional Synthetic Gene Network
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3545451.svg)](https://doi.org/10.5281/zenodo.3545451)
+[![Article DOI](https://img.shields.io/badge/Article%20DOI-10.5281%2Fzenodo.6801764-blue)](https://doi.org/10.5281/zenodo.6801764)
+[![Code DOI](https://img.shields.io/badge/Code%20DOI-10.5281%2Fzenodo.3545451-blue)](https://doi.org/10.5281/zenodo.3545451)
 
-Here we replicate the work of Purcell, di Bernardo, Grierson and Savery on [A Multi-Functional Synthetic Gene Network: A Frequency Multiplier, Oscillator and Switch](https://doi.org/10.1371/journal.pone.0016140), for [ReScience](https://rescience.github.io/).
+We hereby replicate the work of Purcell, di Bernardo, Grierson and Savery on ["A Multi-Functional Synthetic Gene Network: A Frequency Multiplier, Oscillator and Switch"](https://doi.org/10.1371/journal.pone.0016140), for [ReScience](https://rescience.github.io/).
 
 ![SBOL](sbol.png)
 
@@ -17,7 +18,14 @@ These are available in [Octave Forge](https://octave.sourceforge.io/) and can be
 > pkg install 'https://octave.sourceforge.io/download.php?package=signal-1.4.1.tar.gz'
 ```
 
-Each experiment is configured in a separate `.mat` file following Octave's standard human-readable ASCII format.
+More recent versions of Octave (e.g., 7.1.0 and later) are not guaranteed to work, but if you wish to use these anyway it might be a better idea to install the latest version of the additional packages as well:
+
+```octave
+> pkg install -forge control
+> pkg install -forge signal
+```
+
+Each experiment is configured in a separate `.mat` file following Octave's standard human-readable format.
 They are named after the Figure they generate on the [replication document](article.pdf).
 For the complete set of simulation settings, refer to the provided [src/save_parameters.m](src/save_parameters.m) script, which generates a sample `parameters.mat` file.
 Also check out the experiment configurations inside the [src/parameters/experiments/](src/parameters/experiments/) folder for some practical examples.
@@ -31,6 +39,8 @@ After all is ready, simply run:
 ```bash
 $ python3 experiments.py
 ```
+
+**FYI**: Running all simulations takes about 14 minutes on a modest laptop, where approximately 10 minutes are spent on the experiment which generates Figure 8.
 
 
 ## Replication paper document

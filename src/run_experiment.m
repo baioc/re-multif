@@ -157,7 +157,7 @@ elseif strcmp(experiment_class, 'period')
   % plot frequency response
   input_periods /= timescale;
   output_periods /= timescale;
-  plot(input_periods, output_periods, '@b');
+  plot(input_periods, output_periods, '+b');
   pbaspect(plot_aspect);
   xlabel("Input period (10^5 seconds)");
   ylabel("Output period (10^5 seconds)");
